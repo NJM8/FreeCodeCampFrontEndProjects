@@ -29,7 +29,7 @@ $(document).ready(function(){
 
 				$.when($.get("https://fcc-weather-api.glitch.me/api/current?lat=" + latLng[0] + "&lon=" + latLng[1]))
 					.then(function(response){
-						let weather = response.weather[0].description;
+						let weatherDescription = response.weather[0].description;
 						let tempurature = (response.main.temp * 1.8) + 32;
 						let wind = response.wind.speed;
 						let tempuratureDescription = '';
@@ -73,9 +73,9 @@ $(document).ready(function(){
 
 						// then find gifs
 
-						getGifs(weather, 'Weather: ');
-						getGifs(tempuratureDescription, 'Tempurature: ');
-						getGifs(windDescription, 'Wind: ');
+						getGifs('weatherDescription', weatherDescription, 'Weather: ');
+						getGifs('tempuratureDescription', tempuratureDescription, 'Tempurature: ');
+						getGifs('windDescription', windDescription, 'Wind: ');
 					});
 			})
 			.fail(error => {
@@ -84,44 +84,41 @@ $(document).ready(function(){
 			});	
 	});
 
-function getGifs(description, label){
-	$.when($.get("http://api.giphy.com/v1/gifs/search?q=" + description + "&api_key=fLBc8pLLd3UMGWIvHv1hRu2tlwKbGBvE&limit=25"))
+function getGifs(description, descriptionText, label){
+	$.when($.get("http://api.giphy.com/v1/gifs/search?q=" + descriptionText + "&api_key=fLBc8pLLd3UMGWIvHv1hRu2tlwKbGBvE&limit=25"))
 		.then(function(data){
-			const randNum = Math.floor(Math.random() * 25);
+      const randNum = Math.floor(Math.random() * 25);
+      const $newGifContainer = $("<li>", {
+        class: 'list-group-item list-group-item-dark'
+      })
 			const $newGif = $("<iframe>", {
 				src: data.data[randNum].embed_url, 
 				width: '300', 
 				height: '300', 
 				class: 'giphy-embed', 
-				frameBorder: '0'
-			});
-			$('#gifs').append($newGif);
-			
-			addDescription(description, label);
+        frameBorder: '0',
+      });
+      $newGifContainer.append($newGif);
+      const $descriptionText = $('<li>', {
+        text: label + descriptionText,
+        class: 'list-group-item list-group-item-info'
+      })
+			$(`#${description}`).append($newGifContainer);
+			$(`#${description}`).append($descriptionText);
 		})
 		.fail(error => {
-			const $newGif = $("<p>", {
+			const $newGif = $("<li>", {
 				text: "Unable to find a great Gif", 
 				width: '300', 
-				height: '300'
+        height: '300', 
+        class: 'list-group-item list-group-item-warning'
 			});
 			$('#gifs').append($newGif);
 			console.log(error);
 		});
 }	
 
-function addDescription(desc, label){
-		var newDescriptionDiv = $('<div>', {
-			class: 'col-4 description' 
-		})
-		var newDescriptionP = $('<p>', {
-			text: label + desc
-		})
-		newDescriptionDiv.append(newDescriptionP);
-		$('#descriptions').append(newDescriptionDiv);
-	}
-
-	$('#delete').on('click', function(){
+$('#delete').on('click', function(){
 		$('.giphy-embed').remove();
 		$('.description').remove();
 	})

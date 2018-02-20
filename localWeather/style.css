@@ -1,8 +1,8 @@
 body {
-	background: #101010;
+	background: dimgray;
 }
 
-h1, p {
+h1, h5 {
 	margin: 20px auto;
 	color: #F8F8F8;
 	text-align: center;
@@ -12,8 +12,4 @@ h1, p {
     .container{
         max-width: 970px;
     }
-}
-
-iframe {
-	padding: 5px;
 }

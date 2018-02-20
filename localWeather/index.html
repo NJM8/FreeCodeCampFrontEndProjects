@@ -12,14 +12,13 @@
 <body>
 	<div class="container">
 		<div class="row">
-			<h1>Check your local weather by Gif!</h1>
-			<p>Enter a location below to find out the current weather. Please note results may be up for interpretation. <i class="fa fa-smile-o" aria-hidden="true"></i></p>	
+			<h1>Check your local weather by <em>Gif!</em></h1>
+			<h5>Enter a location below to find out the current weather. Please note results may be up for interpretation. <i class="fa fa-smile-o" aria-hidden="true"></i></h5>	
 		</div>
 		<div class="row">
 			<div class="col-1"></div>
 			<div class="col-6">
-			<!-- Don't forget to remove value before submitting -->
-				<input type="text" name="gifType" class="form-control" id="query" placeholder="Anchorage, Alaska" value="Ithaca, NY">
+				<input type="text" name="gifType" class="form-control" id="query" placeholder="Anchorage, Alaska">
 			</div>
 			<div class="col-2">
 				<button class="btn btn-primary" id="check">Check Weather</button>
@@ -27,11 +26,15 @@
 			<div class="col-2">
 				<button class="btn btn-danger" id="delete">Delete</button>
 			</div>
-		</div>
-		<div class="row" id="gifs">
-		</div>
-		<div class="row" id="descriptions">
-		</div>
+    </div>
+  </div>
+  <div class="container d-flex justify-content-around flex-nowrap text-center my-3">
+		<ul class="list-group mx-2" id="weatherDescription">
+    </ul>
+		<ul class="list-group mx-2" id="tempuratureDescription">
+		</ul>
+    <ul class="list-group mx-2" id="windDescription">
+		</ul>
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
