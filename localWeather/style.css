@@ -1,0 +1,19 @@
+body {
+	background: #101010;
+}
+
+h1, p {
+	margin: 20px auto;
+	color: #F8F8F8;
+	text-align: center;
+}
+
+@media (min-width: 1200px) {
+    .container{
+        max-width: 970px;
+    }
+}
+
+iframe {
+	padding: 5px;
+}
