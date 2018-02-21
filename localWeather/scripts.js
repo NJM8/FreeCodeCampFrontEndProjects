@@ -7,29 +7,42 @@ $(document).ready(function(){
 	})
 
 	$('#check').on('click', function(){
+		// get location from input
 		let location = $('#query').val();
 
+		// if no location display a message to prompt a location
 		if (location === '') {
-			alert("please enter something in the search field.");
+			$('#delete').click();
+			const $message = $('<h5>', {
+				class: 'list-group-item list-group-item-info mx-auto mt-3',
+				text: "please enter something in the search field."
+			}); 
+			$('#locationDisplay').html($message);
 			return;
 		}
-
+		// reset input
     $('#query').val('');
 
-    if ($('#weatherDescription li').length) {
+		// if there are gifs present delete them
+    if ($('#weatherDescription li').length || $('#locationDisplay h5').length) {
       $('#delete').click();
     }
 
 		// first get lat and long
-
-		$.when($.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + location[0] + '&key=AIzaSyAa2Fm1SPYpC2qkif3suYQyLYGtBthsYtQ'))
+		$.when($.get('https://api.opencagedata.com/geocode/v1/json?q=' + location + '&key=b79b1abe44204c99b963ebc85971e53e'))
 			.then(function(response){
+				console.log(response);
 				let latLng = [];
-				latLng.push(response.results[0].geometry.location.lat);
-				latLng.push(response.results[0].geometry.location.lng);
+				latLng.push(response.results[0].geometry.lat);
+				latLng.push(response.results[0].geometry.lng)
+				// set location display to show found location
+				const $location = $('<h5>', {
+					class: 'list-group-item list-group-item-info mx-auto mt-3',
+					text: response.results[0].formatted
+				});
+				$('#locationDisplay').html($location);
 
 				// then get weather conditions from FCC weather api
-
 				$.when($.get("https://fcc-weather-api.glitch.me/api/current?lat=" + latLng[0] + "&lon=" + latLng[1]))
 					.then(function(response){
 						let weatherDescription = response.weather[0].description;
@@ -75,14 +88,17 @@ $(document).ready(function(){
 						}
 
 						// then find gifs
-
 						getGifs('weatherDescription', weatherDescription, 'Weather: ');
 						getGifs('tempuratureDescription', tempuratureDescription, 'Tempurature: ', tempurature);
 						getGifs('windDescription', windDescription, 'Wind: ');
 					});
 			})
 			.fail(error => {
-				alert("Oops, we couldn't find that location");
+				const $message = $('<h5>', {
+					class: 'list-group-item list-group-item-info mx-auto mt-3',
+					text: 'Oops, we couldn\'t find that location'
+				});
+				$('#locationDisplay').html($message);
 				console.log(error);
 			});	
 	});
@@ -139,7 +155,8 @@ $(document).ready(function(){
   $('#delete').on('click', function(){
     $('#weatherDescription li').remove();
     $('#tempuratureDescription li').remove();
-    $('#windDescription li').remove();
+		$('#windDescription li').remove();
+		$('#locationDisplay h5').remove();
   });
   
   $('#changeTemp').on('click', function(){
