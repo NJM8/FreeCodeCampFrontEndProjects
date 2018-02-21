@@ -15,15 +15,12 @@
 			<h1>Check your local weather by <em>Gif!</em></h1>
 			<h5>Enter a location below to find out the current weather. Please note results may be up for interpretation. <i class="fa fa-smile-o" aria-hidden="true"></i></h5>	
 		</div>
-		<div class="row">
-			<div class="col-6">
-				<input type="text" name="gifType" class="form-control" id="query" placeholder="Anchorage, Alaska">
-			</div>
-			<div class="col-6">
-				<button class="btn btn-primary" id="check">Check Weather</button>
-        <button class="btn btn-primary mx-2" id="changeTemp">Change Temp</button>
-        <button class="btn btn-primary" id="delete">Delete Gifs</button>
-      </div>
+		<div class="row d-flex justify-content-around my-2">
+			<input type="text" name="gifType" class="form-control" id="query" placeholder="Anchorage, Alaska">
+			<button class="btn btn-primary" id="check">Check Weather</button>
+			<button class="btn btn-primary" id="changeTemp">Change Temp</button>
+			<button class="btn btn-primary" id="getMoreGifs">Get New Gifs</button>
+			<button class="btn btn-primary" id="delete">Delete Gifs</button>
 		</div>
 		<div class="row" id="messageDisplay"></div>
   </div>

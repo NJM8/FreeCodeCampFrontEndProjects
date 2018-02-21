@@ -128,14 +128,19 @@ $(document).ready(function(){
 			});	
 	}
 
+	$('#getMoreGifs').on('click', () => {
+		$('#query').val($('#messageDisplay h5').html());
+		$('#check').click();
+	})
+
   $('#delete').on('click', function(){
     $('#weatherDescription li').remove();
     $('#tempuratureDescription li').remove();
 		$('#windDescription li').remove();
-		$('#locationDisplay h5').remove();
+		$('#messageDisplay h5').remove();
   });
   
-  $('#changeTemp').on('click', function(){
+  $('#changeTemp').on('click', () => {
     const tempDisplay = $('#tempDisplay');
     const currentTemp = tempDisplay.data('temp');
     if (tempDisplay.data('scale') === 'F') {
