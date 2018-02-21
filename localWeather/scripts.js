@@ -88,7 +88,7 @@ $(document).ready(function(){
 	});
 
   function getGifs(description, descriptionText, label, tempurature){
-	  $.when($.get("http://api.giphy.com/v1/gifs/search?q=" + descriptionText + "&api_key=fLBc8pLLd3UMGWIvHv1hRu2tlwKbGBvE&limit=50"))
+	  $.when($.get("https://api.giphy.com/v1/gifs/search?q=" + descriptionText + "&api_key=fLBc8pLLd3UMGWIvHv1hRu2tlwKbGBvE&limit=50"))
 		.then(function(data){
       const randNum = Math.floor(Math.random() * 50);
       const $newGifContainer = $("<li>", {
