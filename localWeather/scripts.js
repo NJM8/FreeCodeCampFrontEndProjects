@@ -73,7 +73,7 @@ $(document).ready(function(){
 			.then((data) => {
 				const randNum = Math.floor(Math.random() * 50);
 				const $newGifContainer = $("<li>", {
-					class: 'list-group-item list-group-item-dark'
+					class: 'list-group-item list-group-item-info'
 				});
 
 				const $newGif = $("<iframe>", {
@@ -193,11 +193,15 @@ $(document).ready(function(){
 	
 	if ('geolocation' in navigator) {
 		displayMessage('Finding your local weather');
-		navigator.geolocation.getCurrentPosition((position) => {
+		let successHandler = function(position){
 			const latLng = [position.coords.latitude, position.coords.longitude];
 			getLocation(latLng);
 			getWeather(latLng);
-		});
+		}
+		const errorHandler = function(){
+			displayMessage("We couldn't get your location automatically, please search above!");
+		}
+		navigator.geolocation.getCurrentPosition(successHandler, errorHandler);
 	} else {
 		displayMessage("We couldn't get your location automatically, please search above!");
 	}
