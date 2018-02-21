@@ -1,156 +1,132 @@
 $(document).ready(function(){
-	$('input').keyup(function(event){ // adds an event listener to the input
+	$('input').keyup(event => { // adds an event listener to the input
 		event.preventDefault(); // stops default action
 		if (event.keyCode === 13) { // if the key pressed is the enter key
 			$('#check').click(); // call the click function of the input field
 		}
 	})
 
-	$('#check').on('click', function(){
+	$('#check').on('click', () => {
 		// get location from input
-		let location = $('#query').val();
+		const location = $('#query').val();
 
 		// if no location display a message to prompt a location
 		if (location === '') {
 			$('#delete').click();
-			const $message = $('<h5>', {
-				class: 'list-group-item list-group-item-info mx-auto mt-3',
-				text: "please enter something in the search field."
-			}); 
-			$('#locationDisplay').html($message);
+			displayMessage('please enter something in the search field.');
 			return;
+		} else {
+			displayMessage('Let\'s see what we can find....');
 		}
 		// reset input
     $('#query').val('');
 
-		// if there are gifs present delete them
+		// if there are gifs or a message present present delete them
     if ($('#weatherDescription li').length || $('#locationDisplay h5').length) {
       $('#delete').click();
     }
 
 		// first get lat and long
-		$.when($.get('https://api.opencagedata.com/geocode/v1/json?q=' + location + '&key=b79b1abe44204c99b963ebc85971e53e'))
-			.then(function(response){
-				console.log(response);
-				let latLng = [];
-				latLng.push(response.results[0].geometry.lat);
-				latLng.push(response.results[0].geometry.lng)
+		$.when($.get(`https://api.opencagedata.com/geocode/v1/json?q=${location}&key=b79b1abe44204c99b963ebc85971e53e`))
+			.then(response => {
+				let latLng = [response.results[0].geometry.lat, response.results[0].geometry.lng];
 				// set location display to show found location
-				const $location = $('<h5>', {
-					class: 'list-group-item list-group-item-info mx-auto mt-3',
-					text: response.results[0].formatted
-				});
-				$('#locationDisplay').html($location);
-
+				displayMessage(response.results[0].formatted);
 				// then get weather conditions from FCC weather api
-				$.when($.get("https://fcc-weather-api.glitch.me/api/current?lat=" + latLng[0] + "&lon=" + latLng[1]))
-					.then(function(response){
-						let weatherDescription = response.weather[0].description;
-						let tempurature = (response.main.temp * 1.8) + 32;
-						let wind = response.wind.speed;
-						let tempuratureDescription = '';
-						let windDescription = '';
-
-						switch (true) {
-							case tempurature < 32:
-								tempuratureDescription = 'freezing';
-								break;
-							case 32 < tempurature && tempurature < 60:
-								tempuratureDescription = 'cold';
-								break;
-							case 60 < tempurature && tempurature < 80:
-								tempuratureDescription = 'comfortable';
-								break;
-							case 80 < tempurature && tempurature < 100:
-								tempuratureDescription = 'hot';
-								break;
-							case 100 < tempurature:
-								tempuratureDescription = 'sweltering';
-								break;
-						}
-
-						switch (true) {
-							case wind < 4:
-								windDescription = 'mild';
-								break;
-							case 4 < wind && wind < 8:
-								windDescription = 'breezy';
-								break;
-							case 8 < wind && wind < 12:
-								windDescription = 'windy';
-								break;
-							case 12 < wind && wind < 16:
-								windDescription = 'blustery';
-								break;
-							case 16 < wind:
-								windDescription = 'gusty';
-								break;
-						}
-
-						// then find gifs
-						getGifs('weatherDescription', weatherDescription, 'Weather: ');
-						getGifs('tempuratureDescription', tempuratureDescription, 'Tempurature: ', tempurature);
-						getGifs('windDescription', windDescription, 'Wind: ');
-					});
+				getWeather(latLng);
 			})
 			.fail(error => {
-				const $message = $('<h5>', {
-					class: 'list-group-item list-group-item-info mx-auto mt-3',
-					text: 'Oops, we couldn\'t find that location'
-				});
-				$('#locationDisplay').html($message);
+				displayMessage('Oops, we couldn\'t find that location');
 				console.log(error);
 			});	
-	});
-
-  function getGifs(description, descriptionText, label, tempurature){
-	  $.when($.get("https://api.giphy.com/v1/gifs/search?q=" + descriptionText + "&api_key=fLBc8pLLd3UMGWIvHv1hRu2tlwKbGBvE&limit=50"))
-		.then(function(data){
-      const randNum = Math.floor(Math.random() * 50);
-      const $newGifContainer = $("<li>", {
-        class: 'list-group-item list-group-item-dark'
-      });
-
-			const $newGif = $("<iframe>", {
-				src: data.data[randNum].embed_url, 
-				width: '300', 
-				height: '300', 
-				class: 'giphy-embed', 
-        frameBorder: '0',
-      });
-
-      $newGifContainer.append($newGif);
-
-      const $descriptionText = $("<li>", {
-        text: label + descriptionText,
-        class: 'list-group-item list-group-item-info'
-      });
-
-      if (tempurature) {
-        const $tempDisplay = $("<span>", {
-          class: 'badge badge-light ml-2', 
-          id: 'tempDisplay',
-          text: `${tempurature.toFixed(1)} F`,
-          'data-temp': tempurature.toFixed(1),
-          'data-scale': 'F'
-        });
-        $descriptionText.append($tempDisplay);
-      }
-
-			$(`#${description}`).append($newGifContainer);
-			$(`#${description}`).append($descriptionText);
-		})
-		.fail(error => {
-			const $newGif = $("<li>", {
-				text: "Unable to find a great Gif", 
-				width: '300', 
-        height: '300', 
-        class: 'list-group-item list-group-item-warning'
-			});
-			$(`#${description}`).append($newGif);
-			console.log(error);
 		});
-  }	
+		
+	function getWeather(latLng) {
+		$.when($.get(`https://fcc-weather-api.glitch.me/api/current?lat=${latLng[0]}&lon=${latLng[1]}`))
+			.then(response => {
+				const weatherDescription = response.weather[0].description;
+				const tempurature = (response.main.temp * 1.8) + 32;
+				const wind = response.wind.speed;
+				const tempuratureDescription = getTempDesc(tempurature);
+				const windDescription = getWindDesc(wind);
+				// then find gifs
+				getGifs('weatherDescription', weatherDescription, 'Weather: ');
+				getGifs('tempuratureDescription', tempuratureDescription, 'Tempurature: ', tempurature);
+				getGifs('windDescription', windDescription, 'Wind: ');
+			})
+			.fail(error => {
+				displayMessage('Unable to find weather');
+				console.log(error);
+			});
+		};
+
+	function displayMessage(message) {
+		const $location = $('<h5>', {
+			class: 'list-group-item list-group-item-info mx-auto mt-3',
+			text: message
+		});
+		$('#messageDisplay').html($location);
+	};
+
+	function getGifs(description, descriptionText, label, tempurature){
+	  $.when($.get(`https://api.giphy.com/v1/gifs/search?q=${descriptionText}&api_key=fLBc8pLLd3UMGWIvHv1hRu2tlwKbGBvE&limit=50`))
+			.then((data) => {
+				const randNum = Math.floor(Math.random() * 50);
+				const $newGifContainer = $("<li>", {
+					class: 'list-group-item list-group-item-dark'
+				});
+
+				const $newGif = $("<iframe>", {
+					src: data.data[randNum].embed_url, 
+					width: '300', 
+					height: '300', 
+					class: 'giphy-embed', 
+					frameBorder: '0',
+				});
+
+				$newGifContainer.append($newGif);
+
+				const $descriptionText = $("<li>", {
+					text: label + descriptionText,
+					class: 'list-group-item list-group-item-info'
+				});
+
+				if (tempurature) {
+					const $tempDisplay = $("<span>", {
+						class: 'badge badge-light ml-2', 
+						id: 'tempDisplay',
+						text: `${tempurature.toFixed(1)} F`,
+						'data-temp': tempurature.toFixed(1),
+						'data-scale': 'F'
+					});
+					$descriptionText.append($tempDisplay);
+				}
+
+				$(`#${description}`).append($newGifContainer);
+				$(`#${description}`).append($descriptionText);
+			})
+			.fail(error => {
+				const $newGif = $("<li>", {
+					text: "Unable to find a great Gif", 
+					width: '300', 
+					height: '300', 
+					class: 'list-group-item list-group-item-warning'
+				});
+				$(`#${description}`).append($newGif);
+				console.log(error);
+			});
+	}	
+	
+	function getLocation(latLng){
+		$.when($.get(`https://api.opencagedata.com/geocode/v1/json?q=${latLng[0]}+${latLng[1]}&key=b79b1abe44204c99b963ebc85971e53e`))
+			.then(response => {
+				displayMessage(response.results[0].formatted);
+			})
+			.fail(error => {
+				displayMessage('Oops, we couldn\'t find that location');
+				console.log(error);
+			});	
+	}
 
   $('#delete').on('click', function(){
     $('#weatherDescription li').remove();
@@ -173,5 +149,60 @@ $(document).ready(function(){
       tempDisplay.data('scale', 'F');
       tempDisplay.data('temp', newTemp);
     }
-  })
-})
+	});
+	
+	function getTempDesc(tempurature){
+		switch (true) {
+			case tempurature < 32:
+				return 'freezing';
+				break;
+			case 32 < tempurature && tempurature < 60:
+				return 'cold';
+				break;
+			case 60 < tempurature && tempurature < 80:
+				return 'comfortable';
+				break;
+			case 80 < tempurature && tempurature < 100:
+				return 'hot';
+				break;
+			case 100 < tempurature:
+				return 'sweltering';
+				break;
+		}
+	};
+
+	function getWindDesc(wind){
+		switch (true) {
+			case wind < 4:
+				return 'mild';
+				break;
+			case 4 < wind && wind < 8:
+				return 'breezy';
+				break;
+			case 8 < wind && wind < 12:
+				return 'windy';
+				break;
+			case 12 < wind && wind < 16:
+				return 'blustery';
+				break;
+			case 16 < wind:
+				return 'gusty';
+				break;
+		}
+	};
+	
+	if ('geolocation' in navigator) {
+		displayMessage('Finding your local weather');
+		navigator.geolocation.getCurrentPosition((position) => {
+			const latLng = [position.coords.latitude, position.coords.longitude];
+			getLocation(latLng);
+			getWeather(latLng);
+		});
+	} else {
+		displayMessage("We couldn't get your location automatically, please search above!");
+	}
+});
+
+
+
+
