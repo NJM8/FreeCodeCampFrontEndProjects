@@ -45,13 +45,13 @@ $(document).ready(function(){
 		$.when($.get(`https://fcc-weather-api.glitch.me/api/current?lat=${latLng[0]}&lon=${latLng[1]}`))
 			.then(response => {
 				const weatherDescription = response.weather[0].description;
-				const tempurature = (response.main.temp * 1.8) + 32;
+				const temperature = (response.main.temp * 1.8) + 32;
 				const wind = response.wind.speed;
-				const tempuratureDescription = getTempDesc(tempurature);
+				const temperatureDescription = getTempDesc(temperature);
 				const windDescription = getWindDesc(wind);
 				// then find gifs
 				getGifs('weatherDescription', weatherDescription, 'Weather: ');
-				getGifs('tempuratureDescription', tempuratureDescription, 'Tempurature: ', tempurature);
+				getGifs('temperatureDescription', temperatureDescription, 'Temperature: ', temperature);
 				getGifs('windDescription', windDescription, 'Wind: ');
 			})
 			.fail(error => {
@@ -68,7 +68,7 @@ $(document).ready(function(){
 		$('#messageDisplay').html($location);
 	};
 
-	function getGifs(description, descriptionText, label, tempurature){
+	function getGifs(description, descriptionText, label, temperature){
 	  $.when($.get(`https://api.giphy.com/v1/gifs/search?q=${descriptionText}&api_key=fLBc8pLLd3UMGWIvHv1hRu2tlwKbGBvE&limit=50`))
 			.then((data) => {
 				const randNum = Math.floor(Math.random() * 50);
@@ -91,12 +91,12 @@ $(document).ready(function(){
 					class: 'list-group-item list-group-item-info'
 				});
 
-				if (tempurature) {
+				if (temperature) {
 					const $tempDisplay = $("<span>", {
 						class: 'badge badge-light ml-2', 
 						id: 'tempDisplay',
-						text: `${tempurature.toFixed(1)} F`,
-						'data-temp': tempurature.toFixed(1),
+						text: `${temperature.toFixed(1)} F`,
+						'data-temp': temperature.toFixed(1),
 						'data-scale': 'F'
 					});
 					$descriptionText.append($tempDisplay);
@@ -135,7 +135,7 @@ $(document).ready(function(){
 
   $('#delete').on('click', function(){
     $('#weatherDescription li').remove();
-    $('#tempuratureDescription li').remove();
+    $('#temperatureDescription li').remove();
 		$('#windDescription li').remove();
 		$('#messageDisplay h5').remove();
   });
@@ -156,21 +156,21 @@ $(document).ready(function(){
     }
 	});
 	
-	function getTempDesc(tempurature){
+	function getTempDesc(temperature){
 		switch (true) {
-			case tempurature < 32:
+			case temperature < 32:
 				return 'freezing';
 				break;
-			case 32 < tempurature && tempurature < 60:
+			case 32 < temperature && temperature < 60:
 				return 'cold';
 				break;
-			case 60 < tempurature && tempurature < 80:
+			case 60 < temperature && temperature < 80:
 				return 'comfortable';
 				break;
-			case 80 < tempurature && tempurature < 100:
+			case 80 < temperature && temperature < 100:
 				return 'hot';
 				break;
-			case 100 < tempurature:
+			case 100 < temperature:
 				return 'sweltering';
 				break;
 		}
