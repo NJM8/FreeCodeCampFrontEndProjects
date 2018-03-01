@@ -1,7 +1,3 @@
-$(document).ready(function(){
-  $('.parallax').parallax();
-});
-
 function tweetIt () {
   var phrase = document.getElementById('phrase').innerText;
   var author = document.getElementById('author').innerText;

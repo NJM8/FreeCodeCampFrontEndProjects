@@ -1,11 +1,32 @@
+html { 
+  background: url(01860_sanfrancisco_2560x1600.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 .quote-card {
   position: absolute;
   top: 0px;
-  left 0px;
+  left: 0px;
   padding-top: 125px;
   padding-left: 200px;
   z-index: 10;
 }
+
 .card {
   width: 400px;
+}
+
+.linkToPortfolio {
+  position: absolute;
+  
+}
+
+@media screen and (max-width: 1024px) { 
+  img {
+    left: 50%;
+    margin-left: -512px; 
+  }
 }
