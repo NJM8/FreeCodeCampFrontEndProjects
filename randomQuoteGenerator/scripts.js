@@ -1,12 +1,4 @@
 $(document).ready(function(){
-  function tweetIt () {
-    const phrase = document.getElementById('phrase').innerText;
-    const author = document.getElementById('author').innerText;
-    const tweetUrl = 'https://twitter.com/intent/tweet?text=' +
-    encodeURIComponent(phrase) + " " + encodeURIComponent(author);
-    window.open(tweetUrl);
-  }
-
   const quotes = {
     quote_0: {
       id: 0,
@@ -121,6 +113,10 @@ $(document).ready(function(){
     })
   });
 
+  $("#tweetIt").click(function(){
+    tweetIt();
+  });
+
   function showNewQuote(){
     const randNum = Math.floor(Math.random() * 20 + 1);
     let newQuote = "";
@@ -140,6 +136,15 @@ $(document).ready(function(){
     $("#quoteCard").css({"padding-top": newTopPadding});
     $("#quoteCard").css({"padding-left": newLeftPadding});
     $("#quoteCard").fadeIn("slow", function(){
-    });
+      });
   };
+
+  function tweetIt () {
+    const phrase = document.getElementById('phrase').innerText;
+    const author = document.getElementById('author').innerText;
+    const tweetUrl = 'https://twitter.com/intent/tweet?text=' +
+    encodeURIComponent(phrase) + " " + encodeURIComponent(author);
+    console.log(tweetUrl);
+    window.open(tweetUrl);
+  }
 });
