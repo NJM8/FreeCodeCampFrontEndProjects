@@ -10,8 +10,8 @@ html {
   position: absolute;
   top: 0px;
   left: 0px;
-  padding-top: 125px;
-  padding-left: 200px;
+  padding-top: 10%;
+  padding-left: 5%;
   z-index: 10;
 }
 
@@ -19,14 +19,32 @@ html {
   width: 400px;
 }
 
-.linkToPortfolio {
+#linkToPortfolio {
   position: absolute;
-  
+  bottom: 1%;
+  margin-left: 55%;
+  z-index: 10;  
 }
 
 @media screen and (max-width: 1024px) { 
   img {
     left: 50%;
     margin-left: -512px; 
+  }
+}
+
+@media screen and (max-width: 600px) { 
+  #linkToPortfolio {
+    bottom: 1%;
+    margin-left: 25%;
+    z-index: 10;  
+  }
+}
+
+@media screen and (max-width: 900px) { 
+  #linkToPortfolio {
+    bottom: 1%;
+    margin-left: 45%;
+    z-index: 10;  
   }
 }

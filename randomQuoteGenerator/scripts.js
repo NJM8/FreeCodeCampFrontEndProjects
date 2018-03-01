@@ -1,12 +1,12 @@
 function tweetIt () {
-  var phrase = document.getElementById('phrase').innerText;
-  var author = document.getElementById('author').innerText;
-  var tweetUrl = 'https://twitter.com/intent/tweet?text=' +
+  const phrase = document.getElementById('phrase').innerText;
+  const author = document.getElementById('author').innerText;
+  const tweetUrl = 'https://twitter.com/intent/tweet?text=' +
   encodeURIComponent(phrase) + " " + encodeURIComponent(author);
   window.open(tweetUrl);
 }
 
-var quotes = {
+const quotes = {
   quote_0: {
     id: 0,
     phrase: "People often say that motivation doesn’t last. Well, neither does bathing. That’s why we recommend it daily.",
@@ -121,13 +121,11 @@ $("#newQuote").click(function(){
 });
 
 function showNewQuote(){
-  var randNum = Math.floor(Math.random() * 20 + 1);
-  var newQuote = "";
-  var newAuthor = "";
-  var newTopPadding = Math.floor(Math.random() * 600 + 1);
-  var newLeftPadding = Math.floor(Math.random() * 600 + 1);
-  for (var key in quotes) {
-    for (var key2 in quotes[key]){
+  const randNum = Math.floor(Math.random() * 20 + 1);
+  let newQuote = "";
+  let newAuthor = "";
+  for (let key in quotes) {
+    for (let key2 in quotes[key]){
       if (quotes[key][key2] === randNum) {
         newQuote = quotes[key].phrase;
         newAuthor = quotes[key].author;
@@ -136,6 +134,8 @@ function showNewQuote(){
   }
   $("#phrase").html(newQuote);
   $("#author").html(newAuthor);
+  const newTopPadding = Math.random() * ($(document).height() - $("#quoteCard").outerHeight());
+  const newLeftPadding = Math.random() * ($(document).width() - $("#quoteCard").outerWidth());
   $("#quoteCard").css({"padding-top": newTopPadding});
   $("#quoteCard").css({"padding-left": newLeftPadding});
   $("#quoteCard").fadeIn("slow", function(){
