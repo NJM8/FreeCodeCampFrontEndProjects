@@ -1,0 +1,49 @@
+html { 
+  background: url(/images/mark-solarski-209233-unsplash.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.container {
+  padding-top: 6%;
+}
+
+.card-panel {
+  font-size: 1.4rem;
+  font-style: italic;
+}
+
+#toPortfolio {
+  font-size: .9rem;
+}
+
+#photoCred {
+  position: absolute;
+  margin-left: 15%;
+  bottom: 10px;
+  background-color: black;
+  color: white;
+  text-decoration: none;
+  padding :4px 6px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.2;
+  display: inline-block;
+  border-radius: 3px;
+}
+
+svg {
+  height: 12px;
+  width: auto;
+  position: relative;
+  vertical-align: middle;
+  top: -1px;
+  fill: white;
+}
+
+span {
+  display: inline-block;
+  padding: 2px 3px;
+}
