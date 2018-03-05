@@ -1,0 +1,89 @@
+body {
+	background-color: #f5f5f5;
+}
+
+#game-board {
+	background-color: slategrey;
+	width: 600px;
+	height: 500px;
+}
+
+#square {
+	width: 40px;
+	height: 40px;
+	background-color: tomato;
+}
+
+#circle {
+	width: 40px;
+	height: 40px;
+	background-color: tomato;
+	border-radius: 22.5px;
+	-moz-border-radius:22.5px;
+	-webkit-border-radius:22.5px;
+}
+
+#triangle {
+	width: 0px;
+	height: 0px;
+	border-left: 23px solid transparent;
+	border-right: 23px solid transparent;
+	border-bottom: 43px solid tomato;
+}
+
+#star { 
+	margin: 12.5px 0; 
+	position: relative; 
+	display: block; 
+	color: tomato; 
+	width: 0px; height: 0px; 
+	border-right: 25px solid transparent; 
+	border-bottom: 17.5px solid tomato; 
+	border-left: 25px solid transparent; 
+	transform: rotate(35deg); 
+	-moz-transform: rotate(35deg); 
+	-webkit-transform: rotate(35deg); 
+	-ms-transform: rotate(35deg); 
+	-o-transform: rotate(35deg); 
+} 
+
+#star:before { 
+	border-bottom: 20px solid tomato; 
+	border-left: 7.5px solid transparent; 
+	border-right: 7.5px solid transparent; 
+	position: absolute; 
+	height: 0; 
+	width: 0; 
+	top: -11.25px; 
+	left: -16.25px; 
+	display: block; 
+	content: ''; 
+	transform: rotate(-35deg); 
+	-webkit-transform: rotate(-35deg); 
+	-moz-transform: rotate(-35deg); 
+	-ms-transform: rotate(-35deg); 
+	-o-transform: rotate(-35deg); 
+} 
+
+#star:after { 
+	position: absolute; 
+	display: block; 
+	color: tomato; 
+	top: 0.75px; left: -26.25px; 
+	width: 0px; 
+	height: 0px; 
+	border-right: 25px solid transparent; 
+	border-bottom: 17.5px solid tomato; 
+	border-left: 25px solid transparent; 
+	transform: rotate(-70deg); 
+	-webkit-transform: rotate(-70deg); 
+	-moz-transform: rotate(-70deg); 
+	-ms-transform: rotate(-70deg); 
+	-o-transform: rotate(-70deg); 
+	content: ''; 
+}
+
+
+
+
+
