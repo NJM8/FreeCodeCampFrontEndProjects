@@ -138,7 +138,7 @@ $(document).ready(function(){
 				$(`#${description}`).append($descriptionText);
 			})
 			.done(() => {
-				$(`#${description}`).animate({opacity:1},2200);
+				$(`#${description}`).animate({opacity:1},600);
 			})
 			.fail(error => {
 				const $newGif = $("<li>", {
@@ -187,30 +187,30 @@ $(document).ready(function(){
 			displayMessage('Please enter something in the search field.');
 			return;
 		}
-		$('#weatherDescription li').animate({opacity:0}, 600, function(){
-			$(this).remove();
+		$('#weatherDescription').animate({opacity:0}, 600, function(){
+			$(this).children('li').remove();
 		});
-    $('#temperatureDescription li').animate({opacity:0}, 600, function(){
-			$(this).remove();
+    $('#temperatureDescription').animate({opacity:0}, 600, function(){
+			$(this).children('li').remove();
 		});
-		$('#windDescription li').animate({opacity:0}, 600, function(){
-			$(this).remove();
+		$('#windDescription').animate({opacity:0}, 600, function(){
+			$(this).children('li').remove();
 		});
 		getWeather(latLng);
 	});
 
   $('#delete').on('click', function(){
-    $('#weatherDescription li').animate({opacity:0}, 600, function(){
-			$(this).remove();
+    $('#weatherDescription').animate({opacity:0}, 600, function(){
+			$(this).children('li').remove();
 		});
-    $('#temperatureDescription li').animate({opacity:0}, 600, function(){
-			$(this).remove();
+    $('#temperatureDescription').animate({opacity:0}, 600, function(){
+			$(this).children('li').remove();
 		});
-		$('#windDescription li').animate({opacity:0}, 600, function(){
-			$(this).remove();
+		$('#windDescription').animate({opacity:0}, 600, function(){
+			$(this).children('li').remove();
 		});
 		$('#messageDisplay h5').animate({opacity:0}, 600, function(){
-			$(this).remove();
+			$(this).children('li').remove();
 		});
 		latLng = [];
 		location = '';
