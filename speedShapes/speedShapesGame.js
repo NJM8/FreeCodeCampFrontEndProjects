@@ -26,22 +26,21 @@ document.addEventListener('DOMContentLoaded', function(event){
 	let delta = 0;
 	let main;
 	
-
-	let keys = {
+	const keys = {
 		38: 'square', 
 		40: 'circle', 
 		39: 'triangle',
 		37: 'star',
 
 		randomShape: function(){
-			let values = Object.values(keys);
+			const values = Object.values(keys);
 			return values[Math.floor(Math.random() * 4)];
 		}
 	}
 
-	let colors = ['#ff6347', '#00ff7f', '#ff00ff', '#fffacd', '#b22222', '#f0e68c', '#00ffff', '#ffa500', '#d2691e', '#556b2f', '#e9967a', '#ff1493', '#ffd700', '#fafad2', '#20b2aa'];
+	const colors = ['#ff6347', '#00ff7f', '#ff00ff', '#fffacd', '#b22222', '#f0e68c', '#00ffff', '#ffa500', '#d2691e', '#556b2f', '#e9967a', '#ff1493', '#ffd700', '#fafad2', '#20b2aa'];
 
-	let finalMessages = {
+	const finalMessages = {
 		1: 'Ouch! I think some practice is in order. Your final score was ', 
 		2: 'Not bad! Your final score was ', 
 		3: 'Pretty good! Your final score was ', 
