@@ -15,26 +15,27 @@
 			<h1>Check your local weather by <em>Gif!</em></h1>
 			<h5>Enter a location below to find out the current weather. Please note results may be up for interpretation. <i class="fa fa-smile-o" aria-hidden="true"></i></h5>	
 		</div>
-		<div class="row d-flex justify-content-around m-2">
-			<input type="text" name="gifType" class="form-control m-2" id="query" placeholder="Anchorage, Alaska">
-			<button class="btn btn-primary m-2" id="check">Check Weather</button>
-			<button class="btn btn-primary m-2" id="changeTemp">Change Temp</button>
-			<button class="btn btn-primary m-2" id="getMoreGifs">Get New Gifs</button>
-			<button class="btn btn-primary m-2" id="delete">Delete Gifs</button>
+		<div class="row d-flex justify-content-around mt-2">
+			<input type="text" name="gifType" class="form-control" id="query" placeholder="Anchorage, Alaska">
+			<button class="btn btn-primary" id="check">Check Weather</button>
+			<button class="btn btn-primary" id="changeTemp">Change Temp</button>
+			<button class="btn btn-primary" id="getMoreGifs">Get New Gifs</button>
+			<button class="btn btn-primary" id="delete">Delete Gifs</button>
+			<button class="btn btn-primary" href="http://www.natethedev.com/" target="_blank">Created by Nate Mallison</button>
 		</div>
 		<div class="row" id="messageDisplay"></div>
   </div>
   <div class="container d-flex justify-content-around text-center my-3 flex-wrap">
-		<ul class="list-group m-2" id="weatherDescription">
+		<ul class="list-group m-2 gifContainer" id="weatherDescription">
     </ul>
-		<ul class="list-group m-2" id="temperatureDescription">
+		<ul class="list-group m-2 gifContainer" id="temperatureDescription">
 		</ul>
-    <ul class="list-group m-2" id="windDescription">
+    <ul class="list-group m-2 gifContainer" id="windDescription">
 		</ul>
 	</div>
-	<div class="container d-flex justify-content-center">
+	<!-- <div class="container d-flex justify-content-center">
     <a class="btn btn-primary m-2" href="http://www.natethedev.com/" target="_blank">Created by Nate Mallison</a>
-  </div>
+  </div> -->
 
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>

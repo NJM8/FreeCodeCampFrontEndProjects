@@ -21,3 +21,11 @@ li {
 #query {
     width: 300px;
 }
+
+.gifContainer {
+    opacity: 0;
+}
+
+#messageDisplay {
+    opacity: 0;
+}
