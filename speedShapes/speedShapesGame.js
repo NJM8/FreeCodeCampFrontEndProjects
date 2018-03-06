@@ -1,49 +1,56 @@
-$(document).ready(function(){
-	var canvas = document.getElementById('game-board');
+document.addEventListener('DOMContentLoaded', function(event){
+	const difficultyInputs = document.querySelectorAll('input');
+	const difficultyInputLabels = document.querySelectorAll('label');
+	const timeDisplay = document.querySelector('#time-left');
+	const scoreDisplay = document.querySelector('#score')
+	const finalMessageDisplay = document.querySelector('#final-message');
+	let canvas = document.getElementById('game-board');
 	canvas.width = 600;
 	canvas.height = 500;
 	window.ctx = canvas.getContext('2d');
-	var playing = false;
-	var currentShape = '';
-	var score = 0;
-	var possibleScore = 30;
-	var timeLeft = 30;
-	var randomX = 0;
-	var randomY = 0;
-	var difficulty = 'medium';
-	var finalMessage = '';
-	var hasGuessed = false;
-	var displayedShapeCount = 0;
-	var lastFrameTimeMs = 0;
-	var timerFPMS = 1000;
-	var shapeFPMS = 1000;
-	var maxFPS = 10;
-	var delta = 0;
-	var main;
+	let playing = false;
+	let currentShape = '';
+	let score = 0;
+	const possibleScore = 30;
+	let timeLeft = 30;
+	let randomX = 0;
+	let randomY = 0;
+	let difficulty = 'medium';
+	let finalMessage = '';
+	let hasGuessed = false;
+	let displayedShapeCount = 0;
+	let lastFrameTimeMs = 0;
+	let timerFPMS = 1000;
+	let shapeFPMS = 1000;
+	let maxFPS = 10;
+	let delta = 0;
+	let main;
+	
 
-	var keys = {
+	let keys = {
 		38: 'square', 
 		40: 'circle', 
 		39: 'triangle',
 		37: 'star',
 
 		randomShape: function(){
-			var values = Object.values(keys);
+			let values = Object.values(keys);
 			return values[Math.floor(Math.random() * 4)];
 		}
 	}
 
-	var colors = ['#ff6347', '#00ff7f', '#ff00ff', '#fffacd', '#b22222', '#f0e68c', '#00ffff', '#ffa500', '#d2691e', '#556b2f', '#e9967a', '#ff1493', '#ffd700', '#fafad2', '#20b2aa'];
+	let colors = ['#ff6347', '#00ff7f', '#ff00ff', '#fffacd', '#b22222', '#f0e68c', '#00ffff', '#ffa500', '#d2691e', '#556b2f', '#e9967a', '#ff1493', '#ffd700', '#fafad2', '#20b2aa'];
 
-	var finalMessages = {
+	let finalMessages = {
 		1: 'Ouch! I think some practice is in order. Your final score was ', 
 		2: 'Not bad! Your final score was ', 
 		3: 'Pretty good! Your final score was ', 
 		4: 'Great Job! Your final score was '
 	}
 
-	var buildFinalMessage = function(){
-		var quarterScore = possibleScore / 4;
+	const buildFinalMessage = function(){
+		finalMessageDisplay.innerText = '';
+		const quarterScore = possibleScore / 4;
 		if (score <= (quarterScore)) {
 			finalMessage = finalMessages[1];
 		} else if ((quarterScore + 1) <= score && score <= (quarterScore * 2)) {
@@ -54,8 +61,7 @@ $(document).ready(function(){
 			finalMessage = finalMessages[4];
 		}
 
-		finalMessage += score;
-		finalMessage += ' out of ';
+		finalMessage += `${score} out of `;
 
 		if (difficulty === 'easy') {
 			finalMessage += '15!';
@@ -66,7 +72,7 @@ $(document).ready(function(){
 		}
 	}
 
-	var draw = function(){ 
+	const draw = function(){ 
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 		if (currentShape === 'square') {
@@ -77,9 +83,9 @@ $(document).ready(function(){
 			ctx.fill();
 			ctx.closePath();
 		} else if (currentShape === 'triangle') {
-			var stepOneX = randomX + 30;
-			var stepOneY = randomY + 40;
-			var StepTwoX = stepOneX - 60;
+			let stepOneX = randomX + 30;
+			let stepOneY = randomY + 40;
+			let StepTwoX = stepOneX - 60;
 
 			ctx.beginPath();
 			ctx.moveTo(randomX, randomY);
@@ -93,7 +99,7 @@ $(document).ready(function(){
 		    ctx.translate(randomX, randomY);
 		    ctx.moveTo(0, 0 - 20);
 
-		    for (var i = 0; i < 5; i++) {
+		    for (let i = 0; i < 5; i++) {
 		        ctx.rotate(Math.PI / 5);
 		        ctx.lineTo(0, 0 - (20 * 0.4));
 		        ctx.rotate(Math.PI / 5);
@@ -106,12 +112,12 @@ $(document).ready(function(){
 		}
 	}
 
-	var timer = function(){
+	const timer = function(){
 		timeLeft -= 1;
-		$('#time-left').text(timeLeft);
+		timeDisplay.innerText = timeLeft;
 	}
 
-	var displayShape = function(){ // seperate functions to set up for each draw		
+	const displayShape = function(){ // seperate functions to set up for each draw		
 		hasGuessed = false; // reset hasGuessed to prevent button spamming
 		currentShape = keys.randomShape(); // get a random shape to draw
 		ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)]; // get a random color
@@ -121,7 +127,7 @@ $(document).ready(function(){
 		draw() // draw new shape
 	}
 
-	var mainLoop = function(timestamp){
+	const mainLoop = function(timestamp){
 		if (timeLeft === 0) { // when the timer hits zero this will end the game
 			playing = false;
 			playGame();
@@ -172,9 +178,13 @@ $(document).ready(function(){
 		main = requestAnimationFrame(mainLoop);
 	}
 
-	var playGame = function(){
+	const playGame = function(){
 		if (playing){
-			$('input').attr('disabled', 'true');
+			difficultyInputs.forEach(element => {
+				element.setAttribute('disabled', 'true');
+				element.setAttribute('aria-disabled', 'true');
+				element.parentNode.classList.add('disabled');
+			});
 			// display an initial shape at the start as the game loop needs to cycle before it can draw anything
 			displayShape(); 
 			// on hard mode we also need to display a second initial shape, this will trigger the drawing of the the shape at 100 ms
@@ -186,13 +196,18 @@ $(document).ready(function(){
 		} else {
 			cancelAnimationFrame(main);
 			buildFinalMessage();
-			$('#final-message').text(finalMessage);
+			finalMessageDisplay.innerText = finalMessage;
+			// Easier to use bootstrap method for show/hide of modal rather than complete rebuild.
 			$('#score-modal').modal('show');
-			$('input').removeAttr('disabled');
+			difficultyInputs.forEach(element => {
+				element.removeAttribute('disabled');
+				element.removeAttribute('aria-disabled');
+				element.parentNode.classList.remove('disabled');
+			});
 		}
 	}
 
-	$(document).on('keyup', function(event){
+	document.body.onkeyup = function(event){
 		// on space bar press start the game
 		if (event.keyCode === 32 && !playing) {
 			playing = true;
@@ -201,50 +216,66 @@ $(document).ready(function(){
 			if (!hasGuessed){
 				// has guessed prevents button spamming, you can only guess once per shapeDisplay
 				hasGuessed = true;
-				var shapedGuessed = keys[event.keyCode];
+				let shapedGuessed = keys[event.keyCode];
 				// if the shape guessed is the current shape update the score and display it
 				if (shapedGuessed === currentShape) {
 					score += 1;
-					$('#score').text(score);
+					scoreDisplay.innerText = score;
 				}	
 			} else {
 				return;
 			}
 		}
-	});
+	};
 
+	// Easier to use bootstrap method for show/hide of modal rather than complete rebuild.	
 	$('#score-modal').on('hidden.bs.modal', function(){
-		// the modal only displays whene the game is over, so when it closes we can reset the game space
-		$('#score').text(0);
-		$('#time-left').text(30);
+		// the modal only displays when the game is over, so when it closes we can reset the game space
+		scoreDisplay.innerText = '0';
+		timeDisplay.innerText = '30';
 		score = 0;
 		timeLeft = 30;
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 	});
+	
+	const setDifficulty = function(event){
+		difficultyInputLabels.forEach(input => input.classList.remove('active'));
+		this.parentNode.classList.add('active');
+		if (this.id === 'difficulty1') {
+			difficulty = 'easy';
+			possibleScore = 15;
+			shapeFPMS = 1000;
+		} else if (this.id === 'difficulty2') {
+			difficulty = 'medium';
+			possibleScore = 30;
+			shapeFPMS = 1000;
+		} else if (this.id === 'difficulty3') {
+			difficulty = 'hard';
+			possibleScore = 60;
+			shapeFPMS = 500;
+		}
+	}
+	
+	difficultyInputs.forEach(input => input.addEventListener('click', setDifficulty));
 
-	$('#difficulty1').on('click', function(){
-		$('label').removeClass('active');
-		$('#difficulty1').parent().addClass('active');
-		difficulty = 'easy';
-		possibleScore = 15;
-		shapeFPMS = 1000;
+	const displaySmallScreenMessage = function(){
+		finalMessage = 'I\'m sorry speed shapes has not been optimized for a small screen, please enjoy it on a larger screen.';
+		finalMessageDisplay.innerText = finalMessage;
+		// Easier to use bootstrap method for show/hide of modal rather than complete rebuild.
+		$('#score-modal').modal('show');
+
+	}
+
+	if (window.innerWidth < 1100) {
+		displaySmallScreenMessage();
+	}
+
+	window.addEventListener('resize', ()=> {
+		if (window.innerWidth < 1100) {
+			displaySmallScreenMessage();
+		}
 	});
 
-	$('#difficulty2').on('click', function(){
-		$('label').removeClass('active');
-		$('#difficulty2').parent().addClass('active');
-		difficulty = 'medium';
-		possibleScore = 30;
-		shapeFPMS = 1000;
-	});
-
-	$('#difficulty3').on('click', function(){
-		$('label').removeClass('active');
-		$('#difficulty3').parent().addClass('active');
-		difficulty = 'hard';
-		possibleScore = 60;
-		shapeFPMS = 500;
-	});
-})
+});
 
 
