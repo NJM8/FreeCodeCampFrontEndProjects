@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  
   const quotes = {
     quote_0: {
       id: 0,
