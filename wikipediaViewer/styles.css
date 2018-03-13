@@ -54,7 +54,7 @@ a {
   font-size: 1.2rem;
 
   color: #fff;
-  background-color: #407FC7;
+  background-color: darkturquoise;
 
   border: none;
   border-radius: 3px;
@@ -67,7 +67,8 @@ li {
   list-style: none;
 }
 
-.tabLinks {
+
+#tabLinks {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-around;
@@ -85,14 +86,30 @@ li {
 	position: absolute;
 	top: 0; right: 0; bottom: 0; left: 0;
 	z-index: -1;
-	background: skyblue;
+	background: darkturquoise;
 	transform: perspective(2px) rotateX(2deg);
   border-radius: 4px 4px 0 0;
 }
 
+.hover {
+  transform: scale(1.03);
+}
+
+.selected {
+  transform: scale(1.05);
+}
+
+.hover::before {
+  transform: perspective(2px) rotateX(2deg) scale(1.03);
+}
+.selected::before {
+  background-color: lightskyblue;
+  transform: perspective(2px) rotateX(2deg) scale(1.05);
+}
+
 .tabContent {
-  width: 100%;
-  height:  100px;
+  width: 90%;
+  height: 200px;
   opacity: 0;
   background-color: darkturquoise;
   transition: all 0.5s;
