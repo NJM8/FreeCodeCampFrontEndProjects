@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(){
   const search = document.querySelector('#getQuery');
-  const tabContainer = document.querySelector('.tabLinks');
-  const tabs = document.querySelectorAll('.tabLink');
+  const tabContainer = document.querySelector('#tabLinks');
+  const tabLinks = document.querySelectorAll('.tabLink');
   const tabContents = document.querySelectorAll('.tabContent');
 
   function getQuery(query) {
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function showTab(event){
-    tabs.forEach(tab => tab.classList.remove('selected'));
+    tabLinks.forEach(tab => tab.classList.remove('selected'));
     event.target.classList.remove('hover');
     event.target.classList.add('selected');
   }
@@ -96,12 +96,15 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   }); 
 
-  tabs.forEach(tab => tab.addEventListener('mouseenter', showHover));
-  tabs.forEach(tab => tab.addEventListener('mouseout', removeHover));
+  tabLinks.forEach(tab => tab.addEventListener('mouseenter', showHover));
+  tabLinks.forEach(tab => tab.addEventListener('mouseout', removeHover));
 
-  tabs.forEach(tab => tab.addEventListener('click', function(event){
+  tabLinks.forEach(tab => tab.addEventListener('click', function(event){
     showPage(event);
     showTab(event);
   }));
+
+  const tabLinksBottom = tabContainer.getBoundingClientRect().bottom;
+  tabContents.forEach(tabContent => tabContent.style.top = tabLinksBottom);
 
 })

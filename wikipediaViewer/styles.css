@@ -5,6 +5,7 @@ body {
   background: -webkit-linear-gradient(215deg, #71B280, #134E5E);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(215deg, #71B280, #134E5E); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   font-family: 'Slabo 27px', serif;
+  color: #fafafa;
 }
 
 header {
@@ -15,7 +16,6 @@ header {
 }
 
 h1 {
-  color: #fafafa;
   font-style: italic;
   font-size: 3rem;
 }
@@ -63,20 +63,27 @@ a {
   cursor: pointer;
 }
 
-li {
-  list-style: none;
-}
-
-
 #tabLinks {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-around;
 }
 
+#tabContents {
+  overflow: hidden;
+  position: relative;
+}
+
+.tabContent {
+  position: relative;
+  height: 200px;
+  opacity: 0;
+  background-color: darkturquoise;
+  transition: all 0.5s;
+}
+
 .tabLink {
   position: relative;
-	display: inline-block;
 	padding: 5px 15px 0 15px;
 	margin: 0 10px;
 }
@@ -92,27 +99,19 @@ li {
 }
 
 .hover {
-  transform: scale(1.03);
-}
-
-.selected {
   transform: scale(1.05);
 }
 
+.selected {
+  transform: scale(1.1);
+}
+
 .hover::before {
-  transform: perspective(2px) rotateX(2deg) scale(1.03);
+  transform: perspective(2px) rotateX(2deg) scale(1.05);
 }
 .selected::before {
   background-color: lightskyblue;
-  transform: perspective(2px) rotateX(2deg) scale(1.05);
-}
-
-.tabContent {
-  width: 90%;
-  height: 200px;
-  opacity: 0;
-  background-color: darkturquoise;
-  transition: all 0.5s;
+  transform: perspective(2px) rotateX(2deg) scale(1.1);
 }
 
 .slide-left {
@@ -126,4 +125,14 @@ li {
 .center {
   opacity: 1;
   transform: translateX(0%);
+}
+
+#tabContent1 {
+  background-color: red;
+}
+#tabContent2 {
+  background-color: green;
+}
+#tabContent3 {
+  background-color: blue;
 }
