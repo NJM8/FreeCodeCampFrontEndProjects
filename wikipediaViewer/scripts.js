@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function(){
   const search = document.querySelector('#getQuery');
-  const tabContainer = document.querySelector('#tabLinks');
-  const tabLinks = document.querySelectorAll('.tabLink');
-  const tabContents = document.querySelectorAll('.tabContent');
+  const tabLinksContainer = document.querySelector('#tabLinks');
+  const tabLink = document.querySelectorAll('.tabLink');
+  const tabContent = document.querySelectorAll('.tabContent');
+  const iframes = document.querySelectorAll('iframe');
 
   function getQuery(query) {
     const request = new Request(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${query}&limit=10&origin=*`);
@@ -16,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function(){
         //   }
         //   newTab.id = `${index}`;
         //   newTab.textContent = page[index];
-        //   tabContainer.appendChild(newTab);
+        //   tabLinksContainer.appendChild(newTab);
 
         //   let newTabContent = document.createElement('div');
 
@@ -48,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if (thisTabId > currentTabId) {
       currentTab.classList.add('slide-left');
       thisTabContent.classList.remove('slide-right');
-      tabContents.forEach((tab, index) => {
+      tabContent.forEach((tab, index) => {
         if ((index + 1) > currentTabId && (index + 1) < thisTabId){
           console.log(tab);
           tab.classList.add('slide-left');
@@ -58,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function(){
     } else {
       currentTab.classList.add('slide-right');
       thisTabContent.classList.remove('slide-left');
-      tabContents.forEach((tab, index) => {
+      tabContent.forEach((tab, index) => {
         if ((index + 1) < currentTabId && (index + 1) > thisTabId){
           console.log(tab);
           tab.classList.add('slide-right');
@@ -70,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function showTab(event){
-    tabLinks.forEach(tab => tab.classList.remove('selected'));
+    tabLink.forEach(tab => tab.classList.remove('selected'));
     event.target.classList.remove('hover');
     event.target.classList.add('selected');
   }
@@ -89,6 +90,15 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   }
 
+  function setTabContentHeight(){
+    const tabLinksBottom = tabLinksContainer.getBoundingClientRect().bottom;
+    const windowHeight = document.body.clientHeight;
+    console.log(windowHeight - tabLinksBottom);
+    iframes.forEach(iframe => {
+      iframe.setAttribute('height', windowHeight - tabLinksBottom);
+    });
+  }
+
   search.addEventListener('click', getInput);
   search.addEventListener('keyup', function(event){
     if (event.keyCode === 13) {
@@ -96,15 +106,16 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   }); 
 
-  tabLinks.forEach(tab => tab.addEventListener('mouseenter', showHover));
-  tabLinks.forEach(tab => tab.addEventListener('mouseout', removeHover));
+  tabLink.forEach(tab => tab.addEventListener('mouseenter', showHover));
+  tabLink.forEach(tab => tab.addEventListener('mouseout', removeHover));
 
-  tabLinks.forEach(tab => tab.addEventListener('click', function(event){
+  tabLink.forEach(tab => tab.addEventListener('click', function(event){
     showPage(event);
     showTab(event);
   }));
 
-  const tabLinksBottom = tabContainer.getBoundingClientRect().bottom;
-  tabContents.forEach(tabContent => tabContent.style.top = tabLinksBottom);
+  window.addEventListener('resize', setTabContentHeight);
 
-})
+  setTabContentHeight()
+
+});
