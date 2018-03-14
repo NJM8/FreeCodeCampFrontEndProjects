@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function(){
     const currentTab = document.querySelector('.center');
     const currentTabId = currentTab.id.substr(currentTab.id.length - 1);
     const thisTabId = event.target.id;
-    console.log(thisTabId);
     if (currentTabId === thisTabId) {
       return;
     }
@@ -51,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function(){
       thisTabContent.classList.remove('slide-right');
       tabContent.forEach((tab, index) => {
         if ((index + 1) > currentTabId && (index + 1) < thisTabId){
-          console.log(tab);
           tab.classList.add('slide-left');
           tab.classList.remove('slide-right');
         }
@@ -61,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function(){
       thisTabContent.classList.remove('slide-left');
       tabContent.forEach((tab, index) => {
         if ((index + 1) < currentTabId && (index + 1) > thisTabId){
-          console.log(tab);
           tab.classList.add('slide-right');
           tab.classList.remove('slide-left');
         }
@@ -93,7 +90,6 @@ document.addEventListener('DOMContentLoaded', function(){
   function setTabContentHeight(){
     const tabLinksBottom = tabLinksContainer.getBoundingClientRect().bottom;
     const windowHeight = document.body.clientHeight;
-    console.log(windowHeight - tabLinksBottom);
     iframes.forEach(iframe => {
       iframe.setAttribute('height', windowHeight - tabLinksBottom);
     });

@@ -1,5 +1,7 @@
 * {
   box-sizing: border-box;
+  font-family: 'Dosis', serif;
+  letter-spacing: 1px;
 }
 
 body {
@@ -8,7 +10,6 @@ body {
 	background: #134E5E;  /* fallback for old browsers */
   background: -webkit-linear-gradient(215deg, #71B280, #134E5E);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(215deg, #71B280, #134E5E); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  font-family: 'Slabo 27px', serif;
   color: #fafafa;
   overflow: hidden;
 }
@@ -151,6 +152,6 @@ iframe {
   position: absolute;
   margin: 5px;
   
-  right: 30px;
-  bottom: 30px;
+  right: 20px;
+  bottom: 15px;
 }
