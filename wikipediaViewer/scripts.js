@@ -11,30 +11,28 @@ document.addEventListener('DOMContentLoaded', function(){
   let iframes;
   let iframeSources = [];
 
-  function loadAdditionalFrames(){
+  function showiframe(event){
+    this.style.opacity = 1;
+    removeMessage();
+  }
+
+  function setiframeSrc(){
     iframes.forEach((iframe, index) => {
-      if (index > 0) {
-        iframe.setAttribute('src', `${iframeSources[index]}`);
-      }
+      iframe.setAttribute('src', `${iframeSources[index]}`);
     });
   }
 
-  function displayErrorMessage(){
-    message.textContent = 'Sorry there was an error or no results from your query, try searching again!';
+  function displayMessage(string){
+    removeMessage();
     setTimeout(() => {
+      message.textContent = string;
       messageContainer.style.opacity = 1;
     }, 400);
+    
   }
-
+  
   function removeMessage(){
     messageContainer.style.opacity = 0;
-  }
-
-  function displaySearchMessage(){
-    message.textContent = 'Let\'s see what we can find.';
-    setTimeout(() => {
-      messageContainer.style.opacity = 1;
-    }, 400);
   }
 
   function createNewTabLink(name, index){
@@ -48,15 +46,22 @@ document.addEventListener('DOMContentLoaded', function(){
     tabLinksContainer.appendChild(newTab);
   }
 
-  function createNewTabContent(url, index){
+  function createNewTabContent(name, description, url, index){
     let newTabContent = document.createElement('div');
     newTabContent.classList.add('tabContent');
     (index === 0) ? newTabContent.classList.add('center'): newTabContent.classList.add('slide-right');
     newTabContent.id = `tabContent${index}`;
 
+    let newDescriptionContainer = document.createElement('div');
+    newDescriptionContainer.classList.add('tabDescriptionContainer');
+    
+    let newDescription = document.createElement('p');
+    newDescription.classList.add('tabDescription');
+    newDescription.textContent = description || 'No description available';
+
+    newDescriptionContainer.appendChild(newDescription);
+    
     let newiframe = document.createElement('iframe');
-    if (index === 0 && newiframe.addEventListener('load', showResults));
-    if (index === 0 && newiframe.setAttribute('src', `${url}`));
     iframeSources.push(url);
 
     let newVisitPage = document.createElement('a');
@@ -66,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function(){
     newVisitPage.setAttribute('href', `${url}`);
     newVisitPage.textContent = 'Visit this page on Wikipedia';
 
+    newTabContent.appendChild(newDescriptionContainer);
     newTabContent.appendChild(newiframe);
     newTabContent.appendChild(newVisitPage);
 
@@ -73,15 +79,18 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function showResults(){
+    displayMessage('Loading pages from wikipedia');
     setTimeout(() => {
       tabsContainer.style.opacity = 1;
-      loadAdditionalFrames();
+    }, 600);
+    setTimeout(() => {
+      setiframeSrc();
     }, 1000);
   }
 
   function getRandomQuery(){
     removeResults();
-    displaySearchMessage();
+    displayMessage('Let\'s see what we can find.');
     
     const request = new Request('https://api.wordnik.com/v4/words.json/randomWords?limit=1&api_key=087c20e93577cfed4f10000525a09c1bceb25388be80f712d');
 
@@ -92,29 +101,31 @@ document.addEventListener('DOMContentLoaded', function(){
           }, 1000);
         })
       }).catch(error => {
-        displayErrorMessage();
+        displayMessage('Sorry there was an error or no results from your query, try searching again!');
         console.log(error);
       })
   }
 
   function getQuery(query) {
-    const request = new Request(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${query}&limit=8&origin=*`);
+    const request = new Request(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${query}&limit=6&origin=*`);
     fetch(request).then(function(response){
       return response.json().then(function(data){
         if (data[1].length === 0) {
           throw Error('No search results');
         }
-				data[1].forEach((name, index) => {
-          createNewTabLink(name, index);
-        });
-				data[3].forEach((url, index) => {
-          createNewTabContent(url, index);
-        });
+        for (let i = 0; i < 6; i++) {
+          if (data[1][i].length === 0) {
+            return;
+          }
+          createNewTabLink(data[1][i], i);
+          createNewTabContent(data[1][i], data[2][i], data[3][i], i);
+        }
       })
       .then(() => {
         tabLink = document.querySelectorAll('.tabLink');
         tabContent = document.querySelectorAll('.tabContent');
         iframes = document.querySelectorAll('iframe');
+        iframes.forEach(iframe => iframe.addEventListener('load', showiframe));
         setTabContentHeight();
         tabLink.forEach(tab => tab.addEventListener('mouseenter', showHover));
         tabLink.forEach(tab => tab.addEventListener('mouseout', removeHover));
@@ -124,16 +135,17 @@ document.addEventListener('DOMContentLoaded', function(){
           showTab(event);
         }));
         window.addEventListener('resize', setTabContentHeight);
-        // showResults();
+        showResults();
       })
     }).catch(error => {
-      displayErrorMessage();
+      displayMessage('Sorry there was an error or no results from your query, try searching again!');
       console.log(error);
     })
   }
 
   function removeResults(){
     if (tabLink && tabContent) {
+      iframeSources = [];
       tabsContainer.style.opacity = 0;
       setTimeout(() => {
         while (tabLinksContainer.firstChild) {
@@ -148,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function getInput(event){
     event.preventDefault();
-    displaySearchMessage();
+    displayMessage('Let\'s see what we can find.');
     removeResults();
     let query = document.querySelector('#query');
     let value = query.value;
@@ -215,8 +227,11 @@ document.addEventListener('DOMContentLoaded', function(){
   function setTabContentHeight(){
     const tabLinksBottom = tabLinksContainer.getBoundingClientRect().bottom;
     const windowHeight = document.body.clientHeight;
-    iframes.forEach(iframe => {
-      iframe.setAttribute('height', windowHeight - tabLinksBottom);
+    const descriptions = document.querySelectorAll('.tabDescriptionContainer');
+    tabContentsContainer.setAttribute('height', windowHeight - tabLinksBottom);
+    iframes.forEach((iframe, index) => {
+      const descriptionHeight = descriptions[index].getBoundingClientRect().bottom;
+      iframe.setAttribute('height', windowHeight - descriptionHeight);
     });
   }
 
