@@ -59,10 +59,12 @@ document.addEventListener('DOMContentLoaded', function(){
   function getRandomQuery(){
     removeErrorMessage();
     removeResults();
-    const request = new Request('https://api.wordnik.com:80/v4/words.json/randomWords?limit=1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5');
+    
+    const request = new Request('https://api.wordnik.com/v4/words.json/randomWords?limit=1&api_key=087c20e93577cfed4f10000525a09c1bceb25388be80f712d');
 
     fetch(request).then(function(response){
         return response.json().then(function(data){
+          console.log(data);
           setTimeout(() => {
             getQuery(data[0].word);
           }, 1000);
