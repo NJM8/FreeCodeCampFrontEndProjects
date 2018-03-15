@@ -15,29 +15,16 @@
       <input type="text" id="query">
       <button type="submit" id="getQuery">Search</button>
     </form>
+    <button type="button" id="getRandomQuery">Random Search</button>
     <a href="https://www.natethedev.com/" target="_blank" rel="noopener">Created by Nate Mallison</a>
   </header>
-  <div class="tabs">
+  <div id="tabs">
     <div id="tabLinks">
-      <div class="tabLink selected" id="1">One</div>
-      <div class="tabLink" id="2">Two</div>
-      <div class="tabLink" id="3">Three</div>
     </div>
     <div id="tabContents">
-      <div class="tabContent center" id="tabContent1">
-        <iframe src="https://www.wikipedia.org/" sandbox="">content one</iframe>
-        <a class="visitPage" href="https://www.wikipedia.org/" target="_blank" rel="noopener">Visit this page on Wikipedia</a>
-      </div>
-      <div class="tabContent slide-right" id="tabContent2">
-        <iframe src="https://www.wikipedia.org/" sandbox="">content two</iframe>
-        <a class="visitPage" href="https://www.wikipedia.org/" target="_blank" rel="noopener">Visit this page on Wikipedia</a>
-      </div>
-      <div class="tabContent slide-right" id="tabContent3">
-        <iframe src="https://www.wikipedia.org/" sandbox="">content three</iframe>
-        <a class="visitPage" href="https://www.wikipedia.org/" target="_blank" rel="noopener">Visit this page on Wikipedia</a>
-      </div>
     </div>
   </div>
+  <div id="errorMessage"><p>Sorry there was an error or no results from your query, try searching again!</p></div>
   <script src="scripts.js"></script>
 </body>
 </html>

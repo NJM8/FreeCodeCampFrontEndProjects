@@ -1,37 +1,137 @@
 document.addEventListener('DOMContentLoaded', function(){
   const search = document.querySelector('#getQuery');
+  const randomSearch = document.querySelector('#getRandomQuery');
+  const errorMessageContainer = document.querySelector('#errorMessage');
+  const tabsContainer = document.querySelector('#tabs');
   const tabLinksContainer = document.querySelector('#tabLinks');
-  const tabLink = document.querySelectorAll('.tabLink');
-  const tabContent = document.querySelectorAll('.tabContent');
-  const iframes = document.querySelectorAll('iframe');
+  const tabContentsContainer = document.querySelector('#tabContents');
+  let tabLink;
+  let tabContent;
+  let iframes;
+
+  function displayErrorMessage(){
+    errorMessageContainer.style.opacity = 1;
+  }
+
+  function removeErrorMessage(){
+    errorMessageContainer.style.opacity = 0;
+  }
+
+  function createNewTabLink(name, index){
+    let newTab = document.createElement('div');
+    newTab.classList.add('tabLink');
+    if (index === 0) {
+      newTab.classList.add('selected');
+    }
+    newTab.id = `${index}`;
+    newTab.textContent = name;
+    tabLinksContainer.appendChild(newTab);
+  }
+
+  function createNewTabContent(url, index){
+    let newTabContent = document.createElement('div');
+    newTabContent.classList.add('tabContent');
+    (index === 0) ? newTabContent.classList.add('center'): newTabContent.classList.add('slide-right');
+    newTabContent.id = `tabContent${index}`;
+
+    let newiframe = document.createElement('iframe');
+    newiframe.setAttribute('src', `${url}`);
+
+    let newVisitPage = document.createElement('a');
+    newVisitPage.classList.add('visitPage');
+    newVisitPage.setAttribute('target', '_blank');
+    newVisitPage.setAttribute('rel', 'noopener');
+    newVisitPage.setAttribute('href', `${url}`);
+    newVisitPage.textContent = 'Visit this page on Wikipedia';
+
+    newTabContent.appendChild(newiframe);
+    newTabContent.appendChild(newVisitPage);
+
+    tabContentsContainer.appendChild(newTabContent);
+  }
+
+  function showResults(){
+    setTimeout(() => {
+      tabsContainer.style.opacity = 1;
+    }, 1000);
+  }
+
+  function getRandomQuery(){
+    removeErrorMessage();
+    removeResults();
+    const request = new Request('http://api.wordnik.com:80/v4/words.json/randomWords?limit=1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5');
+
+    fetch(request).then(function(response){
+        return response.json().then(function(data){
+          setTimeout(() => {
+            getQuery(data[0].word);
+          }, 1000);
+        })
+      }).catch(error => {
+        displayErrorMessage();
+        console.log(error);
+      })
+  }
 
   function getQuery(query) {
-    const request = new Request(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${query}&limit=10&origin=*`);
+    const request = new Request(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${query}&limit=8&origin=*`);
     fetch(request).then(function(response){
       return response.json().then(function(data){
-				// data.forEach((page, index) => {
-        //   let newTab = document.createElement('li');
-        //   newTab.classList.add('tabLink');
-        //   if (index === 0) {
-        //     newtab.classList.add('selected');
-        //   }
-        //   newTab.id = `${index}`;
-        //   newTab.textContent = page[index];
-        //   tabLinksContainer.appendChild(newTab);
+        if (data[1].length === 0) {
+          throw Error('No search results');
+        }
+				data[1].forEach((name, index) => {
+          createNewTabLink(name, index);
+        });
+				data[3].forEach((url, index) => {
+          createNewTabContent(url, index);
+        });
+      })
+      .then(() => {
+        tabLink = document.querySelectorAll('.tabLink');
+        tabContent = document.querySelectorAll('.tabContent');
+        iframes = document.querySelectorAll('iframe');
+        setTabContentHeight();
+        tabLink.forEach(tab => tab.addEventListener('mouseenter', showHover));
+        tabLink.forEach(tab => tab.addEventListener('mouseout', removeHover));
 
-        //   let newTabContent = document.createElement('div');
-
-        // })
+        tabLink.forEach(tab => tab.addEventListener('click', function(event){
+          showPage(event);
+          showTab(event);
+        }));
+        window.addEventListener('resize', setTabContentHeight);
+        showResults();
       })
     }).catch(error => {
+      displayErrorMessage();
       console.log(error);
     })
   }
 
+  function removeResults(){
+    if (tabLink && tabContent) {
+      tabsContainer.style.opacity = 0;
+      setTimeout(() => {
+        while (tabLinksContainer.firstChild) {
+          tabLinksContainer.removeChild(tabLinksContainer.firstChild);
+        }
+        while (tabContentsContainer.firstChild) {
+          tabContentsContainer.removeChild(tabContentsContainer.firstChild);
+        }
+      }, 1000)
+    }
+  }
+
   function getInput(event){
     event.preventDefault();
-    let query = document.querySelector('#query').value;
-    getQuery(query);
+    removeErrorMessage();
+    removeResults();
+    let query = document.querySelector('#query');
+    let value = query.value;
+    setTimeout(() => {
+      getQuery(value);
+    }, 1000);
+    query.value = '';
   }
 
   function showPage(event){
@@ -49,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function(){
       currentTab.classList.add('slide-left');
       thisTabContent.classList.remove('slide-right');
       tabContent.forEach((tab, index) => {
-        if ((index + 1) > currentTabId && (index + 1) < thisTabId){
+        if (index > currentTabId && index < thisTabId){
           tab.classList.add('slide-left');
           tab.classList.remove('slide-right');
         }
@@ -58,12 +158,13 @@ document.addEventListener('DOMContentLoaded', function(){
       currentTab.classList.add('slide-right');
       thisTabContent.classList.remove('slide-left');
       tabContent.forEach((tab, index) => {
-        if ((index + 1) < currentTabId && (index + 1) > thisTabId){
+        if (index < currentTabId && index > thisTabId){
           tab.classList.add('slide-right');
           tab.classList.remove('slide-left');
         }
       })
     }
+    
     thisTabContent.classList.add('center');
   }
 
@@ -102,16 +203,5 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   }); 
 
-  tabLink.forEach(tab => tab.addEventListener('mouseenter', showHover));
-  tabLink.forEach(tab => tab.addEventListener('mouseout', removeHover));
-
-  tabLink.forEach(tab => tab.addEventListener('click', function(event){
-    showPage(event);
-    showTab(event);
-  }));
-
-  window.addEventListener('resize', setTabContentHeight);
-
-  setTabContentHeight()
-
+  randomSearch.addEventListener('click', getRandomQuery);
 });
