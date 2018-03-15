@@ -64,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
     fetch(request).then(function(response){
         return response.json().then(function(data){
-          console.log(data);
           setTimeout(() => {
             getQuery(data[0].word);
           }, 1000);
