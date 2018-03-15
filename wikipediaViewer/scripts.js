@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function(){
     newTabContent.id = `tabContent${index}`;
 
     let newiframe = document.createElement('iframe');
+    if (index === 0 && newiframe.addEventListener('load', showResults));
     newiframe.setAttribute('src', `${url}`);
 
     let newVisitPage = document.createElement('a');
@@ -112,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function(){
           showTab(event);
         }));
         window.addEventListener('resize', setTabContentHeight);
-        showResults();
+        // showResults();
       })
     }).catch(error => {
       displayErrorMessage();
