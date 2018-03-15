@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function(){
   const search = document.querySelector('#getQuery');
   const randomSearch = document.querySelector('#getRandomQuery');
-  const errorMessageContainer = document.querySelector('#errorMessage');
+  const messageContainer = document.querySelector('#messageContainer');
+  const message = document.querySelector('#message');
   const tabsContainer = document.querySelector('#tabs');
   const tabLinksContainer = document.querySelector('#tabLinks');
   const tabContentsContainer = document.querySelector('#tabContents');
@@ -10,11 +11,21 @@ document.addEventListener('DOMContentLoaded', function(){
   let iframes;
 
   function displayErrorMessage(){
-    errorMessageContainer.style.opacity = 1;
+    message.textContent = 'Sorry there was an error or no results from your query, try searching again!';
+    setTimeout(() => {
+      messageContainer.style.opacity = 1;
+    }, 400);
   }
 
-  function removeErrorMessage(){
-    errorMessageContainer.style.opacity = 0;
+  function removeMessage(){
+    messageContainer.style.opacity = 0;
+  }
+
+  function displaySearchMessage(){
+    message.textContent = 'Let\'s see what we can find.';
+    setTimeout(() => {
+      messageContainer.style.opacity = 1;
+    }, 400);
   }
 
   function createNewTabLink(name, index){
@@ -57,8 +68,8 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function getRandomQuery(){
-    removeErrorMessage();
     removeResults();
+    displaySearchMessage();
     
     const request = new Request('https://api.wordnik.com/v4/words.json/randomWords?limit=1&api_key=087c20e93577cfed4f10000525a09c1bceb25388be80f712d');
 
@@ -125,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function getInput(event){
     event.preventDefault();
-    removeErrorMessage();
+    displaySearchMessage();
     removeResults();
     let query = document.querySelector('#query');
     let value = query.value;
