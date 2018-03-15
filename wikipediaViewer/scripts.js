@@ -9,6 +9,15 @@ document.addEventListener('DOMContentLoaded', function(){
   let tabLink;
   let tabContent;
   let iframes;
+  let iframeSources = [];
+
+  function loadAdditionalFrames(){
+    iframes.forEach((iframe, index) => {
+      if (index > 0) {
+        iframe.setAttribute('src', `${iframeSources[index]}`);
+      }
+    });
+  }
 
   function displayErrorMessage(){
     message.textContent = 'Sorry there was an error or no results from your query, try searching again!';
@@ -47,7 +56,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
     let newiframe = document.createElement('iframe');
     if (index === 0 && newiframe.addEventListener('load', showResults));
-    newiframe.setAttribute('src', `${url}`);
+    if (index === 0 && newiframe.setAttribute('src', `${url}`));
+    iframeSources.push(url);
 
     let newVisitPage = document.createElement('a');
     newVisitPage.classList.add('visitPage');
@@ -65,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function(){
   function showResults(){
     setTimeout(() => {
       tabsContainer.style.opacity = 1;
+      loadAdditionalFrames();
     }, 1000);
   }
 
