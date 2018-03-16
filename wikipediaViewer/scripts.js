@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function(){
   const tabsContainer = document.querySelector('#tabs');
   const tabLinksContainer = document.querySelector('#tabLinks');
   const tabContentsContainer = document.querySelector('#tabContents');
+  let searching = false;
   let tabLink;
   let tabContent;
   let iframes;
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function(){
     setTimeout(() => {
       iframes.forEach(iframe => iframe.style.opacity = 1);
       removeMessage();
+      searching = false;
     }, 3000);
   }
 
@@ -91,6 +93,11 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function getRandomQuery(){
+    if (searching) {
+      console.log('stop');
+      return;
+    }
+    searching = true;
     removeResults();
     displayMessage('Let\'s see what we can find.');
     
@@ -104,18 +111,20 @@ document.addEventListener('DOMContentLoaded', function(){
         })
       }).catch(error => {
         displayMessage('Sorry there was an error or no results from your query, try searching again!');
+        removeResults();
+        searching = false;        
         console.log(error);
       })
   }
 
   function getQuery(query) {
-    const request = new Request(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${query}&limit=8&origin=*`);
+    const request = new Request(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${query}&limit=6&origin=*`);
     fetch(request).then(function(response){
       return response.json().then(function(data){
         if (data[1].length === 0) {
           throw Error('No search results');
         }
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 6; i++) {
           if (data[1][i].length === 0) {
             return;
           }
@@ -141,13 +150,15 @@ document.addEventListener('DOMContentLoaded', function(){
       })
     }).catch(error => {
       displayMessage('Sorry there was an error or no results from your query, try searching again!');
+      removeResults();
+      searching = false;
       console.log(error);
     })
   }
 
   function removeResults(){
+    iframeSources = [];
     if (tabLink && tabContent) {
-      iframeSources = [];
       tabsContainer.style.opacity = 0;
       setTimeout(() => {
         while (tabLinksContainer.firstChild) {
@@ -162,6 +173,11 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function getInput(event){
     event.preventDefault();
+    if (searching) {
+      console.log('stop');      
+      return;
+    }
+    searching = true;
     displayMessage('Let\'s see what we can find.');
     removeResults();
     let query = document.querySelector('#query');

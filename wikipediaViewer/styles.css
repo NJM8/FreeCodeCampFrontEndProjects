@@ -14,18 +14,19 @@ body {
   overflow: hidden;
 }
 
-header {
+.header {
+  width: 100%;
   display: flex;
   flex-flow: wrap;
   align-items: center;
   justify-content: space-around;
   align-content: center;
-  height: 70px;
 }
 
 h1 {
   font-style: italic;
   font-size: 3.25rem;
+  margin: 2px 0;
 }
 
 input {
@@ -33,7 +34,8 @@ input {
 	border: 1px solid #D6D9DC;
 	border-radius: 3px;
 	padding: 7px;
-	font-size: 1.1rem;
+  font-size: 1.1rem;
+  margin: 2px 0;  
 }
 
 button {
@@ -48,6 +50,7 @@ button {
 	padding: 8px 15px;
   cursor: pointer;
   transition: all ease 0.3s;
+  margin: 2px 0;  
 }
 
 a:hover, button:hover {
@@ -72,7 +75,8 @@ a {
 
   padding: 9px 16px;
   cursor: pointer;
-  transition: all ease 0.3s;  
+  transition: all ease 0.3s; 
+  margin: 2px 0;   
 }
 
 #tabs {
@@ -82,7 +86,7 @@ a {
 
 #tabLinks {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
 }
 
@@ -90,7 +94,7 @@ a {
   position: relative;
   font-size: 1.05rem;  
 	padding: 10px 15px 5px 15px;
-  margin: 0 2px;
+  margin: 2px 2px 0px 2px;
   text-align: center;
 }
 
@@ -164,10 +168,10 @@ iframe {
 }
 
 .visitPage {
-  position: absolute;
+  position: relative;
   margin: 5px;
-  right: 20px;
-  bottom: 15px;
+  right: 260px;
+  bottom: 45px;
 }
 
 #messageContainer {
