@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function(){
           throw Error('No search results');
         }
         for (let i = 0; i < 6; i++) {
-          if (data[1][i].length === 0) {
+          if (data[1][i] === undefined) {
             return;
           }
           createNewTabLink(data[1][i], i);
@@ -158,17 +158,15 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function removeResults(){
     iframeSources = [];
-    if (tabLink && tabContent) {
-      tabsContainer.style.opacity = 0;
-      setTimeout(() => {
-        while (tabLinksContainer.firstChild) {
-          tabLinksContainer.removeChild(tabLinksContainer.firstChild);
-        }
-        while (tabContentsContainer.firstChild) {
-          tabContentsContainer.removeChild(tabContentsContainer.firstChild);
-        }
-      }, 1000)
-    }
+    tabsContainer.style.opacity = 0;
+    setTimeout(() => {
+      while (tabLinksContainer.firstChild) {
+        tabLinksContainer.removeChild(tabLinksContainer.firstChild);
+      }
+      while (tabContentsContainer.firstChild) {
+        tabContentsContainer.removeChild(tabContentsContainer.firstChild);
+      }
+    }, 1000);
   }
 
   function getInput(event){
