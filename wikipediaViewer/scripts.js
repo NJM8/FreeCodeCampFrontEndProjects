@@ -11,9 +11,11 @@ document.addEventListener('DOMContentLoaded', function(){
   let iframes;
   let iframeSources = [];
 
-  function showiframe(event){
-    this.style.opacity = 1;
-    removeMessage();
+  function showiframes(){
+    setTimeout(() => {
+      iframes.forEach(iframe => iframe.style.opacity = 1);
+      removeMessage();
+    }, 3000);
   }
 
   function setiframeSrc(){
@@ -107,13 +109,13 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function getQuery(query) {
-    const request = new Request(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${query}&limit=6&origin=*`);
+    const request = new Request(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${query}&limit=8&origin=*`);
     fetch(request).then(function(response){
       return response.json().then(function(data){
         if (data[1].length === 0) {
           throw Error('No search results');
         }
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 8; i++) {
           if (data[1][i].length === 0) {
             return;
           }
@@ -125,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function(){
         tabLink = document.querySelectorAll('.tabLink');
         tabContent = document.querySelectorAll('.tabContent');
         iframes = document.querySelectorAll('iframe');
-        iframes.forEach(iframe => iframe.addEventListener('load', showiframe));
+        iframes[0].onload = showiframes();
         setTabContentHeight();
         tabLink.forEach(tab => tab.addEventListener('mouseenter', showHover));
         tabLink.forEach(tab => tab.addEventListener('mouseout', removeHover));

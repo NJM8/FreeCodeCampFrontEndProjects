@@ -91,6 +91,7 @@ a {
   font-size: 1.05rem;  
 	padding: 10px 15px 5px 15px;
   margin: 0 2px;
+  text-align: center;
 }
 
 .tabLink::before {
@@ -129,6 +130,7 @@ a {
   border-left: 3px solid cornflowerblue;
   border-right: 3px solid cornflowerblue;
   border-radius: 0 0 3px 3px;
+  background-color: darkturquoise;  
   left: 0px;
   width: 100%;
   opacity: 0.5;
@@ -152,8 +154,7 @@ a {
 
 iframe {
   width: 100%;
-  transition: all ease 1s;
-  background-color: darkturquoise;  
+  transition: all ease 0.3s;
   border-right: none;
   border-left: none;
   border-top: none;
