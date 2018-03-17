@@ -1,5 +1,6 @@
 * {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   font-family: 'Dosis', serif;
   letter-spacing: 1px;
 }
@@ -8,6 +9,8 @@ body {
   margin: 0;
   min-height: 100vh;
 	background: #134E5E;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(235deg, #71B280, #134E5E);
+  background: -o-linear-gradient(235deg, #71B280, #134E5E);
   background: linear-gradient(215deg, #71B280, #134E5E); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: #fafafa;
   overflow: hidden;
@@ -15,11 +18,18 @@ body {
 
 .header {
   width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-flow: wrap;
-  align-items: center;
-  justify-content: space-around;
-  align-content: center;
+  -ms-flex-flow: wrap;
+      flex-flow: wrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -ms-flex-line-pack: center;
+      align-content: center;
 }
 
 h1 {
@@ -48,16 +58,22 @@ button {
   
 	padding: 8px 15px;
   cursor: pointer;
+  -webkit-transition: all ease 0.3s;
+  -o-transition: all ease 0.3s;
   transition: all ease 0.3s;
   margin: 2px 0;  
 }
 
 a:hover, button:hover {
+  -webkit-transition: all ease 0.3s;
+  -o-transition: all ease 0.3s;
   transition: all ease 0.3s;
 	background-color: #76AEED;
 }
 
 a:active, button:active {
+  -webkit-transition: all ease 0.3s;
+  -o-transition: all ease 0.3s;
   transition: all ease 0.3s;
 	background-color: cornflowerblue;
 }
@@ -74,19 +90,28 @@ a {
 
   padding: 9px 16px;
   cursor: pointer;
+  -webkit-transition: all ease 0.3s;
+  -o-transition: all ease 0.3s;
   transition: all ease 0.3s; 
   margin: 2px 0;   
 }
 
 #tabs {
   opacity: 0;
+  -webkit-transition: all ease 0.5s;
+  -o-transition: all ease 0.5s;
   transition: all ease 0.5s;
 }
 
 #tabLinks {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .tabLink {
@@ -107,19 +132,27 @@ a {
 }
 
 .hover {
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
   transition: all 0.3s;
 }
 
 .selected {
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
   transition: all 0.3s;  
 }
 
 .hover::before {
   background-color: #76AEED;
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
   transition: all 0.3s;
 }
 .selected::before {
   background-color: cornflowerblue;
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
   transition: all 0.3s;
 }
 
@@ -137,23 +170,33 @@ a {
   left: 0px;
   width: 100%;
   opacity: 0.5;
+  -webkit-transition: all 500ms cubic-bezier(0.785, 0.135, 0.150, 0.860);
+  -o-transition: all 500ms cubic-bezier(0.785, 0.135, 0.150, 0.860);
   transition: all 500ms cubic-bezier(0.785, 0.135, 0.150, 0.860); /* easeInOutCirc */
 }
 .slide-left {
-  transform: translateX(-100%);
+  -webkit-transform: translateX(-100%);
+      -ms-transform: translateX(-100%);
+          transform: translateX(-100%);
 }
 
 .slide-right {
-  transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+      -ms-transform: translateX(100%);
+          transform: translateX(100%);
 }
 
 .center {
   opacity: 1;
-  transform: translateX(0%);
+  -webkit-transform: translateX(0%);
+      -ms-transform: translateX(0%);
+          transform: translateX(0%);
 }
 
 iframe {
   width: 100%;
+  -webkit-transition: all ease 0.3s;
+  -o-transition: all ease 0.3s;
   transition: all ease 0.3s;
   border-right: none;
   border-left: none;
@@ -171,10 +214,18 @@ iframe {
 }
 
 #messageContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   opacity: 0;
+  -webkit-transition: all ease 0.3s;
+  -o-transition: all ease 0.3s;
   transition: all ease 0.3s;
   height: 30px;
   margin-bottom: 10px;
