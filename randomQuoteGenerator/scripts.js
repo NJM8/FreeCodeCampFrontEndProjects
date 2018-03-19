@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+  // simple lazy loader for images, grabs datasrc attribute and changes it to src
   [].forEach.call(document.querySelectorAll('img[data-src]'), function(img) {
     img.setAttribute('src', img.getAttribute('data-src'));
     img.onload = function() {
@@ -7,6 +8,7 @@ $(document).ready(function(){
     };
   });
   
+  // quotes object
   const quotes = {
     quote_0: {
       id: 0,
@@ -115,12 +117,14 @@ $(document).ready(function(){
     }
   }
 
+  // animate out old quote
   $("#newQuote").click(function(){
     $("#quoteCard").fadeOut("slow", function(){
       showNewQuote();
     })
   });
 
+  // call tweet function to get quote to twitter
   $("#tweetIt").click(function(){
     tweetIt();
   });
@@ -129,24 +133,33 @@ $(document).ready(function(){
     const randNum = Math.floor(Math.random() * 20 + 1);
     let newQuote = "";
     let newAuthor = "";
+    // find quote id that matches random number chosen
     for (let key in quotes) {
       for (let key2 in quotes[key]){
         if (quotes[key][key2] === randNum) {
+          // set phrase and author 
           newQuote = quotes[key].phrase;
           newAuthor = quotes[key].author;
         } 
       }
     }
+
+    // put new phrase and author into quote card
     $("#phrase").html(newQuote);
     $("#author").html(newAuthor);
+
+    // get new random location for quote card, should always be visible in any window size
     const newTopPadding = Math.random() * ($(document).height() - $("#quoteCard").outerHeight());
     const newLeftPadding = Math.random() * ($(document).width() - $("#quoteCard").outerWidth());
+    // set new location
     $("#quoteCard").css({"padding-top": newTopPadding});
     $("#quoteCard").css({"padding-left": newLeftPadding});
+    // animate in card with new quote
     $("#quoteCard").fadeIn("slow", function(){
       });
   };
 
+  // send quote and author out to twitter
   function tweetIt () {
     const phrase = document.getElementById('phrase').innerText;
     const author = document.getElementById('author').innerText;
@@ -156,6 +169,7 @@ $(document).ready(function(){
     window.open(tweetUrl);
   }
 
+  // initial animation after page load to show first quote and link to portfolio page
   $('#quoteCard').animate({opacity:1}, 1000);
   $('#linkToPortfolio').animate({opacity:1}, 1400);
 });
