@@ -1,10 +1,14 @@
 document.addEventListener('DOMContentLoaded', function(event){
+
+	// initialize selectors for buttons, display elements, and inputs
 	const difficultyInputs = document.querySelectorAll('input');
 	const difficultyInputLabels = document.querySelectorAll('label');
 	const timeDisplay = document.querySelector('#time-left');
 	const scoreDisplay = document.querySelector('#score')
 	const finalMessageDisplay = document.querySelector('#final-message');
 	let canvas = document.getElementById('game-board');
+
+	// initialize variables and canvas
 	canvas.width = 600;
 	canvas.height = 500;
 	window.ctx = canvas.getContext('2d');
@@ -26,20 +30,24 @@ document.addEventListener('DOMContentLoaded', function(event){
 	let delta = 0;
 	let main;
 	
+	// keys object to map a direction key to the appropriate shape string
 	const keys = {
 		38: 'square', 
 		40: 'circle', 
 		39: 'triangle',
 		37: 'star',
 
+		// function to return a random shape to display while playing
 		randomShape: function(){
 			const values = Object.values(keys);
 			return values[Math.floor(Math.random() * 4)];
 		}
 	}
 
+	// various colors to use for shapes
 	const colors = ['#ff6347', '#00ff7f', '#ff00ff', '#fffacd', '#b22222', '#f0e68c', '#00ffff', '#ffa500', '#d2691e', '#556b2f', '#e9967a', '#ff1493', '#ffd700', '#fafad2', '#20b2aa'];
 
+	// final messages to display based on score percentage
 	const finalMessages = {
 		1: 'Ouch! I think some practice is in order. Your final score was ', 
 		2: 'Not bad! Your final score was ', 
@@ -47,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function(event){
 		4: 'Great Job! Your final score was '
 	}
 
+	// function to build final message based on score
 	const buildFinalMessage = function(){
 		finalMessageDisplay.innerText = '';
 		const quarterScore = possibleScore / 4;
@@ -71,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function(event){
 		}
 	}
 
+	// drawing function to display randomly selected shape on canvas
 	const draw = function(){ 
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -111,11 +121,13 @@ document.addEventListener('DOMContentLoaded', function(event){
 		}
 	}
 
+	// decrements timer variable and displays new time
 	const timer = function(){
 		timeLeft -= 1;
 		timeDisplay.innerText = timeLeft;
 	}
 
+	// function to display new random shape
 	const displayShape = function(){ // seperate functions to set up for each draw		
 		hasGuessed = false; // reset hasGuessed to prevent button spamming
 		currentShape = keys.randomShape(); // get a random shape to draw
@@ -126,6 +138,7 @@ document.addEventListener('DOMContentLoaded', function(event){
 		draw() // draw new shape
 	}
 
+	// main game loop
 	const mainLoop = function(timestamp){
 		if (timeLeft === 0) { // when the timer hits zero this will end the game
 			playing = false;
@@ -177,8 +190,11 @@ document.addEventListener('DOMContentLoaded', function(event){
 		main = requestAnimationFrame(mainLoop);
 	}
 
+	// function to kick off game play
 	const playGame = function(){
+		// if we are playing
 		if (playing){
+			// disable inputs for changing difficulty
 			difficultyInputs.forEach(element => {
 				element.setAttribute('disabled', 'true');
 				element.setAttribute('aria-disabled', 'true');
@@ -190,14 +206,17 @@ document.addEventListener('DOMContentLoaded', function(event){
 			if (difficulty === 'hard') {
 				displayedShapeCount += 1;
 			}
-			// kick off game loop
+			// start game loop
 			main = requestAnimationFrame(mainLoop);
 		} else {
+			// we are not playing so cancel loop
 			cancelAnimationFrame(main);
+			// generate and display final message
 			buildFinalMessage();
 			finalMessageDisplay.innerText = finalMessage;
-			// Easier to use bootstrap method for show/hide of modal rather than complete rebuild.
+			// Easier to use bootstrap jQuery method for show/hide of modal rather than complete rebuild to vanilla JS.
 			$('#score-modal').modal('show');
+			// allow difficulty selectors to be used again
 			difficultyInputs.forEach(element => {
 				element.removeAttribute('disabled');
 				element.removeAttribute('aria-disabled');
@@ -237,6 +256,7 @@ document.addEventListener('DOMContentLoaded', function(event){
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 	});
 	
+	// pressing the button to a different difficulty will set the possibleScore, frames per second, and difficulty string
 	const setDifficulty = function(event){
 		difficultyInputLabels.forEach(input => input.classList.remove('active'));
 		this.parentNode.classList.add('active');
@@ -255,8 +275,10 @@ document.addEventListener('DOMContentLoaded', function(event){
 		}
 	}
 	
+	// add event listener to each difficulty input
 	difficultyInputs.forEach(input => input.addEventListener('click', setDifficulty));
 
+	// fall back message to push user to use a larger screen, would like to optimize for mobile play someday
 	const displaySmallScreenMessage = function(){
 		finalMessage = 'I\'m sorry speed shapes has not been optimized for a small screen, please enjoy it on a larger screen.';
 		finalMessageDisplay.innerText = finalMessage;
@@ -265,6 +287,7 @@ document.addEventListener('DOMContentLoaded', function(event){
 
 	}
 
+	// display small screen message if starting out on a small screen or on making the screen too small
 	if (window.innerWidth < 1100) {
 		displaySmallScreenMessage();
 	}
@@ -274,7 +297,5 @@ document.addEventListener('DOMContentLoaded', function(event){
 			displaySmallScreenMessage();
 		}
 	});
-
 });
-
 
