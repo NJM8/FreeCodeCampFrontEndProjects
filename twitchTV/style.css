@@ -1,23 +1,21 @@
 body { 
   background: url(https://s13.postimg.org/6ai1mh8vr/sven-scheuermeier-106767-unsplash-min.jpg) no-repeat top center fixed;
   background-size: cover;
-  font-family: 'Bitter', serif;
+}
+
+a {
+  cursor: pointer;
 }
 
 html {
+  font-family: 'Bitter', serif;
   font-size: 1.1rem;
 }
 
-#photoCred {
-  position: absolute;
-  margin-left: 3%;
-  bottom: 10px;
-  background-color: rgba(119, 136, 153, 0.8);
+h2 {
   color: white;
-  text-decoration: none;
-  padding: 4px 6px 0px 6px;
-  display: inline-block;
-  border-radius: 3px;
+  font-style: italic;
+  font-size: 2.5rem;
 }
 
 svg {
@@ -31,20 +29,32 @@ svg {
 
 span {
   display: inline-block;
-  padding: 2px 3px;
+  padding: 0 3px;
 }
 
-#toPortfolio {
-  position: absolute;
-  right: 35px;
-  bottom: 10px;
-}
-
-#searchButton {
+.buttons {
   background-color: rgba(119, 136, 153, 0.8);
   color: white;  
 }
 
-#searchButton:hover, #photoCred:hover{
+.buttons:hover {
   background-color: rgba(101, 115, 126, 0.8);  
+}
+
+.dropdown-menu > a:hover {
+  background-color: #e2e6ea;
+}
+
+.dropdown-menu > a:active {
+  background-color: rgb(101, 115, 126);
+}
+
+.dropdown-menu {
+  color: #212529;
+  background-color: #f8f9fa;
+  border-color: #f8f9fa;
+}
+
+.results {
+  white-space: normal;
 }
