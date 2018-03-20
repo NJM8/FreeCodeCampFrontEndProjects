@@ -1,19 +1,21 @@
-html { 
+body { 
   background: url(https://s13.postimg.org/6ai1mh8vr/sven-scheuermeier-106767-unsplash-min.jpg) no-repeat top center fixed;
   background-size: cover;
+  font-family: 'Bitter', serif;
+}
+
+html {
+  font-size: 1.1rem;
 }
 
 #photoCred {
   position: absolute;
   margin-left: 3%;
   bottom: 10px;
-  background-color: black;
+  background-color: rgba(119, 136, 153, 0.8);
   color: white;
   text-decoration: none;
-  padding :4px 6px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  line-height: 1.2;
+  padding: 4px 6px 0px 6px;
   display: inline-block;
   border-radius: 3px;
 }
@@ -35,6 +37,5 @@ span {
 #toPortfolio {
   position: absolute;
   right: 35px;
-  bottom: 15px;
-  font-size: 1.1rem;
+  bottom: 10px;
 }
