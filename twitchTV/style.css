@@ -39,3 +39,12 @@ span {
   right: 35px;
   bottom: 10px;
 }
+
+#searchButton {
+  background-color: rgba(119, 136, 153, 0.8);
+  color: white;  
+}
+
+#searchButton:hover, #photoCred:hover{
+  background-color: rgba(101, 115, 126, 0.8);  
+}
