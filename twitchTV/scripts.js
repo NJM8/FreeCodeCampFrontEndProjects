@@ -39,12 +39,11 @@ $(document).ready(function(){
   function createNewSuccessDisplay(response, query){
     // create new a tag with btn style and tooltip
     let $display = $('<a>', {
-      class: 'btn m-1 results',
+      class: ' m-1 results',
       'data-toggle': 'tooltip',
       'data-placement': 'left', 
       title: `Visit ${query} on Twitch TV`,
       href: `https://www.twitch.tv/${query}`, 
-      role: 'button', 
       target: '_blank',
       rel: 'noopener'
     });
@@ -54,14 +53,27 @@ $(document).ready(function(){
       $display.addClass('btn-secondary');
       $display.text(`${query} is offline right now.`);
     } else {
-      $display.addClass('btn-info');
+      $display.addClass('');
       $display.text(`${query} is now streaming: ${response.stream.channel.status}`);
     }
 
     // add new display element to results container
     $('#results').append($display);
     // initialize tooltip on hover functionality
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
+
+    // add listener to anchor buttons to prevent focus styling from persisting    
+    $('.btn').on('keypress', function () {
+      $(this).blur();
+      $(this).hideFocus = false;
+      $(this).css('outline: null');
+    });
+  
+    $('.btn').on('click', function () {
+      $(this).blur();
+      $(this).hideFocus = true;
+      $(this).css('outline: none');
+    });
   }
 
   // create error display, same style as success so we use an a tag and style like a btn
@@ -82,5 +94,18 @@ $(document).ready(function(){
 			getQuery($('#search').val());
       $('#search').val(''); 
 		}
+  });
+
+  // add listener to anchor buttons to prevent focus styling from persisting
+  $('.btn').on('keypress', function () {
+    $(this).blur();
+    $(this).hideFocus = false;
+    $(this).css('outline: null');
+  });
+
+  $('.btn').on('click', function () {
+    $(this).blur();
+    $(this).hideFocus = true;
+    $(this).css('outline: none');
   });
 });

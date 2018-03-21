@@ -75,3 +75,7 @@ body {
 #footer {
   flex-shrink: 0;
 }
+
+a:focus {
+  text-decoration: none !important;
+}
