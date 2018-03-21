@@ -12,6 +12,9 @@ $(document).ready(function(){
   })
 
   function getQuery(query){
+    if (query === '') {
+      return;
+    }
     // first check the api for existance of the username searched
     $.when($.getJSON(`https://wind-bow.gomix.me/twitch-api/users/${query}?callback=?`))
       .then(response => {
@@ -39,7 +42,7 @@ $(document).ready(function(){
   function createNewSuccessDisplay(response, query){
     // create new a tag with btn style and tooltip
     let $display = $('<a>', {
-      class: ' m-1 results',
+      class: 'btn link m-1 results',
       'data-toggle': 'tooltip',
       'data-placement': 'left', 
       title: `Visit ${query} on Twitch TV`,
@@ -53,7 +56,7 @@ $(document).ready(function(){
       $display.addClass('btn-secondary');
       $display.text(`${query} is offline right now.`);
     } else {
-      $display.addClass('');
+      $display.addClass('btn-info');
       $display.text(`${query} is now streaming: ${response.stream.channel.status}`);
     }
 
@@ -63,13 +66,13 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
 
     // add listener to anchor buttons to prevent focus styling from persisting    
-    $('.btn').on('keypress', function () {
+    $('.link').on('keypress', function () {
       $(this).blur();
       $(this).hideFocus = false;
       $(this).css('outline: null');
     });
   
-    $('.btn').on('click', function () {
+    $('.link').on('click', function () {
       $(this).blur();
       $(this).hideFocus = true;
       $(this).css('outline: none');
@@ -97,13 +100,13 @@ $(document).ready(function(){
   });
 
   // add listener to anchor buttons to prevent focus styling from persisting
-  $('.btn').on('keypress', function () {
+  $('.link').on('keypress', function () {
     $(this).blur();
     $(this).hideFocus = false;
     $(this).css('outline: null');
   });
 
-  $('.btn').on('click', function () {
+  $('.link').on('click', function () {
     $(this).blur();
     $(this).hideFocus = true;
     $(this).css('outline: none');
