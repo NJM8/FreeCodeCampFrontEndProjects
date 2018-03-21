@@ -272,6 +272,19 @@ $(document).ready(function(){
 	} else {
 		displayMessage("We couldn't get your location automatically, please search above!");
 	}
+
+	// add listener to anchor buttons to prevent focus styling from persisting
+	$('.btn').on('keypress', function () {
+		$(this).blur();
+		$(this).hideFocus = false;
+		$(this).css('outline: null');
+	});
+
+	$('.btn').on('click', function () {
+		$(this).blur();
+		$(this).hideFocus = true;
+		$(this).css('outline: none');
+	});
 });
 
 
