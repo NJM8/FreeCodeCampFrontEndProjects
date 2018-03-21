@@ -91,11 +91,10 @@ $(document).ready(function(){
   }
 
   // bind event listener to input for enter/return key
-  $('input').keyup(event => { 
-		event.preventDefault();
+  $('input').on('keyup', event => { 
+    event.preventDefault();
 		if (event.keyCode === 13) {
-			getQuery($('#search').val());
-      $('#search').val(''); 
+      $('#searchButton').click(); 
 		}
   });
 
