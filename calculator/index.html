@@ -6,10 +6,56 @@
   <meta name="description" content="An HTML and CSS calculator run by Javascript">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Javascript Calculator</title>
+  <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet"> 
   <link rel="stylesheet" href="style.css">
   <script src="scripts.js" defer></script>
 </head>
 <body>
-  
+    <div id="bg">
+      <img data-src="https://s14.postimg.org/im1z4w4j5/markus-spiske-207946-unsplash-min.jpg" alt="A desk with a MacBook Pro and some books">
+    </div>
+    <div class="content">
+      <div class="calculatorContainer">
+        <div class="displayContainer">
+            <div class="slanted buttonDefault bot-left"><span class="slantedContent" id="display"></span></div>
+            <div></div>
+        </div>
+        <div class="row">
+          <div class="slanted buttonDefault bot-left calcButtonContainer" id="clearContainer"><span class="slantedContent calcButton doubleWidth">Clear</span></div>
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">&divide;</span></div>
+        </div>
+        <div class="row">
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">7</span></div>
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">8</span></div>
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">9</span></div>
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">*</span></div>
+        </div>
+        <div class="row">
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">4</span></div>
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">5</span></div>
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">6</span></div>
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">-</span></div>
+        </div>
+        <div class="row">
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">1</span></div>
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">2</span></div>
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">3</span></div>
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">+</span></div>
+        </div>
+        <div class="row">
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">.</span></div>
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton">0</span></div>
+          <div class="slanted buttonDefault bot-left calcButtonContainer"><span class="slantedContent calcButton doubleWidth">=</span></div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="slanted buttonDefault bot-left">
+          <a href="https://unsplash.com/photos/Skf7HxARcoc?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText" target="_blank" rel="noopener" class="slantedContent link">Photo by Markus Spiske</a>
+        </div>
+        <div class="slanted buttonDefault bot-left">
+          <a href="https://www.natethedev.com/" target="_blank" rel="noopener" class="slantedContent link" \>Created by Nate Mallison</a>
+        </div>
+      </div>
+    </div>
 </body>
 </html>
