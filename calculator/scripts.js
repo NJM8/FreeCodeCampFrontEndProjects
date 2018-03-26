@@ -39,21 +39,26 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function unHighlightButton(event){
     if (event.target.nodeName === 'DIV') {
-      event.target.classList.remove('active');
-      event.target.classList.remove('slantedActive');
-      event.target.childNodes[0].classList.remove('slantedContentActive');
-      event.target.classList.remove('buttonDefaultActive');
-      event.target.classList.add('slanted');
-      event.target.childNodes[0].classList.add('slantedContent');
-      event.target.classList.add('buttonDefault');
+      setTimeout(() => {
+        event.target.classList.remove('active');
+        event.target.classList.remove('slantedActive');
+        event.target.childNodes[0].classList.remove('slantedContentActive');
+        event.target.classList.remove('buttonDefaultActive');
+        event.target.classList.add('slanted');
+        event.target.childNodes[0].classList.add('slantedContent');
+        event.target.classList.add('buttonDefault');
+      }, 100);
+      
     } else {
-      event.target.parentNode.classList.remove('slantedActive');
-      event.target.classList.remove('slantedContentActive');
-      event.target.parentNode.classList.remove('buttonDefaultActive');
-      event.target.parentNode.classList.remove('active');
-      event.target.parentNode.classList.add('slanted');
-      event.target.classList.add('slantedContent');
-      event.target.parentNode.classList.add('buttonDefault');
+      setTimeout(() => {
+        event.target.parentNode.classList.remove('slantedActive');
+        event.target.classList.remove('slantedContentActive');
+        event.target.parentNode.classList.remove('buttonDefaultActive');
+        event.target.parentNode.classList.remove('active');
+        event.target.parentNode.classList.add('slanted');
+        event.target.classList.add('slantedContent');
+        event.target.parentNode.classList.add('buttonDefault');
+      }, 100);
     }
   }
 
