@@ -8,16 +8,55 @@ document.addEventListener('DOMContentLoaded', function(){
 
   let display = document.querySelector('#display');
 
+  let operations = {
+    '+': (x, y) => x + y,
+    '÷': (x, y) => x / y,
+    '-': (x, y) => x - y,
+    '*': (x, y) => x * y
+  }
+  let operators = Object.keys(operations);
+
+  function executeInput(event){
+    let input = display.textContent.split('');
+    display.textContent = 'did';
+  }
+
   function appendToDisplay(event){
     let buttonClicked = event.target.childNodes[0].textContent;
+    let currentContent = display.textContent;
+    let plusMinusElement = document.querySelector('#plusMinus');
+    let isMinus = plusMinusElement.classList.contains('active') === true;
+    if (buttonClicked === '±') {
+      return;
+    }
+    if ((buttonClicked === '*' || buttonClicked === '&divide;' || buttonClicked === '+') && currentContent === '') {
+      return; 
+    }
+    if (operators.includes(buttonClicked) && operators.includes(currentContent[currentContent.length - 1])) {
+      return;
+    }
     if (buttonClicked === 'Clear') {
       display.textContent = '';
       return;
     }
-    display.textContent += buttonClicked;
+    if (isMinus && operators.includes(buttonClicked)) {
+      return;
+    } else if (isMinus){
+      display.textContent += `-${buttonClicked}`;
+      let clickEvent = document.createEvent('MouseEvents');
+      clickEvent.initEvent('mousedown', true, true);
+      plusMinusElement.dispatchEvent(clickEvent);
+    } else {
+      display.textContent += buttonClicked;
+    }
   }
 
   function highlightButton(event){
+    let isPlusMinus = event.target.childNodes[0].textContent === '±';
+    if (isPlusMinus && (event.target.classList.contains('active') || event.target.parentNode.classList.contains('active'))) {
+      unHighlightButton(event);
+      return;
+    }
     if (event.target.nodeName === 'DIV') {
       event.target.classList.add('active');
       event.target.classList.remove('slanted');
@@ -66,11 +105,28 @@ document.addEventListener('DOMContentLoaded', function(){
 
   buttons.forEach(button => button.addEventListener('mousedown', event => {
     highlightButton(event);
-    appendToDisplay(event);
+    if (event.target.childNodes[0].textContent === '=') {
+      executeInput(event);
+    } else {
+      appendToDisplay(event);
+    }
   }));
 
-  buttons.forEach(button => button.addEventListener('mouseup', event => unHighlightButton(event)));
-  buttons.forEach(button => button.addEventListener('mouseout', event => unHighlightButton(event)));
+  buttons.forEach(button => button.addEventListener('mouseup', event => {
+    let isPlusMinus = event.target.childNodes[0].textContent === '±';
+    if (isPlusMinus) {
+      return;
+    }    
+    unHighlightButton(event);
+  }));
+
+  buttons.forEach(button => button.addEventListener('mouseout', event => {
+    let isPlusMinus = event.target.childNodes[0].textContent === '±';
+    if (isPlusMinus) {
+      return;
+    }  
+    unHighlightButton(event);
+  }));
 
   let externalLinks = document.querySelectorAll('a');
 
