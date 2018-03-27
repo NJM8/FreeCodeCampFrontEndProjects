@@ -17,22 +17,26 @@ document.addEventListener('DOMContentLoaded', function(){
   let operators = Object.keys(operations);
 
   function executeInput(event){
-    let input = display.textContent.split('');
+    let input = display.textContent.split(' ');
+    console.log(input);
+    console.log(eval(display.textContent));
     display.textContent = 'did';
   }
 
   function appendToDisplay(event){
     let buttonClicked = event.target.childNodes[0].textContent;
     let currentContent = display.textContent;
+    let lastClicked = currentContent[currentContent.length - 2];
+    console.log(lastClicked);
     let plusMinusElement = document.querySelector('#plusMinus');
     let isMinus = plusMinusElement.classList.contains('active') === true;
     if (buttonClicked === '±') {
       return;
     }
-    if ((buttonClicked === '*' || buttonClicked === '&divide;' || buttonClicked === '+') && currentContent === '') {
+    if (operators.includes(buttonClicked) && currentContent === '') {
       return; 
     }
-    if (operators.includes(buttonClicked) && operators.includes(currentContent[currentContent.length - 1])) {
+    if (operators.includes(buttonClicked) && operators.includes(lastClicked)) {
       return;
     }
     if (buttonClicked === 'Clear') {
@@ -41,13 +45,19 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     if (isMinus && operators.includes(buttonClicked)) {
       return;
-    } else if (isMinus){
-      display.textContent += `-${buttonClicked}`;
+    } 
+    if (isMinus){
+      display.textContent += `-${buttonClicked} `;
       let clickEvent = document.createEvent('MouseEvents');
       clickEvent.initEvent('mousedown', true, true);
       plusMinusElement.dispatchEvent(clickEvent);
     } else {
-      display.textContent += buttonClicked;
+      if (!operators.includes(buttonClicked) && !operators.includes(lastClicked)) {
+        display.textContent = display.textContent.trim();
+        display.textContent += `${buttonClicked} `;
+      } else {
+        display.textContent += `${buttonClicked} `;
+      }
     }
   }
 
@@ -133,4 +143,4 @@ document.addEventListener('DOMContentLoaded', function(){
   externalLinks.forEach(link => link.addEventListener('mousedown', event => highlightButton(event)));
   externalLinks.forEach(link => link.addEventListener('mouseup', event => unHighlightButton(event)));
   externalLinks.forEach(link => link.addEventListener('mouseout', event => unHighlightButton(event)));
-})
+});
