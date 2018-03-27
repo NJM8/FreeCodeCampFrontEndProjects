@@ -19,16 +19,15 @@ document.addEventListener('DOMContentLoaded', function(){
   function executeInput(event){
     let input = display.textContent.split(' ');
     console.log(input);
-    console.log(eval(display.textContent));
     display.textContent = 'did';
   }
 
   function appendToDisplay(event){
-    let buttonClicked = event.target.childNodes[0].textContent;
+    let buttonClicked = event.currentTarget.childNodes[0].textContent;
     let currentContent = display.textContent;
     let lastClicked = currentContent[currentContent.length - 2];
     let plusMinusElement = document.querySelector('#plusMinus');
-    let isMinus = plusMinusElement.classList.contains('active') === true;
+    let isMinus = plusMinusElement.classList.contains('buttonActive') === true;
     if (buttonClicked === '±') {
       return;
     }
@@ -61,56 +60,28 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function highlightButton(event){
-    let isPlusMinus = event.target.childNodes[0].textContent === '±';
-    if (isPlusMinus && (event.target.classList.contains('active') || event.target.parentNode.classList.contains('active'))) {
+    let isPlusMinus = event.currentTarget.childNodes[0].textContent === '±';
+    let isActive = event.currentTarget.classList.contains('buttonActive');
+    if (isPlusMinus && isActive) {
       unHighlightButton(event);
       return;
     }
-    if (event.target.nodeName === 'DIV') {
-      event.target.classList.add('active');
-      event.target.classList.remove('slanted');
-      event.target.childNodes[0].classList.remove('slantedContent');
-      event.target.classList.remove('buttonDefault');
-      event.target.classList.add('slantedActive');
-      event.target.childNodes[0].classList.add('slantedContentActive');
-      event.target.classList.add('buttonDefaultActive');
-    } else {
-      event.target.parentNode.classList.add('active');
-      event.target.parentNode.classList.remove('slanted');
-      event.target.classList.remove('slantedContent');
-      event.target.parentNode.classList.remove('buttonDefault');
-      event.target.parentNode.classList.add('slantedActive');
-      event.target.classList.add('slantedContentActive');
-      event.target.parentNode.classList.add('buttonDefaultActive');
-    }
+    event.currentTarget.classList.remove('button');
+    event.currentTarget.classList.add('buttonActive');
   }
 
   function unHighlightButton(event){
-    if (event.target.nodeName === 'DIV') {
-      event.target.classList.remove('active');
-      event.target.classList.remove('slantedActive');
-      event.target.childNodes[0].classList.remove('slantedContentActive');
-      event.target.classList.remove('buttonDefaultActive');
-      event.target.classList.add('slanted');
-      event.target.childNodes[0].classList.add('slantedContent');
-      event.target.classList.add('buttonDefault');
-    } else {
-      event.target.parentNode.classList.remove('slantedActive');
-      event.target.classList.remove('slantedContentActive');
-      event.target.parentNode.classList.remove('buttonDefaultActive');
-      event.target.parentNode.classList.remove('active');
-      event.target.parentNode.classList.add('slanted');
-      event.target.classList.add('slantedContent');
-      event.target.parentNode.classList.add('buttonDefault');
-    }
+    event.currentTarget.classList.remove('buttonActive');
+    event.currentTarget.classList.add('button');
   }
 
   let buttons = document.querySelectorAll('.calcButtonContainer');
 
   buttons.forEach(button => button.addEventListener('mousedown', event => {
-    console.log(event.target);
+    console.log(event.currentTarget);
     highlightButton(event);
-    if (event.target.childNodes[0].textContent === '=') {
+    let isEquals = event.currentTarget.childNodes[0].textContent === '=';
+    if (isEquals) {
       executeInput(event);
     } else {
       appendToDisplay(event);
@@ -118,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }));
 
   buttons.forEach(button => button.addEventListener('mouseup', event => {
-    let isPlusMinus = event.target.childNodes[0].textContent === '±';
+    let isPlusMinus = event.currentTarget.childNodes[0].textContent === '±';
     if (isPlusMinus) {
       return;
     }    
@@ -126,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }));
 
   buttons.forEach(button => button.addEventListener('mouseout', event => {
-    let isPlusMinus = event.target.childNodes[0].textContent === '±';
+    let isPlusMinus = event.currentTarget.childNodes[0].textContent === '±';
     if (isPlusMinus) {
       return;
     }  
