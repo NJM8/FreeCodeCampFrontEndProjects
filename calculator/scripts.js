@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function(){
     let buttonClicked = event.target.childNodes[0].textContent;
     let currentContent = display.textContent;
     let lastClicked = currentContent[currentContent.length - 2];
-    console.log(lastClicked);
     let plusMinusElement = document.querySelector('#plusMinus');
     let isMinus = plusMinusElement.classList.contains('active') === true;
     if (buttonClicked === '±') {
@@ -88,32 +87,28 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function unHighlightButton(event){
     if (event.target.nodeName === 'DIV') {
-      setTimeout(() => {
-        event.target.classList.remove('active');
-        event.target.classList.remove('slantedActive');
-        event.target.childNodes[0].classList.remove('slantedContentActive');
-        event.target.classList.remove('buttonDefaultActive');
-        event.target.classList.add('slanted');
-        event.target.childNodes[0].classList.add('slantedContent');
-        event.target.classList.add('buttonDefault');
-      }, 100);
-      
+      event.target.classList.remove('active');
+      event.target.classList.remove('slantedActive');
+      event.target.childNodes[0].classList.remove('slantedContentActive');
+      event.target.classList.remove('buttonDefaultActive');
+      event.target.classList.add('slanted');
+      event.target.childNodes[0].classList.add('slantedContent');
+      event.target.classList.add('buttonDefault');
     } else {
-      setTimeout(() => {
-        event.target.parentNode.classList.remove('slantedActive');
-        event.target.classList.remove('slantedContentActive');
-        event.target.parentNode.classList.remove('buttonDefaultActive');
-        event.target.parentNode.classList.remove('active');
-        event.target.parentNode.classList.add('slanted');
-        event.target.classList.add('slantedContent');
-        event.target.parentNode.classList.add('buttonDefault');
-      }, 100);
+      event.target.parentNode.classList.remove('slantedActive');
+      event.target.classList.remove('slantedContentActive');
+      event.target.parentNode.classList.remove('buttonDefaultActive');
+      event.target.parentNode.classList.remove('active');
+      event.target.parentNode.classList.add('slanted');
+      event.target.classList.add('slantedContent');
+      event.target.parentNode.classList.add('buttonDefault');
     }
   }
 
   let buttons = document.querySelectorAll('.calcButtonContainer');
 
   buttons.forEach(button => button.addEventListener('mousedown', event => {
+    console.log(event.target);
     highlightButton(event);
     if (event.target.childNodes[0].textContent === '=') {
       executeInput(event);
