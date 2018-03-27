@@ -6,24 +6,25 @@ document.addEventListener('DOMContentLoaded', function(){
     };
   });
 
-  let display = document.querySelector('#display');
+  const display = document.querySelector('#display');
   
-  let operations = {
+  const operations = {
     '+': (x, y) => x + y,
     '÷': (x, y) => x / y,
     '-': (x, y) => x - y,
     '*': (x, y) => x * y
   }
   
-  let mdas = {
+  const mdas = {
     '*': 1,
     '÷': 2,
     '+': 3,
     '-': 4
   }
   
-  let operators = Object.keys(operations);
+  const operators = Object.keys(operations);
   let answerDisplayed = false;
+  let decimalEntered = false;
   
   function executeInput(event){
     // think about how to deal with last input being an operator
@@ -73,6 +74,41 @@ document.addEventListener('DOMContentLoaded', function(){
       }
     }
   }
+
+  const shiftedKeys = {
+    56: 1111,
+    61: 3333
+  }
+
+  const validKeys = [8, 18, 191, 55, 56, 57, 52, 53, 54, 173, 49, 50, 51, 190, 48, 13, 61];
+
+  function processKeyPress(event){
+    if (!validKeys.includes(event.keyCode)) {
+      return;
+    }
+    if (event.keyCode === 13 && answerDisplayed) {
+      return;
+    }
+    event.preventDefault();
+    let isShifted = event.shiftKey;
+    let element = undefined;
+    
+    if (isShifted) {
+      let shiftedKey = shiftedKeys[event.keyCode];
+      element = document.querySelector(`[data-key="${shiftedKey}"]`);
+    } else {
+      element = document.querySelector(`[data-key="${event.keyCode}"]`);
+    }
+    if (event.type === 'keydown') {
+      let mouseDown = document.createEvent('MouseEvents');
+      mouseDown.initEvent('mousedown', true, true);
+      element.dispatchEvent(mouseDown);
+    } else if (event.type === 'keyup') {
+      let mouseUp = document.createEvent('MouseEvents');
+      mouseUp.initEvent('mouseup', true, true);
+      element.dispatchEvent(mouseUp);
+    }
+  }
   
   function appendToDisplay(event){
     if (answerDisplayed) {
@@ -84,6 +120,14 @@ document.addEventListener('DOMContentLoaded', function(){
     let lastClicked = currentContent[currentContent.length - 2];
     let plusMinusElement = document.querySelector('#plusMinus');
     let isMinus = plusMinusElement.classList.contains('buttonActive') === true;
+    if (buttonClicked === '.' && !decimalEntered) {
+      decimalEntered = true;
+    } else if (buttonClicked === '.' && decimalEntered){
+      return;
+    } 
+    if (operators.includes(buttonClicked) && decimalEntered) {
+      decimalEntered = false;
+    }
     if (buttonClicked === '±') {
       return;
     }
@@ -102,9 +146,9 @@ document.addEventListener('DOMContentLoaded', function(){
     } 
     if (isMinus){
       display.textContent += `-${buttonClicked} `;
-      let clickEvent = document.createEvent('MouseEvents');
-      clickEvent.initEvent('mousedown', true, true);
-      plusMinusElement.dispatchEvent(clickEvent);
+      let mouseDown = document.createEvent('MouseEvents');
+      mouseDown.initEvent('mousedown', true, true);
+      plusMinusElement.dispatchEvent(mouseDown);
     } else {
       if (!operators.includes(buttonClicked) && !operators.includes(lastClicked)) {
         display.textContent = display.textContent.trim();
@@ -174,4 +218,7 @@ document.addEventListener('DOMContentLoaded', function(){
   externalLinks.forEach(link => link.addEventListener('mousedown', event => highlightButton(event)));
   externalLinks.forEach(link => link.addEventListener('mouseup', event => unHighlightButton(event)));
   externalLinks.forEach(link => link.addEventListener('mouseout', event => unHighlightButton(event)));
+
+  document.addEventListener('keydown', event => processKeyPress(event));
+  document.addEventListener('keyup', event => processKeyPress(event));
 });
