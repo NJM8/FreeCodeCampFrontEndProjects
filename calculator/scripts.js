@@ -7,22 +7,75 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 
   let display = document.querySelector('#display');
-
+  
   let operations = {
     '+': (x, y) => x + y,
     '÷': (x, y) => x / y,
     '-': (x, y) => x - y,
     '*': (x, y) => x * y
   }
-  let operators = Object.keys(operations);
-
-  function executeInput(event){
-    let input = display.textContent.split(' ');
-    console.log(input);
-    display.textContent = 'did';
+  
+  let mdas = {
+    '*': 1,
+    '÷': 2,
+    '+': 3,
+    '-': 4
   }
-
+  
+  let operators = Object.keys(operations);
+  let answerDisplayed = false;
+  
+  function executeInput(event){
+    // think about how to deal with last input being an operator
+    let input = display.textContent.split(' ').filter(item => item !== '' && item);
+    let ratings = input.map(item => operators.includes(item) ? mdas[item] : 0);
+    // console.log(input);
+    // console.log(ratings);
+    result = calculateResults(input, ratings);
+    // console.log(`result: ${result}`);
+    if (Number.isInteger(result)) {
+      display.textContent = result;
+    } else {
+      display.textContent = Number(result.toFixed(5));
+    }
+    answerDisplayed = true;
+  }
+  
+  function calculateResults(input, ratings){
+    if (input.length === 1) {
+      // console.log(`answer: ${input[0]}`);
+      return input[0];
+    } else {
+      let count = 1;
+      while (count < 5) {
+        if (ratings.includes(count)) {
+          // console.log('found');
+          let location = ratings.indexOf(count);
+          // console.log(location);
+          let operator = input[location];
+          // console.log(operator);
+          let x = Number(input[location - 1]);
+          // console.log(x);
+          let y = Number(input[location + 1]);
+          // console.log(y);
+          let result = operations[operator](x, y);
+          // console.log(result);
+          input.splice(location - 1, 3, result);
+          // console.log(input);
+          ratings.splice(location - 1, 3, 0);
+          // console.log(ratings);
+          return calculateResults(input, ratings);
+        }
+        count++;
+      }
+    }
+  }
+  
   function appendToDisplay(event){
+    if (answerDisplayed) {
+      display.textContent = '';
+      answerDisplayed = false;
+    }
     let buttonClicked = event.currentTarget.childNodes[0].textContent;
     let currentContent = display.textContent;
     let lastClicked = currentContent[currentContent.length - 2];
@@ -66,19 +119,28 @@ document.addEventListener('DOMContentLoaded', function(){
       unHighlightButton(event);
       return;
     }
-    event.currentTarget.classList.remove('button');
-    event.currentTarget.classList.add('buttonActive');
+    if (event.currentTarget.classList.contains('link')) {
+      event.currentTarget.parentNode.classList.remove('button');
+      event.currentTarget.parentNode.classList.add('buttonActive');
+    } else {
+      event.currentTarget.classList.remove('button');
+      event.currentTarget.classList.add('buttonActive');
+    }
   }
 
   function unHighlightButton(event){
-    event.currentTarget.classList.remove('buttonActive');
-    event.currentTarget.classList.add('button');
+    if (event.currentTarget.classList.contains('link')) {
+      event.currentTarget.parentNode.classList.remove('buttonActive');
+      event.currentTarget.parentNode.classList.add('button');
+    } else {
+      event.currentTarget.classList.remove('buttonActive');
+      event.currentTarget.classList.add('button');
+    }
   }
 
   let buttons = document.querySelectorAll('.calcButtonContainer');
 
   buttons.forEach(button => button.addEventListener('mousedown', event => {
-    console.log(event.currentTarget);
     highlightButton(event);
     let isEquals = event.currentTarget.childNodes[0].textContent === '=';
     if (isEquals) {
