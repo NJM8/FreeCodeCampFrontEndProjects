@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', function(){
   function executeInput(event){
     // think about how to deal with last input being an operator
     let input = display.textContent.split(' ').filter(item => item !== '' && item);
+    if (operators.includes(input[input.length - 1])) {
+      input.splice(input.length - 1, 1);
+    }
     let ratings = input.map(item => operators.includes(item) ? mdas[item] : 0);
     // console.log(input);
     // console.log(ratings);
@@ -88,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function(){
       return; 
     }
     if (operators.includes(buttonClicked) && operators.includes(lastClicked)) {
-      return;
+      display.textContent = currentContent.slice(0, -2);
     }
     if (buttonClicked === 'Clear') {
       display.textContent = '';
