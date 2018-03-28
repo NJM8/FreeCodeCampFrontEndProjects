@@ -69,9 +69,14 @@ img {
   text-decoration: none;
 }
 
+
 .calcButton {
   width: 20px;
   font-size: 1.3rem;
+}
+
+.symbol {
+  font-size: 1.6rem;
 }
 
 .calcButtonContainer {
@@ -87,7 +92,8 @@ img {
 }
 
 #display {
-  width: 245px;
+  width: 230px;
+  text-align: right;
 }
 
 .button {
@@ -188,7 +194,7 @@ a:active {
   }
   .calculatorContainer {
     flex: 1 0 auto;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-left: 12px;
   }
   
@@ -202,13 +208,5 @@ a:active {
 
   .buttonDefaultActive {
     margin: 10px 10px;
-  }
-
-  #display {
-    width: 215px;
-  }
-
-  .doubleWidth {
-    width: 82px;
   }
 }

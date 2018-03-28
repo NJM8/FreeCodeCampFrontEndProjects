@@ -12,14 +12,14 @@ document.addEventListener('DOMContentLoaded', function(){
     '+': (x, y) => x + y,
     '÷': (x, y) => x / y,
     '-': (x, y) => x - y,
-    '*': (x, y) => x * y
+    'x': (x, y) => x * y
   }
   
   const mdas = {
     '*': 1,
     '÷': 2,
     '+': 3,
-    '-': 4
+    'x': 4
   }
   
   const operators = Object.keys(operations);
@@ -64,7 +64,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
   const shiftedKeys = {
     56: 1111,
-    61: 3333
+    61: 3333,
+    8: 8888
   }
 
   const validKeys = [8, 18, 191, 55, 56, 57, 52, 53, 54, 173, 49, 50, 51, 190, 48, 13, 61];
@@ -124,9 +125,14 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     if (operators.includes(buttonClicked) && operators.includes(lastClicked)) {
       display.textContent = currentContent.slice(0, -2);
+      display.textContent += ' ';
     }
-    if (buttonClicked === 'Clear') {
+    if (buttonClicked === 'ac') {
       display.textContent = '';
+      return;
+    }
+    if (buttonClicked === 'ce') {
+      display.textContent = currentContent.slice(0, currentContent.length - 2);
       return;
     }
     if (isMinus && operators.includes(buttonClicked)) {
