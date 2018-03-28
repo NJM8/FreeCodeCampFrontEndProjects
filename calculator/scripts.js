@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function(){
   }
   
   const operators = Object.keys(operations);
-  let answerDisplayed = false;
   let decimalEntered = false;
   
   function executeInput(event){
@@ -34,11 +33,10 @@ document.addEventListener('DOMContentLoaded', function(){
     let ratings = input.map(item => operators.includes(item) ? mdas[item] : 0);
     result = calculateResults(input, ratings);
     if (Number.isInteger(result)) {
-      display.textContent = result;
+      display.textContent = `${result} `;
     } else {
-      display.textContent = Number(result.toFixed(5));
+      display.textContent = `${Number(result.toFixed(5))} `;
     }
-    answerDisplayed = true;
   }
   
   function calculateResults(input, ratings){
@@ -74,9 +72,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if (!validKeys.includes(event.keyCode)) {
       return;
     }
-    if (event.keyCode === 13 && answerDisplayed) {
-      return;
-    }
+
     event.preventDefault();
 
     let isShifted = event.shiftKey;
@@ -88,22 +84,17 @@ document.addEventListener('DOMContentLoaded', function(){
     } else {
       element = document.querySelector(`[data-key="${event.keyCode}"]`);
     }
-
-      let mouseDown = document.createEvent('MouseEvents');
-      mouseDown.initEvent('mousedown', true, true);
-      element.dispatchEvent(mouseDown);
-      setTimeout(() => {
-        let mouseUp = document.createEvent('MouseEvents');
-        mouseUp.initEvent('mouseup', true, true);
-        element.dispatchEvent(mouseUp);
-      }, 100);
+    let mouseDown = document.createEvent('MouseEvents');
+    mouseDown.initEvent('mousedown', true, true);
+    element.dispatchEvent(mouseDown);
+    setTimeout(() => {
+      let mouseUp = document.createEvent('MouseEvents');
+      mouseUp.initEvent('mouseup', true, true);
+      element.dispatchEvent(mouseUp);
+    }, 100);
   }
   
   function appendToDisplay(event){
-    if (answerDisplayed) {
-      display.textContent = '';
-      answerDisplayed = false;
-    }
     let buttonClicked = event.currentTarget.childNodes[0].textContent;
     let currentContent = display.textContent;
     let lastClicked = currentContent[currentContent.length - 2];
@@ -143,6 +134,7 @@ document.addEventListener('DOMContentLoaded', function(){
         display.textContent += `-${buttonClicked} `;
       } else {
         display.textContent += `- ${buttonClicked} `;
+        decimalEntered = false;
       }
       let mouseDown = document.createEvent('MouseEvents');
       mouseDown.initEvent('mousedown', true, true);
