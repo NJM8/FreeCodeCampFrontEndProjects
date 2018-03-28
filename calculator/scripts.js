@@ -27,16 +27,12 @@ document.addEventListener('DOMContentLoaded', function(){
   let decimalEntered = false;
   
   function executeInput(event){
-    // think about how to deal with last input being an operator
     let input = display.textContent.split(' ').filter(item => item !== '' && item);
     if (operators.includes(input[input.length - 1])) {
       input.splice(input.length - 1, 1);
     }
     let ratings = input.map(item => operators.includes(item) ? mdas[item] : 0);
-    // console.log(input);
-    // console.log(ratings);
     result = calculateResults(input, ratings);
-    // console.log(`result: ${result}`);
     if (Number.isInteger(result)) {
       display.textContent = result;
     } else {
@@ -47,27 +43,18 @@ document.addEventListener('DOMContentLoaded', function(){
   
   function calculateResults(input, ratings){
     if (input.length === 1) {
-      // console.log(`answer: ${input[0]}`);
       return input[0];
     } else {
       let count = 1;
       while (count < 5) {
         if (ratings.includes(count)) {
-          // console.log('found');
           let location = ratings.indexOf(count);
-          // console.log(location);
           let operator = input[location];
-          // console.log(operator);
           let x = Number(input[location - 1]);
-          // console.log(x);
           let y = Number(input[location + 1]);
-          // console.log(y);
           let result = operations[operator](x, y);
-          // console.log(result);
           input.splice(location - 1, 3, result);
-          // console.log(input);
           ratings.splice(location - 1, 3, 0);
-          // console.log(ratings);
           return calculateResults(input, ratings);
         }
         count++;
@@ -90,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function(){
       return;
     }
     event.preventDefault();
+
     let isShifted = event.shiftKey;
     let element = undefined;
     
@@ -99,15 +87,15 @@ document.addEventListener('DOMContentLoaded', function(){
     } else {
       element = document.querySelector(`[data-key="${event.keyCode}"]`);
     }
-    if (event.type === 'keydown') {
+
       let mouseDown = document.createEvent('MouseEvents');
       mouseDown.initEvent('mousedown', true, true);
       element.dispatchEvent(mouseDown);
-    } else if (event.type === 'keyup') {
-      let mouseUp = document.createEvent('MouseEvents');
-      mouseUp.initEvent('mouseup', true, true);
-      element.dispatchEvent(mouseUp);
-    }
+      setTimeout(() => {
+        let mouseUp = document.createEvent('MouseEvents');
+        mouseUp.initEvent('mouseup', true, true);
+        element.dispatchEvent(mouseUp);
+      }, 100);
   }
   
   function appendToDisplay(event){
@@ -145,7 +133,11 @@ document.addEventListener('DOMContentLoaded', function(){
       return;
     } 
     if (isMinus){
-      display.textContent += `-${buttonClicked} `;
+      if (currentContent === '' || operators.includes(lastClicked)) {
+        display.textContent += `-${buttonClicked} `;
+      } else {
+        display.textContent += `- ${buttonClicked} `;
+      }
       let mouseDown = document.createEvent('MouseEvents');
       mouseDown.initEvent('mousedown', true, true);
       plusMinusElement.dispatchEvent(mouseDown);
@@ -219,6 +211,5 @@ document.addEventListener('DOMContentLoaded', function(){
   externalLinks.forEach(link => link.addEventListener('mouseup', event => unHighlightButton(event)));
   externalLinks.forEach(link => link.addEventListener('mouseout', event => unHighlightButton(event)));
 
-  document.addEventListener('keydown', event => processKeyPress(event));
-  document.addEventListener('keyup', event => processKeyPress(event));
+  document.addEventListener('keydown', event => processKeyPress(event, 'down'));
 });
