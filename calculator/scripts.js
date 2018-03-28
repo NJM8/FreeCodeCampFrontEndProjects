@@ -16,10 +16,10 @@ document.addEventListener('DOMContentLoaded', function(){
   }
   
   const mdas = {
-    '*': 1,
+    'x': 1,
     '÷': 2,
     '+': 3,
-    'x': 4
+    '-': 4
   }
   
   const operators = Object.keys(operations);
