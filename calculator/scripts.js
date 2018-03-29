@@ -126,7 +126,10 @@ document.addEventListener('DOMContentLoaded', function(){
       element.dispatchEvent(mouseUp);
     }, 100);
   }
-  
+
+  // flag to only allow number entry on valid minus sign input
+  let mustBeNumber = false;
+
   // handler to add inputs to display
   function appendToDisplay(event){
     // get the button clicked
@@ -155,7 +158,9 @@ document.addEventListener('DOMContentLoaded', function(){
         decimalEntered = false;
       }
       display.textContent = currentContent.slice(0, currentContent.length - 2);
-      display.textContent += ' ';
+      if (display.textContent[display.textContent.length - 1] !== ' '){
+        display.textContent += ' ';
+      }
       return;
     }
 
@@ -177,8 +182,17 @@ document.addEventListener('DOMContentLoaded', function(){
       decimalEntered = false;
     }
 
-    // if clicking the plus/minus button and the last entry was an operator add minus symbol with no trailing space expecting number input and return
-    if (buttonClicked === '±' && operators.includes(lastClicked)) {
+    // If button clicked is not a number and it must be a number prevent input
+    if (!Number.isInteger(Number(buttonClicked)) && mustBeNumber) {
+      // let decimal period through
+      if (buttonClicked !== '.') {
+        return;
+      }
+    }
+
+    // if clicking the plus/minus button and the last entry was an operator or if no current input add minus symbol with no trailing space expecting number input and return
+    if (buttonClicked === '±' && (currentContent === '' || operators.includes(lastClicked))) {
+      mustBeNumber = true;
       display.textContent += ' -';
       return;
       // else if button is plus/minus and last clicked must be a number, input negative sign as subtraction and return
@@ -202,6 +216,8 @@ document.addEventListener('DOMContentLoaded', function(){
       // else just add new symbol or operation
       display.textContent += `${buttonClicked} `;
     }
+    // reset flag 
+    mustBeNumber = false;
   }
 
   // highlight button handler

@@ -94,6 +94,7 @@ img {
 #display {
   width: 230px;
   text-align: right;
+  word-wrap: break-word;
 }
 
 .button {
