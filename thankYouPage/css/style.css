@@ -1,6 +1,46 @@
-html { 
-  background: url(https://s13.postimg.org/gr430x23r/mark-solarski-209233-unsplash-min.jpg) no-repeat center center fixed;
-  background-size: cover;
+
+#bg {
+  position: fixed; 
+  top: -50%; 
+  left: -50%; 
+  width: 200%; 
+  height: 200%;
+  z-index: -1;
+}
+#bg img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
+}
+
+#bg:after {
+  position:fixed;
+  display:block;
+  content:"";
+  min-width: 100%;
+  min-height: 100%;
+  background-color:rgba(0,0,0,0.5);
+  top:0;
+  left:0;
+  right: 0;
+  bottom: 0;
+  z-index: -5;
+}
+
+img {
+  opacity: 1;
+  -webkit-transition: opacity 0.4s;
+  -o-transition: opacity 0.4s;
+  transition: opacity 0.4s;
+}
+
+img[data-src] {
+	opacity: 0;
 }
 
 .container {
