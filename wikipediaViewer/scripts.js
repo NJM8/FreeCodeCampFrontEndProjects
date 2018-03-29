@@ -86,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function(){
     
     // create new empty iframe
     let newiframe = document.createElement('iframe');
+    newiframe.sandbox = '';
     // push the wikipedia url to the url array
     iframeSources.push(url);
 
