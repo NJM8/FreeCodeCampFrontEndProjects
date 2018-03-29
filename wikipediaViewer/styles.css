@@ -207,10 +207,10 @@ iframe {
 }
 
 .visitPage {
-  position: relative;
+  position: fixed;
   margin: 5px;
-  right: 260px;
-  bottom: 45px;
+  right: 10px;
+  bottom: 10px;
 }
 
 #messageContainer {
