@@ -19,7 +19,7 @@ html {
 #linkToPortfolio {
   position: absolute;
   bottom: 1%;
-  margin-left: 55%;
+  margin-right: 5%;
   z-index: 10;  
   opacity: 0;
 }
@@ -61,17 +61,8 @@ img[data-src] {
 }
 
 @media screen and (max-width: 600px) { 
-  #linkToPortfolio {
-    bottom: 1%;
-    margin-left: 25%;
-    z-index: 10;  
+  .card {
+    width: 350px;
   }
 }
 
-@media screen and (max-width: 900px) { 
-  #linkToPortfolio {
-    bottom: 1%;
-    margin-left: 45%;
-    z-index: 10;  
-  }
-}
