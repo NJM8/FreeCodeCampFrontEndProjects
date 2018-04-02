@@ -22,8 +22,10 @@ html {
 }
 
 .clockContainer {
-  height: 70vh;
+  display: flex;
+  flex-wrap: wrap;
   flex-grow: 1;
+  align-content: flex-start;
   background-color: lightsteelblue;
 }
 
@@ -69,4 +71,5 @@ a:hover {
 img {
   width: 60px;
   height: 60px;
+  margin: 3px;
 }
