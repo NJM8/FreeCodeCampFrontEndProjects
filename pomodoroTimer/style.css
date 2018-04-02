@@ -24,6 +24,7 @@ html {
 .clockContainer {
   height: 70vh;
   flex-grow: 1;
+  background-color: lightsteelblue;
 }
 
 .controlsContainer {
@@ -31,7 +32,7 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  background-color: coral;
+  background-color: lightcoral;
 }
 
 .title {
