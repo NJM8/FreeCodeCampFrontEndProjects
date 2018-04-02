@@ -6,6 +6,10 @@ html {
   letter-spacing: 1px;
   font-family: cabin, sans-serif;
   font-size: 1.1rem;
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .card {
@@ -54,18 +58,25 @@ a {
 }
 
 a:hover {
-  box-shadow: 2px 3px 3px #979696;
+  box-shadow: 2px 3px 3px #757575;
 }
 
-.control {
+a:active {
+  box-shadow: inset 2px 3px 3px #757575;
+}
+
+.input {
+  background-color: coral;
   font-size: 1.3rem;
   padding: 0px 8px;
-  box-shadow: 1px 1px 1px #757575;
 }
 
 .control:hover {
-  transform: scale(1.02);
-  box-shadow: 1px 2px 2px #979696;
+  box-shadow: 2px 3px 3px #757575;
+}
+
+.control:active {
+  box-shadow: inset 2px 3px 3px #757575;
 }
 
 img {
