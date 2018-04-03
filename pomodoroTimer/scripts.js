@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function(){
   let resetting = false;
   let timing = false;
   let state = undefined;
-  let userBreak;
-  let userSession;
+  let userBreak = document.querySelector('#breakLength').textContent;
+  let userSession = document.querySelector('#sessionLength').textContent;
   let main;
 
   const imgClips = {
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if (clickedOn.includes('break')) {
       let thisBreak = breakLength.textContent.split(':');
       if (clickedOn.includes('Minus')) {
-        if (thisBreak[0] === '0') {
+        if (thisBreak[0] === '0' && !resetting) {
           return;
         }
         let firstBeer = clockContainer.querySelector('img');
@@ -97,7 +97,11 @@ document.addEventListener('DOMContentLoaded', function(){
         newBeer.src = 'images/pint.png';
         newBeer.setAttribute('alt', 'Pint of Beer');
         let firstBeer = clockContainer.querySelector('img');
-        clockContainer.insertBefore(newBeer, firstBeer);
+        if (firstBeer) {
+          clockContainer.insertBefore(newBeer, firstBeer);
+        } else {
+          clockContainer.appendChild(newBeer);
+        }
         thisBreak[0] = (Number(thisBreak[0]) + 1).toString();
       }
       breakLength.textContent = thisBreak.join(':');
@@ -106,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if (clickedOn.includes('session')) {
       let thisSession = sessionLength.textContent.split(':');
       if (clickedOn.includes('Minus')) {
-        if (thisSession[0] === '0') {
+        if (thisSession[0] === '0' && !resetting) {
           return;
         }
         let tomatoes = clockContainer.querySelectorAll('img');
@@ -126,25 +130,31 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function resetTimer(){
+    resetting = true;
     state = undefined;
+    clearInterval(main);
+
     updateDisplay();
     if (lastClockElement) {
       lastClockElement.style.clipPath = '';
+      lastClockElement.style.oClipPath = '';
+      lastClockElement.style.msClipPath = '';
+      lastClockElement.style.webkitClipPath = '';
     }
-    clearInterval(main);
-    resetting = true;
+
     let numberOfBeers = clockContainer.querySelectorAll('img[src="images/pint.png"]').length;
     let numberOfTomatoes = clockContainer.querySelectorAll('img[src="images/tomato.png"]').length;
     let breakAdd = document.querySelector('#breakAdd');
     let sessionAdd = document.querySelector('#sessionAdd');
+    let mouseDown = new Event('mousedown');
     
     while (numberOfBeers < Number(userBreak.split(':')[0])) {
-      breakAdd.click();
+      breakAdd.dispatchEvent(mouseDown);
       numberOfBeers += 1;
     }
     
     while (numberOfTomatoes < Number(userSession.split(':')[0])) {
-      sessionAdd.click();
+      sessionAdd.dispatchEvent(mouseDown);
       numberOfTomatoes += 1;
     }
     
@@ -269,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function(){
     let imgElements = clockContainer.querySelectorAll('img');
     lastClockElement = imgElements[imgElements.length - 1];
     updateDisplay(state);
-    main = setInterval(mainLoop, 1000);
+    main = setInterval(mainLoop, 10);
   }
 
   controls.forEach(control => control.addEventListener('mousedown', event => addToTimer(event)));

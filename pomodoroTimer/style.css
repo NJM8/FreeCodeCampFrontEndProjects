@@ -52,6 +52,8 @@ html {
   -ms-flex-line-pack: start;
       align-content: flex-start;
   background-color: lightsteelblue;
+  min-width: 300px;
+  min-height: 80px;
 }
 
 .controlsContainer {
@@ -119,12 +121,12 @@ a:active {
   padding: 0px 8px;
 }
 
-.control:hover {
+.control:hover, .mainControl:hover {
   -webkit-box-shadow: 2px 3px 3px #757575;
           box-shadow: 2px 3px 3px #757575;
 }
 
-.control:active {
+.control:active, .mainControl:active {
   -webkit-box-shadow: inset 2px 3px 3px #757575;
           box-shadow: inset 2px 3px 3px #757575;
 }
