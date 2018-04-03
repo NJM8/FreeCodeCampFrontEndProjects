@@ -1,10 +1,14 @@
 * {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 html {
   background: #355C7D;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #C06C84, #6C5B7B, #355C7D);  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-gradient(linear, left top, right top, from(#C06C84), color-stop(#6C5B7B), to(#355C7D));
+  background: -webkit-linear-gradient(left, #C06C84, #6C5B7B, #355C7D);
+  background: -o-linear-gradient(left, #C06C84, #6C5B7B, #355C7D);
   background: linear-gradient(to right, #C06C84, #6C5B7B, #355C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: #fff;
   letter-spacing: 1px;
@@ -25,25 +29,44 @@ html {
 }
 
 .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-grow: 1;
-  align-items: stretch;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
 }
 
 .clockContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
-  flex-grow: 1;
-  align-content: flex-start;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-flex-line-pack: start;
+      align-content: flex-start;
   background-color: lightsteelblue;
 }
 
 .controlsContainer {
   width: 385px;
-  flex-shrink: 0;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
   background-color: rgb(218, 123, 150);
 }
 
@@ -54,28 +77,40 @@ html {
 }
 
 .title > h1 {
+  -webkit-transition: all 400ms;
+  -o-transition: all 400ms;
   transition: all 400ms;  
 }
 
 .options {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   background-color: rgb(39, 201, 193);
 }
 
 a {
   text-decoration: none;
   color: #fff;
+  -webkit-transition: all 300ms;
+  -o-transition: all 300ms;
   transition: all 300ms;
 }
 
 a:hover {
-  box-shadow: 2px 3px 3px #757575;
+  -webkit-box-shadow: 2px 3px 3px #757575;
+          box-shadow: 2px 3px 3px #757575;
 }
 
 a:active {
-  box-shadow: inset 2px 3px 3px #757575;
+  -webkit-box-shadow: inset 2px 3px 3px #757575;
+          box-shadow: inset 2px 3px 3px #757575;
 }
 
 .input {
@@ -85,19 +120,25 @@ a:active {
 }
 
 .control:hover {
-  box-shadow: 2px 3px 3px #757575;
+  -webkit-box-shadow: 2px 3px 3px #757575;
+          box-shadow: 2px 3px 3px #757575;
 }
 
 .control:active {
-  box-shadow: inset 2px 3px 3px #757575;
+  -webkit-box-shadow: inset 2px 3px 3px #757575;
+          box-shadow: inset 2px 3px 3px #757575;
 }
 
 img {
   width: 70px;
   height: 70px;
   margin: 3px;
+  -webkit-transition: all 300ms;
+  -o-transition: all 300ms;
   transition: all 300ms;
-  transition-timing-function: cubic-bezier(0.2, 1.7, 0.58, 1);
+  -webkit-transition-timing-function: cubic-bezier(0.2, 1.7, 0.58, 1);
+       -o-transition-timing-function: cubic-bezier(0.2, 1.7, 0.58, 1);
+          transition-timing-function: cubic-bezier(0.2, 1.7, 0.58, 1);
 }
 
 a, p {
@@ -106,8 +147,13 @@ a, p {
 
 @media only screen and (max-width: 850px) {
   .container {
-    flex-direction: column-reverse;
-    align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
   }
   .controlsContainer {
     width: 385px;

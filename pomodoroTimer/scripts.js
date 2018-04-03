@@ -221,13 +221,13 @@ document.addEventListener('DOMContentLoaded', function(){
     let audio;
     switch (state) {
       case 'session':
-        audio = new Audio('/sounds/gong.mp3');
+        audio = document.querySelector('#gong');
         break;
       case 'break':
-        audio = new Audio('/sounds/tone.mp3');
+        audio = document.querySelector('#tone');
         break;
       case 'finished':
-        audio = new Audio('/sounds/bell.mp3');
+        audio = document.querySelector('#bell');
         break;
     }
     audio.play();
