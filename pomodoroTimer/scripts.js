@@ -85,10 +85,10 @@ document.addEventListener('DOMContentLoaded', function(){
 
     if (clickedOn.includes('break')) {
       let thisBreak = breakLength.textContent.split(':');
-      if (thisBreak[0] === '0' && !resetting) {
-        return;
-      }
       if (clickedOn.includes('Minus')) {
+        if (thisBreak[0] === '0') {
+          return;
+        }
         let firstBeer = clockContainer.querySelector('img');
         clockContainer.removeChild(firstBeer);
         thisBreak[0] = (Number(thisBreak[0]) - 1).toString();
@@ -105,10 +105,10 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     if (clickedOn.includes('session')) {
       let thisSession = sessionLength.textContent.split(':');
-      if (thisSession[0] === '0' && !resetting) {
-        return;
-      }
       if (clickedOn.includes('Minus')) {
+        if (thisSession[0] === '0') {
+          return;
+        }
         let tomatoes = clockContainer.querySelectorAll('img');
         let lastTomato = tomatoes[tomatoes.length - 1];
         clockContainer.removeChild(lastTomato);
@@ -217,19 +217,38 @@ document.addEventListener('DOMContentLoaded', function(){
     }, 500);
   }
 
+  function playSound(){
+    let audio;
+    switch (state) {
+      case 'session':
+        audio = new Audio('/sounds/gong.mp3');
+        break;
+      case 'break':
+        audio = new Audio('/sounds/tone.mp3');
+        break;
+      case 'finished':
+        audio = new Audio('/sounds/bell.mp3');
+        break;
+    }
+    audio.play();
+  }
+
   	// main timer loop
 	const mainLoop = function(){
     let sessionTimeLeft = Number(document.querySelector('#sessionLength').textContent.replace(':', ''));
     let breakTimeLeft = Number(document.querySelector('#breakLength').textContent.replace(':', ''));  
 
-    if (sessionTimeLeft === 0) { // when the timer hits zero this will end the session
-			state = 'break';
+    if (sessionTimeLeft === 0 && state !== 'break') { // when the timer hits zero this will end the session
+      state = 'break';
+      playSound();
       updateDisplay(state);
 		}
     if (breakTimeLeft === 0) { // when the timer hits zero this will end the break
       state = 'finished';
+      playSound();
       updateDisplay(state);
-			return;
+      clearInterval(main);
+      return;
 		}
 
     decrementTime(state);
@@ -238,6 +257,7 @@ document.addEventListener('DOMContentLoaded', function(){
   
   function startCountDown(){    
     state = 'session';
+    playSound();
     userBreak = document.querySelector('#breakLength').textContent;
     userSession = document.querySelector('#sessionLength').textContent;
     let imgElements = clockContainer.querySelectorAll('img');
