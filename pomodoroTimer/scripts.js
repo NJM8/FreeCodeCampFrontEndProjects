@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function(){
     main = setInterval(mainLoop, 1000);
   }
 
-  controls.forEach(control => control.addEventListener('click', event => addToTimer(event)));
+  controls.forEach(control => control.addEventListener('mousedown', event => addToTimer(event)));
 
   reset.addEventListener('click', resetTimer);
   start.addEventListener('click', startCountDown);
