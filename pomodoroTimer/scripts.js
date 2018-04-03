@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', function(){
   let lastClockElement;
   let resetting = false;
   let timing = false;
+  let state = undefined;
   let userBreak;
   let userSession;
-  let state;
   let main;
 
   const imgClips = {
@@ -255,7 +255,10 @@ document.addEventListener('DOMContentLoaded', function(){
     updateClockAnimation();
   }
   
-  function startCountDown(){    
+  function startCountDown(){  
+    if (state !== undefined) {
+      return;
+    }
     state = 'session';
     playSound();
     userBreak = document.querySelector('#breakLength').textContent;
