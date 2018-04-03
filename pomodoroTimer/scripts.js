@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if (state === 'session' || state === 'break') {
       return;
     }
-    let clickedOn = event.originalTarget.id;
+    let clickedOn = event.target.id;
 
     if (clickedOn.includes('break')) {
       let thisBreak = breakLength.textContent.split(':');
