@@ -198,19 +198,23 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function updateDisplay(state){
-    switch (state) {
-      case 'session':
-        display.textContent = 'Time to get some work done.';
-        break;
-      case 'break':
-        display.textContent = 'Take it easy for a bit!';
-        break;
-      case 'finished':
-        display.textContent = 'This Pomodoro session is done.';
-        break;
-      default:
-        display.textContent = 'Pomodoro Timer';
-    }
+    display.style.opacity = 0;
+    setTimeout(() => {
+      switch (state) {
+        case 'session':
+          display.textContent = 'Time to get some work done.';
+          break;
+        case 'break':
+          display.textContent = 'Take it easy for a bit!';
+          break;
+        case 'finished':
+          display.textContent = 'This Pomodoro session is done.';
+          break;
+        default:
+          display.textContent = 'Pomodoro Timer';
+      }
+      display.style.opacity = 1;
+    }, 500);
   }
 
   	// main timer loop
