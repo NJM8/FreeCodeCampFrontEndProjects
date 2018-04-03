@@ -194,6 +194,9 @@ document.addEventListener('DOMContentLoaded', function(){
       return;
     } else {
       lastClockElement.style.clipPath = `${imgClips[60 - thisTime]}`;
+      lastClockElement.style.oClipPath = `${imgClips[60 - thisTime]}`;
+      lastClockElement.style.msClipPath = `${imgClips[60 - thisTime]}`;
+      lastClockElement.style.webkitClipPath = `${imgClips[60 - thisTime]}`;
     }
   }
 
