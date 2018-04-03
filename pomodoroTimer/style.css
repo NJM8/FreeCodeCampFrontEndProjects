@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 html {
   background: #355C7D;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #C06C84, #6C5B7B, #355C7D);  /* Chrome 10-25, Safari 5.1-6 */
@@ -15,7 +19,7 @@ html {
 .card {
   padding: 10px;
   margin: 10px;
-  background-color: #03a9f4;
+  background-color: #0393d6;
   text-align: center;
   border-radius: 1px;
 }
@@ -35,6 +39,7 @@ html {
 }
 
 .controlsContainer {
+  width: 385px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -53,7 +58,10 @@ html {
 }
 
 .options {
-  background-color: lightseagreen;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(39, 201, 193);
 }
 
 a {
@@ -71,7 +79,7 @@ a:active {
 }
 
 .input {
-  background-color: coral;
+  background-color: rgb(240, 104, 104);
   font-size: 1.3rem;
   padding: 0px 8px;
 }
@@ -90,4 +98,34 @@ img {
   margin: 3px;
   transition: all 300ms;
   transition-timing-function: cubic-bezier(0.2, 1.7, 0.58, 1);
+}
+
+a, p {
+  height: 45px;
+}
+
+@media only screen and (max-width: 850px) {
+  .container {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  .controlsContainer {
+    width: 385px;
+  }
+  .title {
+    width: 80vw;
+    font-size: 1.1rem;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .controlsContainer {
+    width: 300px;
+  }
+  .title {
+    width: 90vw;
+  }
+  p {
+    height: 60px;
+  }
 }
