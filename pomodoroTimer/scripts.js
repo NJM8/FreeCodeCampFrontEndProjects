@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function(){
+  // grab elements for containers, buttons, and display
   let clockContainer = document.querySelector('.clockContainer');
   let controls = document.querySelectorAll('.control');
   let breakLength = document.querySelector('#breakLength');
@@ -6,14 +7,17 @@ document.addEventListener('DOMContentLoaded', function(){
   let start = document.querySelector('#start');
   let reset = document.querySelector('#reset');
   let display = document.querySelector('.title > h1');
+  // used for storing last element in clock display
   let lastClockElement;
-  let resetting = false;
-  let timing = false;
+  // stores state of application
   let state = undefined;
+  // gets initial length of break and session, will be reset by user selection upon starting timer
   let userBreak = document.querySelector('#breakLength').textContent;
   let userSession = document.querySelector('#sessionLength').textContent;
+  // storage for timer interval
   let main;
 
+  // clip paths for clock animation over image
   const imgClips = {
     1: 'polygon(50% 0, 50% 50%, 55.217% 0, 100% 0, 100% 100%, 0 100%, 0 0)',
     2: 'polygon(50% 0, 50% 50%, 60.594% 0, 100% 0, 100% 100%, 0 100%, 0 0)',
@@ -76,112 +80,148 @@ document.addEventListener('DOMContentLoaded', function(){
     59: 'polygon(50% 0, 50% 50%, 44.698% 0)'
   }
 
-
+  // adds time to break or session timer
   function addToTimer(event){
-    if (state === 'session' || state === 'break') {
+    // return right away if the timer is active
+    if (state !== undefined) {
       return;
     }
+    // pull id from element clicked on
     let clickedOn = event.target.id;
-
+    // if the element is a break time control
     if (clickedOn.includes('break')) {
+      // get the current break time
       let thisBreak = breakLength.textContent.split(':');
+      // is the element clicked is the minus element
       if (clickedOn.includes('Minus')) {
-        if (thisBreak[0] === '0' && !resetting) {
+        // check to see if we already have zero elements, if that is the case return
+        if (thisBreak[0] === '0') {
           return;
         }
+        // grab the first image in the clock container
         let firstBeer = clockContainer.querySelector('img');
+        // remove it
         clockContainer.removeChild(firstBeer);
+        // decrease the break minute time by 1
         thisBreak[0] = (Number(thisBreak[0]) - 1).toString();
       } else {
+        // element clicked must be add so create new img element
         let newBeer = document.createElement('img');
+        // set the src and the alt attribute
         newBeer.src = 'images/pint.png';
         newBeer.setAttribute('alt', 'Pint of Beer');
+        // grab the first beer to insert new beer before it (or first img if no beers)
         let firstBeer = clockContainer.querySelector('img');
         if (firstBeer) {
+          // if there is another element in the container insert our new beer before it
           clockContainer.insertBefore(newBeer, firstBeer);
         } else {
+          // there are no other elements so just add the new beer
           clockContainer.appendChild(newBeer);
         }
+        // increase break minutes by 1
         thisBreak[0] = (Number(thisBreak[0]) + 1).toString();
       }
+      // join the new break time array and set the break time display to it
       breakLength.textContent = thisBreak.join(':');
       return;
     }
+    // is the element clicked is a session control
     if (clickedOn.includes('session')) {
+      // get he current session length
       let thisSession = sessionLength.textContent.split(':');
+      // if we are subtracting from the session time
       if (clickedOn.includes('Minus')) {
-        if (thisSession[0] === '0' && !resetting) {
+        // check to make sure session time does not go negative
+        if (thisSession[0] === '0') {
           return;
         }
+        // get all images from the clock container
         let tomatoes = clockContainer.querySelectorAll('img');
+        // get the last image
         let lastTomato = tomatoes[tomatoes.length - 1];
+        // remove it
         clockContainer.removeChild(lastTomato);
+        // subtract 1 from session time
         thisSession[0] = (Number(thisSession[0]) - 1).toString();
       } else {
+        // we must be adding to the session time so make a new tomato image
         let newTomato = document.createElement('img');
+        // set src and alt attributes
         newTomato.src = 'images/tomato.png';
         newTomato.setAttribute('alt', 'Ripe Tomato');
+        // add the new image to the end of all images in clock container
         clockContainer.appendChild(newTomato);
+        // add 1 to session time
         thisSession[0] = (Number(thisSession[0]) + 1).toString();
       }
+      // set session time to the new time
       sessionLength.textContent = thisSession.join(':');
       return;
     }
   }
 
   function resetTimer(){
-    resetting = true;
+    // set state to undefined and clear interval timer
     state = undefined;
     clearInterval(main);
-
+    // update display message
     updateDisplay();
+    // reset any clock styling on last element
     if (lastClockElement) {
       lastClockElement.style.clipPath = '';
       lastClockElement.style.oClipPath = '';
       lastClockElement.style.msClipPath = '';
       lastClockElement.style.webkitClipPath = '';
     }
-
+    // get current number of beers and tomatoes
     let numberOfBeers = clockContainer.querySelectorAll('img[src="images/pint.png"]').length;
     let numberOfTomatoes = clockContainer.querySelectorAll('img[src="images/tomato.png"]').length;
+    // get add buttons
     let breakAdd = document.querySelector('#breakAdd');
     let sessionAdd = document.querySelector('#sessionAdd');
+    // init mousedown event for click simulation
     let mouseDown = new Event('mousedown');
-    
+    // while the number of beers is less than what the user started with, add a new beer
     while (numberOfBeers < Number(userBreak.split(':')[0])) {
       breakAdd.dispatchEvent(mouseDown);
       numberOfBeers += 1;
     }
-    
+    // while the number of tomatoes is less than what the user started with, add a new tomato
     while (numberOfTomatoes < Number(userSession.split(':')[0])) {
       sessionAdd.dispatchEvent(mouseDown);
       numberOfTomatoes += 1;
     }
     
+    // reset break and session displays to stored user variables
     breakLength.textContent = userBreak;
     sessionLength.textContent = userSession;
-    resetting = false;
   }
 
-  function decrementTime(state){
+  // function to decrease time display depending on state
+  function decrementTime(){
+    // get current time
     let thisTime;
     if (state === 'session') {
       thisTime = sessionLength.textContent.split(':');
     } else {
       thisTime = breakLength.textContent.split(':');
     } 
-
+    // if the seconds are 00, set to 59 and subtract 1 from the minutes
     if (thisTime[1] === '00') {
       thisTime[0] = (Number(thisTime[0]) - 1).toString();
       thisTime[1] = '59';
     } else {
+      // create newTime 1 less than old time
       let newTime = (Number(thisTime[1]) - 1).toString();
+      // if it is less than 10 pad a zero, if not just set it
       if (Number(newTime) < 10) {
         thisTime[1] = `0${newTime}`;
       } else {
         thisTime[1] = newTime;
       }
     }
+    // update display depending on state
     if (state === 'session') {
       sessionLength.textContent = thisTime.join(':');
     } else {
@@ -189,7 +229,9 @@ document.addEventListener('DOMContentLoaded', function(){
     } 
   }
 
+  // function to swap out clip-paths for appearance of a clock on the last element in the clock container
   function updateClockAnimation(){
+    // get the current time seconds depending on the state
     let thisTime;
     if (state === 'session') {
       thisTime = Number(sessionLength.textContent.split(':')[1]);
@@ -197,12 +239,14 @@ document.addEventListener('DOMContentLoaded', function(){
       thisTime = Number(breakLength.textContent.split(':')[1]);
     }
 
+    // if the time is 0, remove the last element and update the lastClockElement for the next animation
     if (thisTime === 0) {
       clockContainer.removeChild(lastClockElement);
       let imgElements = clockContainer.querySelectorAll('img');
       lastClockElement = imgElements[imgElements.length - 1];
       return;
     } else {
+      // update the current clip path to the next 'second'
       lastClockElement.style.clipPath = `${imgClips[60 - thisTime]}`;
       lastClockElement.style.oClipPath = `${imgClips[60 - thisTime]}`;
       lastClockElement.style.msClipPath = `${imgClips[60 - thisTime]}`;
@@ -210,8 +254,11 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   }
 
-  function updateDisplay(state){
+  // function to set the message in the display depending on state
+  function updateDisplay(){
+    // animate out
     display.style.opacity = 0;
+    // use timer to wait for fade out, update text
     setTimeout(() => {
       switch (state) {
         case 'session':
@@ -226,12 +273,15 @@ document.addEventListener('DOMContentLoaded', function(){
         default:
           display.textContent = 'Pomodoro Timer';
       }
+      // animate in
       display.style.opacity = 1;
     }, 500);
   }
 
+  // function to play a sound depending on timer state change
   function playSound(){
     let audio;
+    // grab the corresponding audio element
     switch (state) {
       case 'session':
         audio = document.querySelector('#gong');
@@ -246,40 +296,51 @@ document.addEventListener('DOMContentLoaded', function(){
     audio.play();
   }
 
-  	// main timer loop
-	const mainLoop = function(){
+  // main timer loop
+	let mainLoop = function(){
+    // get break time and session time left
     let sessionTimeLeft = Number(document.querySelector('#sessionLength').textContent.replace(':', ''));
     let breakTimeLeft = Number(document.querySelector('#breakLength').textContent.replace(':', ''));  
-
-    if (sessionTimeLeft === 0 && state !== 'break') { // when the timer hits zero this will end the session
+    // when the session timer hits zero this will end the session, check is to make sure this doesn't run each second when the session is done but the break is running
+    if (sessionTimeLeft === 0 && state !== 'break') { 
+      // update state, play sound and update display
       state = 'break';
       playSound();
-      updateDisplay(state);
-		}
-    if (breakTimeLeft === 0) { // when the timer hits zero this will end the break
+      updateDisplay();
+    }
+    // when the timer hits zero this will end the break
+    if (breakTimeLeft === 0) { 
+      // update state, play sound, update display, clear interval and return to prevent this loop from finishing
       state = 'finished';
       playSound();
-      updateDisplay(state);
+      updateDisplay();
       clearInterval(main);
       return;
 		}
 
-    decrementTime(state);
+    // each loop update the time and the animation
+    decrementTime();
     updateClockAnimation();
   }
   
+  // function to start the countdown
   function startCountDown(){  
+    // check to prevent multiple setintervals from being created
     if (state !== undefined) {
       return;
     }
+    // set state, play sound, update display
     state = 'session';
     playSound();
+    updateDisplay();
+    // store users selected break and session time
     userBreak = document.querySelector('#breakLength').textContent;
     userSession = document.querySelector('#sessionLength').textContent;
+    // set last clock element
     let imgElements = clockContainer.querySelectorAll('img');
     lastClockElement = imgElements[imgElements.length - 1];
-    updateDisplay(state);
-    main = setInterval(mainLoop, 10);
+    // kickoff timer loop
+    main = setInterval(mainLoop, 1000);
   }
 
   controls.forEach(control => control.addEventListener('mousedown', event => addToTimer(event)));
