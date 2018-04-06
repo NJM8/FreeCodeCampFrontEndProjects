@@ -1,3 +1,125 @@
 * {
   box-sizing: border-box;
 }
+
+html {
+  background: #ffd89b;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #19547b, #ffd89b);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #19547b, #ffd89b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: darkcyan;
+  border-radius: 5px;
+  margin: 10px;
+  color: white;
+}
+
+.title {
+  font-size: 2rem;
+  width: 40vw;
+  height: 125px;
+  align-self: center;
+}
+
+.controls {
+  justify-content: space-evenly;
+  width: 400px;
+  height: 70px;
+}
+
+button {
+  font-size: 1.1rem;
+  width: 150px;
+  height: 40px;
+  background-color: rgb(3, 187, 190);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  -webkit-box-shadow: 2px 3px 2px #757575;
+          box-shadow: 2px 3px 2px #757575;
+}
+
+button:active {
+  -webkit-box-shadow: inset 2px 3px 2px #757575;
+          box-shadow: inset 2px 3px 2px #757575;
+}
+
+.board {
+  width: 475px;
+  height: 375px;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
+.boardRow {
+  display: flex;
+}
+
+.boardCell {
+  margin: 0;
+  width: 105px;
+  height: 105px;
+  background-color: rgb(3, 187, 190);
+  list-style: none;
+  cursor: pointer;
+}
+
+#one {
+  border-top-left-radius: 5px;
+}
+
+#two {
+  border: 2px solid azure;
+  border-top: none;
+  border-bottom: none;
+}
+
+#three {
+  border-top-right-radius: 5px;
+}
+
+#four {
+  border: 2px solid azure;
+  border-left: none;
+  border-right: none;
+}
+
+#five {
+  border: 2px solid azure;
+}
+
+#six {
+  border: 2px solid azure;
+  border-left: none;
+  border-right: none;
+}
+
+#seven {
+  border-bottom-left-radius: 5px;
+}
+
+#eight {
+  border: 2px solid azure;
+  border-top: none;
+  border-bottom: none;
+}
+
+#nine {
+  border-bottom-right-radius: 5px;
+}
