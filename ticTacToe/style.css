@@ -29,15 +29,24 @@ body {
 
 .title {
   font-size: 2rem;
-  width: 40vw;
+  width: 565px;
   height: 125px;
   align-self: center;
+  font-style: italic;
+}
+
+#message {
+  transition: all 200ms;
 }
 
 .controls {
   justify-content: space-evenly;
   width: 400px;
   height: 70px;
+}
+
+button {
+  transition: all 400ms;  
 }
 
 button, a {
@@ -94,6 +103,7 @@ button:active, a:active {
   cursor: pointer;
   font-size: 5rem;
   text-align: center;
+  transition: all 200ms;    
 }
 
 #one {
