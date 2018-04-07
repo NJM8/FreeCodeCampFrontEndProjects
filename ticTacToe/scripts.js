@@ -29,9 +29,36 @@ document.addEventListener('DOMContentLoaded', function(){
     element.textContent = message;
   }
 
+  function checkForOpponentTwoInCombination(){
+    return winningCombinations.reduce((result, combo) => {
+      let first = board[combo[0]] === userChoice;
+      let second = board[combo[1]] === userChoice;
+      let third = board[combo[2]] === userChoice;
+      if ((first && second) && board[combo[2]] !== lettersTurn) {
+        result.push(combo);
+        return result;
+      }
+      if ((second && third) && board[combo[0]] !== lettersTurn) {
+        result.push(combo);
+        return result;
+      }
+      if ((first && third) && board[combo[1]] !== lettersTurn) {
+        result.push(combo);
+        return result;
+      }
+      return result;
+    }, []);
+  }
+
   function computerPlayTurn(){
-    let options = Object.keys(board).filter(key => board[key] === 'E');
-    let selection = options[Math.floor(Math.random() * options.length)];
+    let selection;
+    let checkForImminentLoss = checkForOpponentTwoInCombination();
+    if (checkForImminentLoss.length > 0) {
+      selection = checkForImminentLoss[0].find(cell => board[cell] === 'E');
+    } else {
+      let options = Object.keys(board).filter(key => board[key] === 'E');
+      selection = options[Math.floor(Math.random() * options.length)];
+    }
     let element = document.querySelector(`[data-cell="${selection}"]`);
     let mouseDown = new Event('mousedown');
     setTimeout(() => {
