@@ -4,6 +4,10 @@
   padding: 0;
   font-family: 'Lato', sans-serif;
   letter-spacing: 1px;
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .bg {
@@ -63,6 +67,22 @@ body {
 
 .content {
   flex: 1 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.board {
+  background-color: cadetblue;
+  width: 500px;
+  height: 500px;
+  border-radius: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
 }
 
 .footer {
@@ -72,12 +92,17 @@ body {
   justify-content: space-between;
 }
 
+.row {
+  display: flex;
+}
+
 .card {
   margin: 10px;
   padding: 5px 10px;
   background-color: cornsilk;
   color: black;
   border-radius: 4px;
+  border: 1px solid black;
 }
 
 .title {
@@ -91,4 +116,70 @@ body {
   text-decoration: none;
 }
 
+.controls {
+  position: absolute;
+  z-index: 5;
+  background-color: cadetblue;
+  width: 250px;
+  height: 250px;
+  border-radius: 100%;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.controls > div {
+  height: 52px;
+}
+
+.buttonsContainer {
+  display: flex;
+  align-items: center;
+}
+
+#strictIndicator {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+  border-radius: 50%;
+  background-color: black;
+}
+
+button {
+  border: none;
+  font-size: 1.1rem;  
+}
+
+p {
+  font-size: 1.1rem;  
+}
+
+.simonButton {
+  width: 240px;
+  height: 240px;
+  border: 2px solid black;
+}
+
+#green {
+  background-color: forestgreen;
+  border-top-left-radius: 100%;
+}
+
+#red {
+  background-color: tomato;
+  border-top-right-radius: 100%;
+}
+
+#yellow {
+  background-color: gold;
+  border-bottom-left-radius: 100%;
+}
+
+#blue {
+  background-color: steelblue;
+  border-bottom-right-radius: 100%;
+}
 
