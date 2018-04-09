@@ -4,8 +4,8 @@
 
 html {
   background: #ffd89b;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #19547b, #ffd89b);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #19547b, #ffd89b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: -webkit-linear-gradient(to right, #19547b, #ffd89b);
+  background: linear-gradient(to right, #19547b, #ffd89b);
   font-family: 'Lato', sans-serif;
   letter-spacing: 1px;
 }
@@ -148,4 +148,57 @@ button:active, a:active {
 
 #nine {
   border-bottom-right-radius: 5px;
+}
+
+@media only screen and (max-width: 600px) {
+  .title {
+    width: 390px;
+    font-size: 1.3rem;
+    height: 100px;
+  }
+
+  .board {
+    width: 375px;
+    height: 300px;
+  }
+
+  .boardCell {
+    width: 85px;
+    height: 85px;
+    font-size: 4rem;
+  }
+
+  .controls {
+    width: 365px;
+  }
+
+  .button {
+    width: 120px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .title {
+    width: 300px;
+    font-size: 1.1rem;
+    height: 80px;
+  }
+
+  .board {
+    width: 310px;
+    height: 300px;
+  }
+
+  .controls {
+    flex-direction: column;
+    width: 210px;
+    height: 110px;
+  }
+
+  .button {
+    margin: 5px;
+  }
+
+  .container {
+    margin: 4px;
+  }
 }
