@@ -24,12 +24,12 @@ document.addEventListener('DOMContentLoaded', function(){
     9: 'E'
   }
 
-  // function to set the text in an element 
   function updateElementText(element, message){
     element.textContent = message;
   }
 
-  function checkForOpponentTwoInCombination(){
+  // check each winning combo against the board to see if the user has a winning play
+  function checkForOpponentTwoPlaysInWinningCombo(){
     return winningCombinations.reduce((result, combo) => {
       let first = board[combo[0]] === userChoice;
       let second = board[combo[1]] === userChoice;
@@ -50,9 +50,10 @@ document.addEventListener('DOMContentLoaded', function(){
     }, []);
   }
 
+  // computer first checks if the user is about to win, if so play there, otherwise get a random valid play location from the board and play there. settimeout is used so it appears that the computer is thinking, instant play is weird
   function computerPlayTurn(){
     let selection;
-    let checkForImminentLoss = checkForOpponentTwoInCombination();
+    let checkForImminentLoss = checkForOpponentTwoPlaysInWinningCombo();
     if (checkForImminentLoss.length > 0) {
       selection = checkForImminentLoss[0].find(cell => board[cell] === 'E');
     } else {
@@ -67,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }, 500);
   }
 
+  // let's the user choose a side, changes play buttons to X / O and back after selection
   function chooseASide(event){
     updateElementText(display, `You chose ${event.target.textContent}`);
     userChoice = event.target.textContent;
@@ -95,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }, 1000);    
   }
 
+  // kick off one player game, prompts user to choose a side
   function onePlayerGame(){
     computerPlaying = true;
     updateElementText(display, 'Choose a side.');
@@ -106,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function(){
     buttonTwo.addEventListener('mousedown', chooseASide);
   }
 
+  // kicks off two player game
   function twoPlayerGame(){
     lettersTurn = 'X';
     playing = true;
@@ -135,7 +139,6 @@ document.addEventListener('DOMContentLoaded', function(){
         return true;
       }
     } 
-
     return false;
   }
 
@@ -201,5 +204,9 @@ document.addEventListener('DOMContentLoaded', function(){
 
   buttonOne.addEventListener('mousedown', onePlayerGame);
   buttonTwo.addEventListener('mousedown', twoPlayerGame);
-  boardCells.forEach(cell => cell.addEventListener('mousedown', playTurn));
+
+  for (let cell of boardCells) {
+    cell.addEventListener('mousedown', playTurn);
+  }
+
 });
