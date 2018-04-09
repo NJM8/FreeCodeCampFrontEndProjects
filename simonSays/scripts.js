@@ -7,24 +7,37 @@ document.addEventListener('DOMContentLoaded', function(){
     };
   });
 
+  let playing = false;
+
   function centerControls(){
-    console.log('hi');
     const board = document.querySelector('.board');
     const controls = document.querySelector('.controls');
     const boardCenterY = board.getBoundingClientRect().top + (board.getBoundingClientRect().height / 2); 
-    console.log(boardCenterY);
     const boardCenterX = board.getBoundingClientRect().left + (board.getBoundingClientRect().width / 2); 
-    console.log(boardCenterX);
-    const controlsWidth = controls.getBoundingClientRect().width;
-    console.log(controlsWidth);
-    const controlsHeight = controls.getBoundingClientRect().height;
-    console.log(controlsHeight);
-    controls.style.top = boardCenterY + (controlsHeight / 2);
-    controls.style.left = boardCenterX + (controlsWidth / 2);
+    controls.style.top = boardCenterY + (controls.getBoundingClientRect().height / 2);
+    controls.style.left = boardCenterX + (controls.getBoundingClientRect().width / 2);
   }
 
+  function toggleOnOff(){
+    toggle.classList.contains('toggleOn') ? toggle.classList.remove('toggleOn') : toggle.classList.add('toggleOn');
+    playing ? playing = false : playing = true;
+  }
+  
+  function enableStrictMode(){
+    if (playing) {
+      return;
+    }
+    strictIndicator.classList.contains('strictOn') ? 
+    strictIndicator.classList.remove('strictOn') : strictIndicator.classList.add('strictOn');
+  }
+  
+  const toggleBody = document.querySelector('.toggleBody');
+  const toggle = document.querySelector('.toggle');
+  toggleBody.addEventListener('mousedown', toggleOnOff);
 
-
+  const strictButton = document.querySelector('#strict');
+  const strictIndicator = document.querySelector('.strictIndicator');
+  strictButton.addEventListener('mousedown', enableStrictMode); 
 
 
 

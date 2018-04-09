@@ -99,7 +99,7 @@ body {
 .card {
   margin: 10px;
   padding: 5px 10px;
-  background-color: cornsilk;
+  background-color: rgb(235, 235, 235);
   color: black;
   border-radius: 4px;
   border: 1px solid black;
@@ -139,13 +139,45 @@ body {
   align-items: center;
 }
 
-#strictIndicator {
+.strictIndicator {
   content: '';
   width: 20px;
   height: 20px;
   border: 1px solid black;
   border-radius: 50%;
-  background-color: black;
+  background-color: firebrick;
+  transition: all 200ms ease;
+}
+
+.strictOn {
+  background-color: seagreen;
+}
+
+.onOffContainer {
+  display: flex;
+  align-items: center;
+}
+
+.toggleBody {
+  width: 50px;
+  height: 25px;
+}
+
+.toggle {
+  width: 20px;
+  height: 21px;
+  background-color: firebrick;
+  border: 1px solid black;
+  border-radius: 4px;
+  position: relative;
+  top: -4px;
+  left: -9px;
+  transition: all 200ms ease;
+}
+
+.toggleOn {
+  transform: translateX(26px);
+  background-color: seagreen;
 }
 
 button {
@@ -168,9 +200,35 @@ p {
   border-top-left-radius: 100%;
 }
 
+#green:hover {
+  box-shadow: -2px -3px 2px #414141;
+}
+
+#green:active {
+  background-color: rgb(42, 192, 42);
+  border-color: rgb(42, 192, 42);
+  box-shadow: 2px -3px 2px rgb(42, 192, 42);
+  box-shadow: -2px 3px 2px rgb(42, 192, 42);
+  box-shadow: -2px -3px 2px rgb(42, 192, 42);
+  box-shadow: 2px 3px 2px rgb(42, 192, 42);
+}
+
 #red {
   background-color: tomato;
   border-top-right-radius: 100%;
+}
+
+#red:hover {
+  box-shadow: 2px -3px 2px #414141;
+}
+
+#red:active {
+  background-color: rgb(252, 145, 126);
+  border-color: rgb(252, 145, 126);
+  box-shadow: 2px -3px 2px rgb(252, 145, 126);
+  box-shadow: -2px 3px 2px rgb(252, 145, 126);
+  box-shadow: -2px -3px 2px rgb(252, 145, 126);
+  box-shadow: 2px 3px 2px rgb(252, 145, 126);
 }
 
 #yellow {
@@ -178,8 +236,46 @@ p {
   border-bottom-left-radius: 100%;
 }
 
+#yellow:hover {
+  box-shadow: -2px 3px 2px #414141;
+}
+
+#yellow:active {
+  background-color: rgb(252, 224, 67);
+  border-color: rgb(252, 224, 67);
+  box-shadow: 2px -3px 2px rgb(252, 224, 67);
+  box-shadow: -2px 3px 2px rgb(252, 224, 67);
+  box-shadow: -2px -3px 2px rgb(252, 224, 67);
+  box-shadow: 2px 3px 2px rgb(252, 224, 67);
+}
+
 #blue {
   background-color: steelblue;
   border-bottom-right-radius: 100%;
+}
+
+#blue:hover {
+  box-shadow: 2px 3px 2px #414141;
+}
+
+#blue:active {
+  background-color: rgb(95, 163, 219);
+  border-color: rgb(95, 163, 219);
+  box-shadow: 2px -3px 2px rgb(95, 163, 219);
+  box-shadow: -2px 3px 2px rgb(95, 163, 219);
+  box-shadow: -2px -3px 2px rgb(95, 163, 219);
+  box-shadow: 2px 3px 2px rgb(95, 163, 219);
+}
+
+button:hover, a:hover {
+  box-shadow: 2px 3px 2px #414141;
+}
+
+button:active, a:active {
+  box-shadow: inset 2px 3px 2px #414141;
+}
+
+button, .simonButton, .toggleBody {
+  cursor: pointer;
 }
 
