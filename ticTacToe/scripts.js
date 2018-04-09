@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function(){
   buttonOne.addEventListener('mousedown', onePlayerGame);
   buttonTwo.addEventListener('mousedown', twoPlayerGame);
 
-  for (let cell of boardCells) {
+  for (const cell of boardCells) {
     cell.addEventListener('mousedown', playTurn);
   }
 
