@@ -30,6 +30,11 @@ document.addEventListener('DOMContentLoaded', function(){
     strictIndicator.classList.contains('strictOn') ? 
     strictIndicator.classList.remove('strictOn') : strictIndicator.classList.add('strictOn');
   }
+
+  function playSound(event){
+    let sound = document.querySelector(`[data-key="${event.target.dataset.id}"]`);
+    sound.play();
+  }
   
   const toggleBody = document.querySelector('.toggleBody');
   const toggle = document.querySelector('.toggle');
@@ -39,8 +44,10 @@ document.addEventListener('DOMContentLoaded', function(){
   const strictIndicator = document.querySelector('.strictIndicator');
   strictButton.addEventListener('mousedown', enableStrictMode); 
 
-
-
+  const simonButtons = document.querySelectorAll('.simonButton');
+  for (const simonButton of simonButtons) {
+    simonButton.addEventListener('mousedown', playSound);
+  }
   centerControls();
 });
 
