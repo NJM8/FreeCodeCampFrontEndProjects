@@ -42,42 +42,29 @@ document.addEventListener('DOMContentLoaded', function(){
     let ratings = input.map(item => operators.includes(item) ? mdas[item] : 0);
     // run calculations 
     result = calculateResults(input, ratings);
-    // if the result is a solid number
+    // if the result is a solid number display it, otheriwse trim to 5 decimal places then display, when sent as number to string it will also trim trailing zeros 
     if (Number.isInteger(result)) {
-      // append to display
       display.textContent = `${result} `;
     } else {
-      // append to display after trimming to 5 decimal places, when sent as number to string it will also trim trailing zeros
       display.textContent = `${Number(result.toFixed(5))} `;
     }
   }
   
-  // calulate input, recursively process arrays
+  // calulate input, recursively process input and ratings array, works to find first highest order operation in ratings, process associated operation in input, splice operation from arrays and call itself again, exits when only 1 number remains.
   function calculateResults(input, ratings){
     if (input.length === 1) {
-      // calculations done, return result
       return input[0];
     } else {
-      // init count to 1, highest precedence in M(1) D(2) A(3) S(4)
       let count = 1;
       while (count < 5) {
-        // starting from 1 and counting to 4, if we find the number in the ratings array
         if (ratings.includes(count)) {
-          // get the location of the rating
           let location = ratings.indexOf(count);
-          // get the corresponding operator in the input array
           let operator = input[location];
-          // get the first number argument to the left of the operator
           let x = Number(input[location - 1]);
-          // get the second number argument to the right of the operator
           let y = Number(input[location + 1]);
-          // perform the calulation, call to the operations object, the operator will grab the function and pass in x, y
           let result = operations[operator](x, y);
-          // splice the input starting with the first number arg, trim 3, insert result
           input.splice(location - 1, 3, result);
-          // splice ratings array starting with location to the left of the operator found, trim 3, insert 0 
           ratings.splice(location - 1, 3, 0);
-          // run calculations again on new arrays
           return calculateResults(input, ratings);
         }
         count++;
@@ -97,30 +84,24 @@ document.addEventListener('DOMContentLoaded', function(){
 
   // handle keyboard input to map keypress to calculator button press
   function processKeyPress(event){
-    // if not a valid key do nothing
     if (!validKeys.includes(event.keyCode)) {
       return;
     }
     // prevent default browser mapping of keys
     event.preventDefault();
 
-    // init flag for if shift key is pressed, init undefined variable for the element to search for
     let isShifted = event.shiftKey;
     let element = undefined;
     
     if (isShifted) {
-      // if shift key is pressed get custom data-key 'keycode' value
       let shiftedKey = shiftedKeys[event.keyCode];
-      // get element with custom data-key 'keycode'
       element = document.querySelector(`[data-key="${shiftedKey}"]`);
     } else {
-      // get element with regular keycode
       element = document.querySelector(`[data-key="${event.keyCode}"]`);
     }
-    // init mouse event and dispatch
     let mouseDown = new Event('mousedown');
     element.dispatchEvent(mouseDown);
-    // init mouse up and delay 100 ms, keyup seems to fire faster that mouseup so when using keyboard you can barely see calculator key animations
+    // init mouse up and delay 100 ms, keyup seems to fire faster than mouseup so when using keyboard you can barely see calculator key animations
     setTimeout(() => {
       let mouseUp = new Event('mouseup');
       element.dispatchEvent(mouseUp);
@@ -132,9 +113,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   // handler to add inputs to display
   function appendToDisplay(event){
-    // get the button clicked
     let buttonClicked = event.currentTarget.childNodes[0].textContent;
-    // get the current content
     let currentContent = display.textContent;
     // get the last clicked button, -2 because there should always be a space at the end
     let lastClicked = currentContent[currentContent.length - 2];
@@ -220,67 +199,47 @@ document.addEventListener('DOMContentLoaded', function(){
     mustBeNumber = false;
   }
 
-  // highlight button handler
   function highlightButton(event){
-    // if button clicked is a link add active styles to the parent element
     if (event.currentTarget.classList.contains('link')) {
       event.currentTarget.parentNode.classList.remove('button');
       event.currentTarget.parentNode.classList.add('buttonActive');
     } else {
-      // add styles to the selected element
       event.currentTarget.classList.remove('button');
       event.currentTarget.classList.add('buttonActive');
     }
   }
 
-  // unhighlight button handler
   function unHighlightButton(event){
-    // if button clicked is a link remove active styles from parent element
     if (event.currentTarget.classList.contains('link')) {
       event.currentTarget.parentNode.classList.remove('buttonActive');
       event.currentTarget.parentNode.classList.add('button');
     } else {
-      //remove styles from selected element
       event.currentTarget.classList.remove('buttonActive');
       event.currentTarget.classList.add('button');
     }
   }
 
-  // grab all calculator buttons
-  let buttons = document.querySelectorAll('.calcButtonContainer');
-
-  // for every button add event listener for highlight animation
-  buttons.forEach(button => button.addEventListener('mousedown', event => {
+  function highlightAndExecute(event) {
     highlightButton(event);
-    // check if equals is pressed
     let isEquals = event.currentTarget.childNodes[0].textContent === '=';
-    // if yes process input
-    if (isEquals) {
-      executeInput(event);
-      // else append input to display
-    } else {
-      appendToDisplay(event);
-    }
-  }));
+    isEquals ? executeInput(event) : appendToDisplay(event);
+  }
+  
+  let buttons = document.querySelectorAll('.calcButtonContainer');
+  
+  for (const button of buttons) {
+    button.addEventListener('mousedown', highlightAndExecute);
+    button.addEventListener('mouseup', unHighlightButton);
+    button.addEventListener('mouseout', unHighlightButton);
+  }
 
-  // bind event listener for mouse up to unhighlight
-  buttons.forEach(button => button.addEventListener('mouseup', event => {    
-    unHighlightButton(event);
-  }));
-
-  // bind event listener for mouse out to unhighlight in case of accidental click and drag
-  buttons.forEach(button => button.addEventListener('mouseout', event => {
-    unHighlightButton(event);
-  }));
-
-  // grab external links
   let externalLinks = document.querySelectorAll('a');
 
-  // bind event listeners for styling of click event
-  externalLinks.forEach(link => link.addEventListener('mousedown', event => highlightButton(event)));
-  externalLinks.forEach(link => link.addEventListener('mouseup', event => unHighlightButton(event)));
-  externalLinks.forEach(link => link.addEventListener('mouseout', event => unHighlightButton(event)));
+  for (const link of externalLinks) {
+    link.addEventListener('mousedown', highlightButton);
+    link.addEventListener('mouseup', unHighlightButton);
+    link.addEventListener('mouseout', unHighlightButton);
+  }
 
-  // bind event listener to document for keyboard input
   document.addEventListener('keydown', event => processKeyPress(event));
 });
