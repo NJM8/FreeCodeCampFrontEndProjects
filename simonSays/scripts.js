@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const matchingSimonPlay = simonPlays[userPlays.length - 1];
     if (lastUserInput === matchingSimonPlay) {
       if (userPlays.length === simonPlays.length) {
-        if (simonPlays.length === 5) {
+        if (simonPlays.length === 20) {
           changeDisplayMessage('You won!!!');
           endGame();
         } else {
