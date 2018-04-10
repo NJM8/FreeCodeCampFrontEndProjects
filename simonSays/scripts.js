@@ -12,12 +12,13 @@ document.addEventListener('DOMContentLoaded', function(){
   let strictMode = false;
   let simonSaying = false;
   let dontIncreasePlays = false;
+  let cheating = false;
   let count = 0;  
   let simonPlays = [];
   let userPlays = [];
   let simon;  
   let display = document.querySelector('.title');
-  let score = document.querySelector('#score');
+  let round = document.querySelector('#round');
   const activeClasses = {
     1: 'greenActive', 
     2: 'redActive',
@@ -93,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function handleSimonButtonPress(event){
-    if (!on) {
+    if (!on || cheating) {
       return;
     }
 
@@ -106,12 +107,12 @@ document.addEventListener('DOMContentLoaded', function(){
     }, 700);
 
     if (simonSaying) {
+      cheating = true;
       return;
     } else {
       userPlays.push(Number(event.target.dataset.id));
+      checkUserInput();
     }
-
-    checkUserInput();
   }
 
   function simulateInput(id){
@@ -123,11 +124,12 @@ document.addEventListener('DOMContentLoaded', function(){
   function simonsTurn(){
     userPlays = [];
     simonSaying = true;
+    cheating = true;
     if (!dontIncreasePlays) {
       const nextPlay = Math.floor(Math.random() * 4) + 1;
       simonPlays.push(nextPlay);
       setTimeout(() => {
-        score.textContent = simonPlays.length;
+        round.textContent = simonPlays.length;
       }, 500);
     }
     setTimeout(() => {
@@ -142,9 +144,11 @@ document.addEventListener('DOMContentLoaded', function(){
       dontIncreasePlays = false;
       count = 0;
       changeDisplayMessage('Your turn');
+      cheating = false;
       clearInterval(simon);
       return;
     } 
+    cheating = false;
     simulateInput(simonPlays[count]);
     count++;
   }
@@ -170,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function(){
     playing = false;
     simonPlays = [];
     userPlays = [];
-    score.textContent = 0;
+    round.textContent = 0;
     if (display.textContent !== 'Simon Says') {
       setTimeout(() => {
         changeDisplayMessage('Simon Says');
