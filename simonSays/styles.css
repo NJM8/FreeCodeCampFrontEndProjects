@@ -57,6 +57,7 @@ img[data-src] {
 
 html, body {
   height: 100vh;
+  width: 100vw;
 }
 
 body {
@@ -106,10 +107,10 @@ body {
 }
 
 .title {
-  width: 400px;
-  padding: 10px 30px;
+  padding: 5px 30px;
   font-size: 4rem;
   font-style: italic;
+  transition: all 200ms ease;
 }
 
 .link {
@@ -195,16 +196,16 @@ p {
   border: 2px solid black;
 }
 
-#green {
+.green {
   background-color: forestgreen;
   border-top-left-radius: 100%;
 }
 
-#green:hover {
-  box-shadow: -2px -3px 2px #414141;
+.green:hover {
+  box-shadow: -2px -2px 2px #414141;
 }
 
-#green:active {
+.greenActive {
   background-color: rgb(42, 192, 42);
   border-color: rgb(42, 192, 42);
   box-shadow: 2px -3px 2px rgb(42, 192, 42);
@@ -213,16 +214,16 @@ p {
   box-shadow: 2px 3px 2px rgb(42, 192, 42);
 }
 
-#red {
+.red {
   background-color: tomato;
   border-top-right-radius: 100%;
 }
 
-#red:hover {
-  box-shadow: 2px -3px 2px #414141;
+.red:hover {
+  box-shadow: 2px -2px 2px #414141;
 }
 
-#red:active {
+.redActive {
   background-color: rgb(252, 145, 126);
   border-color: rgb(252, 145, 126);
   box-shadow: 2px -3px 2px rgb(252, 145, 126);
@@ -231,34 +232,34 @@ p {
   box-shadow: 2px 3px 2px rgb(252, 145, 126);
 }
 
-#yellow {
+.yellow {
   background-color: gold;
   border-bottom-left-radius: 100%;
 }
 
-#yellow:hover {
-  box-shadow: -2px 3px 2px #414141;
+.yellow:hover {
+  box-shadow: -2px 2px 2px #414141;
 }
 
-#yellow:active {
-  background-color: rgb(252, 224, 67);
-  border-color: rgb(252, 224, 67);
-  box-shadow: 2px -3px 2px rgb(252, 224, 67);
-  box-shadow: -2px 3px 2px rgb(252, 224, 67);
-  box-shadow: -2px -3px 2px rgb(252, 224, 67);
-  box-shadow: 2px 3px 2px rgb(252, 224, 67);
+.yellowActive {
+  background-color: rgb(255, 232, 98);
+  border-color: rgb(255, 232, 98);
+  box-shadow: 2px -3px 2px rgb(255, 232, 98);
+  box-shadow: -2px 3px 2px rgb(255, 232, 98);
+  box-shadow: -2px -3px 2px rgb(255, 232, 98);
+  box-shadow: 2px 3px 2px rgb(255, 232, 98);
 }
 
-#blue {
+.blue {
   background-color: steelblue;
   border-bottom-right-radius: 100%;
 }
 
-#blue:hover {
-  box-shadow: 2px 3px 2px #414141;
+.blue:hover {
+  box-shadow: 2px 2px 2px #414141;
 }
 
-#blue:active {
+.blueActive {
   background-color: rgb(95, 163, 219);
   border-color: rgb(95, 163, 219);
   box-shadow: 2px -3px 2px rgb(95, 163, 219);
