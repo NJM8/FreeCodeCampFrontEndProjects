@@ -107,6 +107,7 @@ body {
 }
 
 .title {
+  width: 600px;
   padding: 5px 30px;
   font-size: 4rem;
   font-style: italic;

@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function(){
   let userPlays = [];
   let simon;  
   let display = document.querySelector('.title');
+  let score = document.querySelector('#score');
   const activeClasses = {
     1: 'greenActive', 
     2: 'redActive',
@@ -45,11 +46,17 @@ document.addEventListener('DOMContentLoaded', function(){
     toggle.classList.contains('toggleOn') ? toggle.classList.remove('toggleOn') : toggle.classList.add('toggleOn');
     on ? on = false : on = true;
     if (!on) {
+      if (strictMode) {
+        enableStrictMode();
+      }
       endGame();
     }
   }
   
   function enableStrictMode(){
+    if (!on) {
+      return;
+    }
     strictIndicator.classList.contains('strictOn') ? 
     strictIndicator.classList.remove('strictOn') : strictIndicator.classList.add('strictOn');
     strictMode ? strictMode = false : strictMode = true;
@@ -62,26 +69,33 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function checkUserInput(){
     const lastUserInput = userPlays[userPlays.length - 1];
-    const lastSimonPlay = simonPlays[simonPlays.length - 1];
-    if (lastUserInput === lastSimonPlay) {
-      if (simonPlays.length === 20) {
-        changeDisplayMessage('You won!!!');
-        setTimeout(() => {
-          endGame();
-        }, 500);
-      } else {
-        return;
+    const matchingSimonPlay = simonPlays[userPlays.length - 1];
+    if (lastUserInput === matchingSimonPlay) {
+      if (userPlays.length === simonPlays.length) {
+        if (simonPlays.length === 5) {
+          changeDisplayMessage('You won!!!');
+          setTimeout(() => {
+            endGame();
+          }, 500);
+        } else {
+          setTimeout(() => {
+            simonsTurn();
+          }, 500);
+        }
       }
     } else {
       if (strictMode) {
         changeDisplayMessage('Wrong!');
         setTimeout(() => {
+          changeDisplayMessage('Game over!');
           endGame();
-        }, 500);
+        }, 1000);
       } else {
         changeDisplayMessage('Try again');
         dontIncreasePlays = true;
-        simonSays();
+        setTimeout(() => {
+          simonsTurn();
+        }, 1000);
       }
     }
   }
@@ -109,17 +123,21 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function simulateInput(id){
-    let element = document.querySelector(`[data-id="${id}"`);
+    let element = document.querySelector(`[data-id="${id}"]`);
     let mousedown = new Event('mousedown');
     element.dispatchEvent(mousedown);
   }
 
   function simonsTurn(){
     changeDisplayMessage('Simon\'s turn');
+    userPlays = [];
     simonSaying = true;
     if (!dontIncreasePlays) {
       const nextPlay = Math.floor(Math.random() * 4) + 1;
       simonPlays.push(nextPlay);
+      setTimeout(() => {
+        score.textContent = simonPlays.length;
+      }, 500);
     }
     setTimeout(() => {
       simon = setInterval(simonSays, 1000);
@@ -127,8 +145,6 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function simonSays(){
-    simulateInput(simonPlays[count]);
-    console.log(count);
     if (count === simonPlays.length) {
       simonSaying = false;
       dontIncreasePlays = false;
@@ -137,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function(){
       clearInterval(simon);
       return;
     } 
+    simulateInput(simonPlays[count]);
     count++;
   }
   
@@ -161,10 +178,12 @@ document.addEventListener('DOMContentLoaded', function(){
     playing = false;
     simonPlays = [];
     userPlays = [];
-    changeDisplayMessage('Game over!');
-    setTimeout(() => {
-      changeDisplayMessage('Simon Says');
-    }, 1500);
+    score.textContent = 0;
+    if (display.textContent !== 'Simon Says') {
+      setTimeout(() => {
+        changeDisplayMessage('Simon Says');
+      }, 1000);
+    }
   }
   
   const toggleBody = document.querySelector('.toggleBody');
