@@ -1,5 +1,6 @@
 * {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: 'Lato', sans-serif;
@@ -61,17 +62,33 @@ html, body {
 }
 
 body {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .content {
-  flex: 1 0 auto;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
   text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .board {
@@ -79,21 +96,37 @@ body {
   width: 500px;
   height: 500px;
   border-radius: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   border: 1px solid black;
 }
 
 .footer {
-  flex-shrink: 0;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
   width: 100vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .row {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 
@@ -111,6 +144,8 @@ body {
   padding: 5px 30px;
   font-size: 4rem;
   font-style: italic;
+  -webkit-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
   transition: all 200ms ease;
 }
 
@@ -126,10 +161,19 @@ body {
   height: 250px;
   border-radius: 100%;
   border: 2px solid black;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .controls > div {
@@ -137,8 +181,12 @@ body {
 }
 
 .buttonsContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .strictIndicator {
@@ -148,6 +196,8 @@ body {
   border: 1px solid black;
   border-radius: 50%;
   background-color: firebrick;
+  -webkit-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
   transition: all 200ms ease;
 }
 
@@ -156,8 +206,12 @@ body {
 }
 
 .onOffContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .toggleBody {
@@ -174,11 +228,15 @@ body {
   position: relative;
   top: -4px;
   left: -9px;
+  -webkit-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
   transition: all 200ms ease;
 }
 
 .toggleOn {
-  transform: translateX(26px);
+  -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+          transform: translateX(26px);
   background-color: seagreen;
 }
 
@@ -203,16 +261,21 @@ p {
 }
 
 .green:hover {
-  box-shadow: -2px -2px 2px #414141;
+  -webkit-box-shadow: -2px -2px 2px #414141;
+          box-shadow: -2px -2px 2px #414141;
 }
 
 .greenActive {
   background-color: rgb(42, 192, 42);
   border-color: rgb(42, 192, 42);
-  box-shadow: 2px -3px 2px rgb(42, 192, 42);
-  box-shadow: -2px 3px 2px rgb(42, 192, 42);
-  box-shadow: -2px -3px 2px rgb(42, 192, 42);
-  box-shadow: 2px 3px 2px rgb(42, 192, 42);
+  -webkit-box-shadow: 2px -3px 2px rgb(42, 192, 42);
+          box-shadow: 2px -3px 2px rgb(42, 192, 42);
+  -webkit-box-shadow: -2px 3px 2px rgb(42, 192, 42);
+          box-shadow: -2px 3px 2px rgb(42, 192, 42);
+  -webkit-box-shadow: -2px -3px 2px rgb(42, 192, 42);
+          box-shadow: -2px -3px 2px rgb(42, 192, 42);
+  -webkit-box-shadow: 2px 3px 2px rgb(42, 192, 42);
+          box-shadow: 2px 3px 2px rgb(42, 192, 42);
 }
 
 .red {
@@ -221,16 +284,21 @@ p {
 }
 
 .red:hover {
-  box-shadow: 2px -2px 2px #414141;
+  -webkit-box-shadow: 2px -2px 2px #414141;
+          box-shadow: 2px -2px 2px #414141;
 }
 
 .redActive {
   background-color: rgb(252, 145, 126);
   border-color: rgb(252, 145, 126);
-  box-shadow: 2px -3px 2px rgb(252, 145, 126);
-  box-shadow: -2px 3px 2px rgb(252, 145, 126);
-  box-shadow: -2px -3px 2px rgb(252, 145, 126);
-  box-shadow: 2px 3px 2px rgb(252, 145, 126);
+  -webkit-box-shadow: 2px -3px 2px rgb(252, 145, 126);
+          box-shadow: 2px -3px 2px rgb(252, 145, 126);
+  -webkit-box-shadow: -2px 3px 2px rgb(252, 145, 126);
+          box-shadow: -2px 3px 2px rgb(252, 145, 126);
+  -webkit-box-shadow: -2px -3px 2px rgb(252, 145, 126);
+          box-shadow: -2px -3px 2px rgb(252, 145, 126);
+  -webkit-box-shadow: 2px 3px 2px rgb(252, 145, 126);
+          box-shadow: 2px 3px 2px rgb(252, 145, 126);
 }
 
 .yellow {
@@ -239,16 +307,21 @@ p {
 }
 
 .yellow:hover {
-  box-shadow: -2px 2px 2px #414141;
+  -webkit-box-shadow: -2px 2px 2px #414141;
+          box-shadow: -2px 2px 2px #414141;
 }
 
 .yellowActive {
   background-color: rgb(255, 232, 98);
   border-color: rgb(255, 232, 98);
-  box-shadow: 2px -3px 2px rgb(255, 232, 98);
-  box-shadow: -2px 3px 2px rgb(255, 232, 98);
-  box-shadow: -2px -3px 2px rgb(255, 232, 98);
-  box-shadow: 2px 3px 2px rgb(255, 232, 98);
+  -webkit-box-shadow: 2px -3px 2px rgb(255, 232, 98);
+          box-shadow: 2px -3px 2px rgb(255, 232, 98);
+  -webkit-box-shadow: -2px 3px 2px rgb(255, 232, 98);
+          box-shadow: -2px 3px 2px rgb(255, 232, 98);
+  -webkit-box-shadow: -2px -3px 2px rgb(255, 232, 98);
+          box-shadow: -2px -3px 2px rgb(255, 232, 98);
+  -webkit-box-shadow: 2px 3px 2px rgb(255, 232, 98);
+          box-shadow: 2px 3px 2px rgb(255, 232, 98);
 }
 
 .blue {
@@ -257,24 +330,31 @@ p {
 }
 
 .blue:hover {
-  box-shadow: 2px 2px 2px #414141;
+  -webkit-box-shadow: 2px 2px 2px #414141;
+          box-shadow: 2px 2px 2px #414141;
 }
 
 .blueActive {
   background-color: rgb(95, 163, 219);
   border-color: rgb(95, 163, 219);
-  box-shadow: 2px -3px 2px rgb(95, 163, 219);
-  box-shadow: -2px 3px 2px rgb(95, 163, 219);
-  box-shadow: -2px -3px 2px rgb(95, 163, 219);
-  box-shadow: 2px 3px 2px rgb(95, 163, 219);
+  -webkit-box-shadow: 2px -3px 2px rgb(95, 163, 219);
+          box-shadow: 2px -3px 2px rgb(95, 163, 219);
+  -webkit-box-shadow: -2px 3px 2px rgb(95, 163, 219);
+          box-shadow: -2px 3px 2px rgb(95, 163, 219);
+  -webkit-box-shadow: -2px -3px 2px rgb(95, 163, 219);
+          box-shadow: -2px -3px 2px rgb(95, 163, 219);
+  -webkit-box-shadow: 2px 3px 2px rgb(95, 163, 219);
+          box-shadow: 2px 3px 2px rgb(95, 163, 219);
 }
 
 button:hover, a:hover {
-  box-shadow: 2px 3px 2px #414141;
+  -webkit-box-shadow: 2px 3px 2px #414141;
+          box-shadow: 2px 3px 2px #414141;
 }
 
 button:active, a:active {
-  box-shadow: inset 2px 3px 2px #414141;
+  -webkit-box-shadow: inset 2px 3px 2px #414141;
+          box-shadow: inset 2px 3px 2px #414141;
 }
 
 button, .simonButton, .toggleBody {
@@ -324,11 +404,18 @@ button, .simonButton, .toggleBody {
   }
 
   .controls {
-    transform: scale(0.75);
+    -webkit-transform: scale(0.75);
+        -ms-transform: scale(0.75);
+            transform: scale(0.75);
   }
   
   .footer {
-    flex-direction: column;
-    align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
   }
 }
