@@ -281,3 +281,54 @@ button, .simonButton, .toggleBody {
   cursor: pointer;
 }
 
+@media only screen and (max-width: 700px) {
+  .title {
+    width: 400px;
+    font-size: 2rem;
+  }
+
+  .board {
+    width: 430px;
+    height: 430px;
+  }
+
+  .simonButton {
+    width: 205px;
+    height: 205px;
+  }
+
+  .controls {
+    width: 215px;
+    height: 215px;
+  }
+}
+
+@media only screen and (max-width: 465px) {
+  body {
+    overflow-x: hidden;
+  }
+  .title {
+    width: 280px;
+    font-size: 1.5rem;
+  }
+
+  .board {
+    margin-top: 50px;
+    width: 300px;
+    height: 300px;
+  }
+
+  .simonButton {
+    width: 140px;
+    height: 140px;
+  }
+
+  .controls {
+    transform: scale(0.75);
+  }
+  
+  .footer {
+    flex-direction: column;
+    align-items: center;
+  }
+}
