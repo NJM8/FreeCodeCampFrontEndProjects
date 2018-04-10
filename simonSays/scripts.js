@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
   
   function enableStrictMode(){
-    if (!on) {
+    if (!on && !strictMode) {
       return;
     }
     strictIndicator.classList.contains('strictOn') ? 
@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function playSound(event){
     let sound = document.querySelector(`[data-key="${event.target.dataset.id}"]`);
+    sound.currentTime = 0;
     sound.play();
   }
 
@@ -74,28 +75,19 @@ document.addEventListener('DOMContentLoaded', function(){
       if (userPlays.length === simonPlays.length) {
         if (simonPlays.length === 5) {
           changeDisplayMessage('You won!!!');
-          setTimeout(() => {
-            endGame();
-          }, 500);
+          endGame();
         } else {
-          setTimeout(() => {
-            simonsTurn();
-          }, 500);
+          simonsTurn();
         }
       }
     } else {
       if (strictMode) {
         changeDisplayMessage('Wrong!');
-        setTimeout(() => {
-          changeDisplayMessage('Game over!');
-          endGame();
-        }, 1000);
+        endGame();
       } else {
         changeDisplayMessage('Try again');
         dontIncreasePlays = true;
-        setTimeout(() => {
-          simonsTurn();
-        }, 1000);
+        simonsTurn();
       }
     }
   }
@@ -129,7 +121,6 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function simonsTurn(){
-    changeDisplayMessage('Simon\'s turn');
     userPlays = [];
     simonSaying = true;
     if (!dontIncreasePlays) {
@@ -140,8 +131,9 @@ document.addEventListener('DOMContentLoaded', function(){
       }, 500);
     }
     setTimeout(() => {
+      changeDisplayMessage('Simon\'s turn');
       simon = setInterval(simonSays, 1000);
-    }, 500);
+    }, 1000);
   }
 
   function simonSays(){
@@ -182,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if (display.textContent !== 'Simon Says') {
       setTimeout(() => {
         changeDisplayMessage('Simon Says');
-      }, 1000);
+      }, 1500);
     }
   }
   
