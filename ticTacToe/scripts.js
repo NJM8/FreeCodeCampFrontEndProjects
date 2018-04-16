@@ -99,12 +99,9 @@ document.addEventListener('DOMContentLoaded', function(){
     
     setTimeout(() => {
       updateElementText(TTT.display, `${TTT.lettersTurn}\'s turn`);
-      TTT.playing = true;
       TTT.buttonOne.textContent = 'One Player';
       TTT.buttonTwo.textContent = 'Two Player';
-      if (TTT.lettersTurn !== TTT.userChoice) {
-        computerPlayTurn(TTT);
-      }
+      TTT.lettersTurn !== TTT.userChoice ? computerPlayTurn(TTT) : TTT.cheating = false;
     }, 1000);    
   }
 
@@ -196,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function(){
   function onePlayerGame(TTT){
     TTT.computerPlaying = true;
     TTT.playing = true;
+    TTT.cheating = true;
     updateElementText(TTT.display, 'Choose a side.');
     TTT.buttonOne.textContent = 'X';
     TTT.buttonTwo.textContent = 'O';
