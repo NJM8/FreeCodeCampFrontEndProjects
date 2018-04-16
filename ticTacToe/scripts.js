@@ -1,27 +1,27 @@
 document.addEventListener('DOMContentLoaded', function(){
-  let buttonOne = document.querySelector('#buttonOne');
-  let buttonTwo = document.querySelector('#buttonTwo');
-  let display = document.querySelector('#message');
-  let boardCells = document.querySelectorAll('.boardCell');
-  let lettersTurn = '';
-  let userChoice = '';
-  let playing = false;
-  let computerPlaying = false;
-  let cheating = false;
-  let playCount = 0;
-
-  let winningCombinations = [[1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]];
-
-  let board = {
-    1: 'E', 
-    2: 'E', 
-    3: 'E', 
-    4: 'E', 
-    5: 'E', 
-    6: 'E', 
-    7: 'E', 
-    8: 'E', 
-    9: 'E'
+  function TicTacToe(){
+    this.buttonOne = document.querySelector('#buttonOne');
+    this.buttonTwo = document.querySelector('#buttonTwo');
+    this.display = document.querySelector('#message');
+    this.boardCells = document.querySelectorAll('.boardCell');
+    this.lettersTurn = '';
+    this.userChoice = '';
+    this.playing = false;
+    this.computerPlaying = false;
+    this.cheating = false;
+    this.playCount = 0;
+    this.winningCombinations = [[1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]];
+    this.board = {
+      1: 'E', 
+      2: 'E', 
+      3: 'E', 
+      4: 'E', 
+      5: 'E', 
+      6: 'E', 
+      7: 'E', 
+      8: 'E', 
+      9: 'E'
+    }
   }
 
   function updateElementText(element, message){
@@ -29,20 +29,20 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   // check each winning combo against the board to see if the user has a winning play
-  function checkForOpponentTwoPlaysInWinningCombo(){
-    return winningCombinations.reduce((result, combo) => {
-      let first = board[combo[0]] === userChoice;
-      let second = board[combo[1]] === userChoice;
-      let third = board[combo[2]] === userChoice;
-      if ((first && second) && board[combo[2]] !== lettersTurn) {
+  function checkForOpponentTwoPlaysInWinningCombo(TTT){
+    return TTT.winningCombinations.reduce((result, combo) => {
+      let first = TTT.board[combo[0]] === TTT.userChoice;
+      let second = TTT.board[combo[1]] === TTT.userChoice;
+      let third = TTT.board[combo[2]] === TTT.userChoice;
+      if ((first && second) && TTT.board[combo[2]] !== TTT.lettersTurn) {
         result.push(combo);
         return result;
       }
-      if ((second && third) && board[combo[0]] !== lettersTurn) {
+      if ((second && third) && TTT.board[combo[0]] !== TTT.lettersTurn) {
         result.push(combo);
         return result;
       }
-      if ((first && third) && board[combo[1]] !== lettersTurn) {
+      if ((first && third) && TTT.board[combo[1]] !== TTT.lettersTurn) {
         result.push(combo);
         return result;
       }
@@ -51,79 +51,54 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   // computer first checks if the user is about to win, if so play there, otherwise get a random valid play location from the board and play there. settimeout is used so it appears that the computer is thinking, instant play is weird
-  function computerPlayTurn(){
+  function computerPlayTurn(TTT){
     let selection;
-    let checkForImminentLoss = checkForOpponentTwoPlaysInWinningCombo();
+    let checkForImminentLoss = checkForOpponentTwoPlaysInWinningCombo(TTT);
     if (checkForImminentLoss.length > 0) {
-      selection = checkForImminentLoss[0].find(cell => board[cell] === 'E');
+      selection = checkForImminentLoss[0].find(cell => TTT.board[cell] === 'E');
     } else {
-      let options = Object.keys(board).filter(key => board[key] === 'E');
+      let options = Object.keys(TTT.board).filter(key => TTT.board[key] === 'E');
       selection = options[Math.floor(Math.random() * options.length)];
     }
     let element = document.querySelector(`[data-cell="${selection}"]`);
     let mouseDown = new Event('mousedown');
     setTimeout(() => {
-      cheating = false;
+      TTT.cheating = false;
       element.dispatchEvent(mouseDown);
     }, 500);
   }
 
   // let's the user choose a side, changes play buttons to X / O and back after selection
-  function chooseASide(event){
-    updateElementText(display, `You chose ${event.target.textContent}`);
-    userChoice = event.target.textContent;
+  function chooseASide(event, TTT){
+    updateElementText(TTT.display, `You chose ${event.target.textContent}`);
+    TTT.userChoice = event.target.textContent;
     let whoGoesFirst = Math.round(Math.random());
 
     if (whoGoesFirst === 1) {
-      lettersTurn = userChoice;
+      TTT.lettersTurn = TTT.userChoice;
     } else {
-      lettersTurn = ( userChoice === 'X' ? 'O' : 'X' );
+      TTT.lettersTurn = ( TTT.userChoice === 'X' ? 'O' : 'X' );
     }
-    buttonOne.disabled = true;
-    buttonTwo.disabled = true;
+    TTT.buttonOne.disabled = true;
+    TTT.buttonTwo.disabled = true;
     
     setTimeout(() => {
-      updateElementText(display, `${lettersTurn}\'s turn`);
-      playing = true;
-      buttonOne.textContent = 'One Player';
-      buttonTwo.textContent = 'Two Player';
-      buttonOne.removeEventListener('mousedown', chooseASide);
-      buttonTwo.removeEventListener('mousedown', chooseASide);
-      buttonOne.addEventListener('mousedown', onePlayerGame);
-      buttonTwo.addEventListener('mousedown', twoPlayerGame);
-      if (lettersTurn !== userChoice) {
-        computerPlayTurn();
+      updateElementText(TTT.display, `${TTT.lettersTurn}\'s turn`);
+      TTT.playing = true;
+      TTT.buttonOne.textContent = 'One Player';
+      TTT.buttonTwo.textContent = 'Two Player';
+      if (TTT.lettersTurn !== TTT.userChoice) {
+        computerPlayTurn(TTT);
       }
     }, 1000);    
   }
 
-  // kick off one player game, prompts user to choose a side
-  function onePlayerGame(){
-    computerPlaying = true;
-    updateElementText(display, 'Choose a side.');
-    buttonOne.textContent = 'X';
-    buttonTwo.textContent = 'O';
-    buttonOne.removeEventListener('mousedown', onePlayerGame);
-    buttonTwo.removeEventListener('mousedown', twoPlayerGame);
-    buttonOne.addEventListener('mousedown', chooseASide);
-    buttonTwo.addEventListener('mousedown', chooseASide);
+  function updateBoard(cellNumber, TTT){
+    TTT.board[cellNumber] = TTT.lettersTurn;
   }
 
-  // kicks off two player game
-  function twoPlayerGame(){
-    lettersTurn = 'X';
-    playing = true;
-    updateElementText(display, 'X\'s turn');
-    buttonOne.disabled = true;
-    buttonTwo.disabled = true;
-  }
-
-  function updateBoard(cellNumber){
-    board[cellNumber] = lettersTurn;
-  }
-
-  function checkForWin(){
-    let currentCombinations = winningCombinations.map(array => array.map(item => board[item]));
+  function checkForWin(TTT){
+    let currentCombinations = TTT.winningCombinations.map(array => array.map(item => TTT.board[item]));
 
     for (let i = 0; i < 8; i++) {
       let combo = currentCombinations[i];
@@ -131,8 +106,8 @@ document.addEventListener('DOMContentLoaded', function(){
         if (combo[0] === 'E') {
           continue;
         }
-        boardCells.forEach(boardCell => {
-          if (winningCombinations[i].includes(Number(boardCell.dataset.cell))) {
+        TTT.boardCells.forEach(boardCell => {
+          if (TTT.winningCombinations[i].includes(Number(boardCell.dataset.cell))) {
             boardCell.style.color = 'tomato';
           }
         });
@@ -142,71 +117,105 @@ document.addEventListener('DOMContentLoaded', function(){
     return false;
   }
 
-  function playTurn(event){
-    if (cheating) {
+  function playTurn(event, TTT){
+    if (TTT.cheating) {
       return;
     }
-    if (!playing) {
+    if (!TTT.playing) {
       return;
     }
     if (event.target.textContent === 'O' || event.target.textContent === 'X') {
       return;
     }
 
-    playCount += 1;
-    updateElementText(event.target, lettersTurn);
-    updateBoard(Number(event.target.dataset.cell));
+    TTT.playCount += 1;
+    updateElementText(event.target, TTT.lettersTurn);
+    updateBoard(Number(event.target.dataset.cell), TTT);
 
-    if (checkForWin()) {
-      endGame();
+    if (checkForWin(TTT)) {
+      endGame(TTT);
       return;
     }
 
-    if (playCount === 9) {
-      endGame(true);
+    if (TTT.playCount === 9) {
+      endGame(TTT, true);
       return;
     }
 
-    lettersTurn === 'X' ? lettersTurn = 'O' : lettersTurn = 'X';
+    TTT.lettersTurn === 'X' ? TTT.lettersTurn = 'O' : TTT.lettersTurn = 'X';
 
-    updateElementText(display, `${lettersTurn}\'s turn`);
+    updateElementText(TTT.display, `${TTT.lettersTurn}\'s turn`);
 
-    if (computerPlaying && lettersTurn !== userChoice) {
-      cheating = true;
-      computerPlayTurn();
+    if (TTT.computerPlaying && TTT.lettersTurn !== TTT.userChoice) {
+      TTT.cheating = true;
+      computerPlayTurn(TTT);
     }
   }
 
-  function endGame(draw = false){
+  function endGame(TTT, draw = false){
     if (draw) {
-      updateElementText(display, 'It was a draw!');
+      updateElementText(TTT.display, 'It was a draw!');
     } else {
-      updateElementText(display, `${lettersTurn} is the winner!`);
+      updateElementText(TTT.display, `${TTT.lettersTurn} is the winner!`);
     }
 
-    buttonOne.disabled = false;
-    buttonTwo.disabled = false;
-    lettersTurn = '';
-    userChoice = '';
-    playing = false;
-    computerPlaying = false;
-    playCount = 0;
-    Object.keys(board).forEach(key => board[key] = 'E');
+    TTT.buttonOne.disabled = false;
+    TTT.buttonTwo.disabled = false;
+    TTT.lettersTurn = '';
+    TTT.userChoice = '';
+    TTT.playing = false;
+    TTT.computerPlaying = false;
+    TTT.playCount = 0;
+    Object.keys(TTT.board).forEach(key => TTT.board[key] = 'E');
 
     setTimeout(() => {
-      boardCells.forEach(cell => {
+      TTT.boardCells.forEach(cell => {
         cell.textContent = '';
         cell.style.color = 'white';
       });
-      updateElementText(display, 'Tic Tac Toe');
+      updateElementText(TTT.display, 'Tic Tac Toe');
     }, 2000);
   }
 
-  buttonOne.addEventListener('mousedown', onePlayerGame);
-  buttonTwo.addEventListener('mousedown', twoPlayerGame);
-
-  for (const cell of boardCells) {
-    cell.addEventListener('mousedown', playTurn);
+  // kick off one player game, prompts user to choose a side
+  function onePlayerGame(TTT){
+    TTT.computerPlaying = true;
+    TTT.playing = true;
+    updateElementText(TTT.display, 'Choose a side.');
+    TTT.buttonOne.textContent = 'X';
+    TTT.buttonTwo.textContent = 'O';
   }
+
+  // kicks off two player game
+  function twoPlayerGame(TTT){
+    TTT.lettersTurn = 'X';
+    TTT.playing = true;
+    updateElementText(TTT.display, 'X\'s turn');
+    TTT.buttonOne.disabled = true;
+    TTT.buttonTwo.disabled = true;
+  }
+
+  function startGame(event, TTT){
+    TTT.playing ? chooseASide(event, TTT) : 
+      event.target.textContent === 'One Player' ? onePlayerGame(TTT) : twoPlayerGame(TTT);
+  }
+  
+  function createNewGame(){
+    const TTT = new TicTacToe();
+    TTT.buttonOne.addEventListener('mousedown', (event) => {
+      startGame(event, TTT);
+    });
+    TTT.buttonTwo.addEventListener('mousedown', (event) => {
+      startGame(event, TTT);
+    });
+
+    for (const cell of TTT.boardCells) {
+      cell.addEventListener('mousedown', (event) => {
+        playTurn(event, TTT);
+      });
+    }
+  }
+
+  createNewGame();
 
 });
