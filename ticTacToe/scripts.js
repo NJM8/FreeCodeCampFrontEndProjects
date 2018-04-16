@@ -28,37 +28,52 @@ document.addEventListener('DOMContentLoaded', function(){
     element.textContent = message;
   }
 
-  // check each winning combo against the board to see if the user has a winning play
-  function checkForOpponentTwoPlaysInWinningCombo(TTT){
+  // check each winning combo against the board to see if the user or the computer has a winning play
+  function checkForTwoPlaysInWinningCombo(TTT){
     return TTT.winningCombinations.reduce((result, combo) => {
-      let first = TTT.board[combo[0]] === TTT.userChoice;
-      let second = TTT.board[combo[1]] === TTT.userChoice;
-      let third = TTT.board[combo[2]] === TTT.userChoice;
-      if ((first && second) && TTT.board[combo[2]] !== TTT.lettersTurn) {
-        result.push(combo);
-        return result;
+      let userFirst = TTT.board[combo[0]] === TTT.userChoice;
+      let userSecond = TTT.board[combo[1]] === TTT.userChoice;
+      let userThird = TTT.board[combo[2]] === TTT.userChoice;
+      if ((userFirst && userSecond) && TTT.board[combo[2]] !== TTT.lettersTurn) {
+        result['user'] = combo;
       }
-      if ((second && third) && TTT.board[combo[0]] !== TTT.lettersTurn) {
-        result.push(combo);
-        return result;
+      if ((userSecond && userThird) && TTT.board[combo[0]] !== TTT.lettersTurn) {
+        result['user'] = combo;
       }
-      if ((first && third) && TTT.board[combo[1]] !== TTT.lettersTurn) {
-        result.push(combo);
-        return result;
+      if ((userFirst && userThird) && TTT.board[combo[1]] !== TTT.lettersTurn) {
+        result['user'] = combo;
       }
+
+      let computerFirst = TTT.board[combo[0]] === TTT.lettersTurn;
+      let computerSecond = TTT.board[combo[1]] === TTT.lettersTurn;
+      let computerThird = TTT.board[combo[2]] === TTT.lettersTurn;
+      if ((computerFirst && computerSecond) && TTT.board[combo[2]] !== TTT.userChoice) {
+        result['computer'] = combo;
+      }
+      if ((computerSecond && computerThird) && TTT.board[combo[0]] !== TTT.userChoice) {
+        result['computer'] = combo;
+      }
+      if ((computerFirst && computerThird) && TTT.board[combo[1]] !== TTT.userChoice) {
+        result['computer'] = combo;
+      }
+      
       return result;
-    }, []);
+    }, {});
   }
 
-  // computer first checks if the user is about to win, if so play there, otherwise get a random valid play location from the board and play there. settimeout is used so it appears that the computer is thinking, instant play is weird
+  // computer first checks if it can win, if so play there, then checks if the user is about to win, if so play there, otherwise get a random valid play location from the board and play there. setTimeout is used so it appears that the computer is thinking, instant play is weird
   function computerPlayTurn(TTT){
     let selection;
-    let checkForImminentLoss = checkForOpponentTwoPlaysInWinningCombo(TTT);
-    if (checkForImminentLoss.length > 0) {
-      selection = checkForImminentLoss[0].find(cell => TTT.board[cell] === 'E');
+    let checkForImminentWinLoss = checkForTwoPlaysInWinningCombo(TTT)
+    if (checkForImminentWinLoss.hasOwnProperty('computer')) {
+      selection = checkForImminentWinLoss['computer'].find(cell => TTT.board[cell] === 'E')
     } else {
-      let options = Object.keys(TTT.board).filter(key => TTT.board[key] === 'E');
-      selection = options[Math.floor(Math.random() * options.length)];
+      if (checkForImminentWinLoss.hasOwnProperty('user')) {
+        selection = checkForImminentWinLoss['user'].find(cell => TTT.board[cell] === 'E')
+      } else {
+        let options = Object.keys(TTT.board).filter(key => TTT.board[key] === 'E');
+        selection = options[Math.floor(Math.random() * options.length)];
+      }
     }
     let element = document.querySelector(`[data-cell="${selection}"]`);
     let mouseDown = new Event('mousedown');
