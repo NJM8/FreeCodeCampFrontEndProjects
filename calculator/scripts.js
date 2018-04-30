@@ -117,6 +117,13 @@ document.addEventListener('DOMContentLoaded', function(){
     let currentContent = display.textContent;
     // get the last clicked button, -2 because there should always be a space at the end
     let lastClicked = currentContent[currentContent.length - 2];
+
+    // allow division by zero but on next input clear display
+    if (currentContent === 'Infinity ' || currentContent === '-Infinity ') {
+      display.textContent = '';
+      currentContent = display.textContent;
+      lastClicked = currentContent[currentContent.length - 2];
+    }
     
     // if user clicks an operator and there are no numbers just return
     if (operators.includes(buttonClicked) && currentContent === '') {
