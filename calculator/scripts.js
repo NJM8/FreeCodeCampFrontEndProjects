@@ -34,6 +34,10 @@ document.addEventListener('DOMContentLoaded', function(){
   function executeInput(event){
     // get input and put into array, filter out empty cell at end due to extra space
     let input = display.textContent.split(' ').filter(item => item !== '' && item);
+    // if not enough inputs return immediately
+    if (input.length < 3) {
+      return;
+    }
     // if the last input was an operator trim it off the end
     if (operators.includes(input[input.length - 1])) {
       input.splice(input.length - 1, 1);
