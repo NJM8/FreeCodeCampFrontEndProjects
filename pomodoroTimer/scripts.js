@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function(){
       updateDisplay();
     }
     // when the timer hits zero this will end the break
-    if (breakTimeLeft === 0) { 
+    if (breakTimeLeft === 0 && state === 'break') { 
       // update state, play sound, update display, clear interval and return to prevent this loop from finishing
       state = 'finished';
       playSound();
