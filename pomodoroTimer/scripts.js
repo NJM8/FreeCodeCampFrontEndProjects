@@ -336,6 +336,7 @@ document.addEventListener('DOMContentLoaded', function(){
     // store users selected break and session time
     userBreak = document.querySelector('#breakLength').textContent;
     userSession = document.querySelector('#sessionLength').textContent;
+    storeUserTimes();
     // set last clock element
     let imgElements = clockContainer.querySelectorAll('img');
     lastClockElement = imgElements[imgElements.length - 1];
@@ -343,7 +344,50 @@ document.addEventListener('DOMContentLoaded', function(){
     main = setInterval(mainLoop, 1000);
   }
 
-  // controls.forEach(control => control.addEventListener('mousedown', event => addToTimer(event)));
+  function storeUserTimes(){
+    localStorage.setItem('NJM8PomodoroTimer', JSON.stringify({'userBreak': userBreak, 'userSession': userSession}));
+  }
+
+  function getUserTimes(){
+    const userTimes = JSON.parse(localStorage.getItem('NJM8PomodoroTimer'));
+    console.log(userTimes);
+    if (userTimes) {
+      const useSavedTimes = confirm('Would you like to use the times from your previous session?');
+      if (useSavedTimes) {
+        let previousUserBreak = Number(userTimes.userBreak.split(':')[0]);
+        let previousUserSession = Number(userTimes.userSession.split(':')[0]);
+        let currentUserBreak = Number(userBreak.split(':')[0]);
+        let currentUserSession = Number(userSession.split(':')[0]);
+        const mouseDown = new Event('mousedown');
+        if (previousUserBreak > currentUserBreak) {
+          const breakAdd = document.querySelector('#breakAdd');
+          while (previousUserBreak > currentUserBreak) {
+            breakAdd.dispatchEvent(mouseDown);
+            previousUserBreak--;
+          }
+        } else {
+          const breakMinus = document.querySelector('#breakMinus');
+          while (previousUserBreak < currentUserBreak) {
+            breakMinus.dispatchEvent(mouseDown);
+            previousUserBreak++;
+          }
+        }
+        if (previousUserSession > currentUserSession) {
+          const sessionAdd = document.querySelector('#sessionAdd');
+          while (previousUserSession > currentUserSession) {
+            sessionAdd.dispatchEvent(mouseDown);
+            previousUserSession--;
+          }
+        } else {
+          const sessionMinus = document.querySelector('#sessionMinus');
+          while (previousUserSession < currentUserSession) {
+            sessionMinus.dispatchEvent(mouseDown);
+            previousUserSession++;
+          }
+        }
+      }
+    }
+  }
 
   for (const control of controls) {
     control.addEventListener('mousedown', addToTimer);
@@ -352,4 +396,5 @@ document.addEventListener('DOMContentLoaded', function(){
   reset.addEventListener('mousedown', resetTimer);
   start.addEventListener('mousedown', startCountDown);
 
+  getUserTimes();
 });
