@@ -19,8 +19,10 @@ $(document).ready(function(){
     $.when($.getJSON(`https://wind-bow.gomix.me/twitch-api/users/${query}?callback=?`))
       .then(response => {
         // if username put in incorrectly or not found display error and return
-        if (response.error === 'Unprocessable Entity' || response.error === 'Not Found') {
-          throw Error('is not a streamer on Twitch');
+        if (response.hasOwnProperty('error')) {
+          if (response.error.toLowerCase() === 'unprocessable entity' || response.error.toLowerCase() === 'not found') {
+            throw Error('is not a streamer on Twitch');
+          }
         }
         // assume username is valid and get current stream status
         $.when($.getJSON(`https://wind-bow.gomix.me/twitch-api/streams/${query}?callback=?`))

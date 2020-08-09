@@ -60,8 +60,9 @@ $(document).ready(function(){
 
 	// get weather starting with latlng, latlng already needs to be populated by navigator geolocation, only used when finding users location.
 	function getWeatherByLatLng(latLng){
-		$.when($.get(`https://api.opencagedata.com/geocode/v1/json?q=${latLng[0]}+${latLng[1]}&key=b79b1abe44204c99b963ebc85971e53e`))
+		$.when($.get(`https://api.opencagedata.com/geocode/v1/json?q=${latLng[0]}+${latLng[1]}&key=1a098c2cfd15418790c84f062d7126ae`))
 			.then(response => {
+        console.log(response)
 				// save formatted location, display to user and get weather by it's latlng
 				location = response.results[0].formatted;
 				displayMessage(location);
@@ -75,7 +76,7 @@ $(document).ready(function(){
 
 	// get weather starting with location, used by search box input.
 	function getWeatherByLocation(location){
-		$.when($.get(`https://api.opencagedata.com/geocode/v1/json?q=${location}&key=b79b1abe44204c99b963ebc85971e53e`))
+		$.when($.get(`https://api.opencagedata.com/geocode/v1/json?q=${location}&key=1a098c2cfd15418790c84f062d7126ae`))
 			.then(response => {
 				// save formatted location and latlng, get weather by latlng
 				latLng = [response.results[0].geometry.lat, response.results[0].geometry.lng];
@@ -216,8 +217,10 @@ $(document).ready(function(){
 		});
 		$('#windDescription').animate({opacity:0}, 600, function(){
 			$(this).children('li').remove();
-		});
-		getWeather(latLng);
+    });
+    setTimeout(() => {
+      getWeather(latLng);
+    }, 1000)
 	});
 
 	// on delete animate out then remove gif containers, reset location and latlng
